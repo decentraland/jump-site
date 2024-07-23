@@ -14,7 +14,7 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
-  const url = isEns(realm) ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}` : `https://places.decentraland.org/api/places?positions=${position}`
+  const url = isEns(realm) ? `https://places.decentraland.zone/api/worlds?names=${realm.toLowerCase()}` : `https://places.decentraland.zone/api/places?positions=${position}`
   const resp = await fetch(url)
   const data: { data: Metadata[] } = await resp.json()
   return data.data[0]
