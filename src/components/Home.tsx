@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { Box, Link, Typography } from 'decentraland-ui2'
 
 import './Home.css'
