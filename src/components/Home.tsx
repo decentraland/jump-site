@@ -4,6 +4,7 @@ import { Box, Link, Typography } from 'decentraland-ui2'
 
 import './Home.css'
 import Card from './Card'
+import Image from '../assets/dcl.webp'
 import { Metadata, getLatestRelease, isEns, launchDesktopApp, queryData } from '../utils'
 
 
@@ -52,9 +53,9 @@ function Home() {
         {title}
       </Typography>
       <Card
-        imageUrl={metadata?.image ?? ''}
-        title={metadata?.title ?? "Unkown title"}
-        subtitle={metadata?.description ?? "Unkown description"}
+        imageUrl={metadata?.image ?? Image}
+        title={metadata?.title ?? ""}
+        subtitle={metadata?.description ?? ""}
         buttonText="Jump in"
         onButtonClick={handleOpenApp}
       />
