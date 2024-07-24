@@ -37,7 +37,7 @@ function Home() {
 
 
   const handleOpenApp = async () => {
-    const appUrl = `decentrasland://realm=${realm}&position=${position}`;
+    const appUrl = `decentraland://realm=${realm}&position=${position}`;
     const resp = await launchDesktopApp(appUrl)
     if (!resp) {
       setShowDownloadOption(true);
