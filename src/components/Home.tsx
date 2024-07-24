@@ -4,7 +4,7 @@ import { Box, Link, Typography } from 'decentraland-ui2'
 
 import './Home.css'
 import Card from './Card'
-import { Metadata, getLatestRelease, isEns, queryData } from '../utils'
+import { Metadata, getLatestRelease, isEns, launchDesktopApp, queryData } from '../utils'
 
 
 
@@ -36,17 +36,12 @@ function Home() {
   }, [])
 
 
-  const handleOpenApp = () => {
-    const appUrl = `decentraland://`;
-
-    // Attempt to open the Decentraland app
-    window.location.href = appUrl;
-
-    // Set a timeout to check if the app opened
-    setTimeout(() => {
-      // If the page is still here after a short delay, show download option
+  const handleOpenApp = async () => {
+    const appUrl = `decentrasland://realm=${realm}&position=${position}`;
+    const resp = await launchDesktopApp(appUrl)
+    if (!resp) {
       setShowDownloadOption(true);
-    }, 1500);
+    }
   };
 
   const title = (realm && isEns(realm)) ? `World: ${realm}` : `Genesis City at ${position}`
