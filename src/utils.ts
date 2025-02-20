@@ -7,6 +7,7 @@ export type Metadata = {
   description: string
   title: string
   image: string
+  contact_name: string
 }
 
 export function isEns(str: string | undefined): str is `${string}.eth` {
