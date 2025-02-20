@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Box, Link, Typography } from 'decentraland-ui2'
+import { getCDNRelease, CDNSource } from 'decentraland-ui2/dist/modules/cdnReleases'
 
 import './Home.css'
 import Card from './Card'
@@ -46,11 +47,19 @@ function Home() {
   };
 
   const title = (realm && isEns(realm)) ? `World: ${realm}` : `Genesis City at ${position}`
-
+  console.log(getCDNRelease(CDNSource.LAUNCHER))
   return (
     <Box className="explorer-website-start">
-      <Typography variant='h3' sx={{ padding: 10, marginTop: -30, textAlign: 'center'}}>
+      <Typography
+        variant="h3"
+      >
         {title}
+      </Typography>
+      <Typography
+        sx={{ marginTop: 1, marginBottom: 4 }}
+        variant="h5"
+      >
+        Created by {metadata?.contact_name}
       </Typography>
       <Card
         imageUrl={metadata?.image ?? Image}

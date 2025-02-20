@@ -10,10 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "decentraland-ui2": "^0.1.0",
+    "decentraland-ui2": "^0.11.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.25.1"
+    "react-router-dom": "^6.25.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
