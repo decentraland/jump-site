@@ -4,20 +4,22 @@
  */
 
 export type Metadata = {
-  description: string
-  title: string
-  image: string
-}
+  description: string;
+  title: string;
+  image: string;
+};
 
 export function isEns(str: string | undefined): str is `${string}.eth` {
-  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
+  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length;
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
-  const url = isEns(realm) ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}` : `https://places.decentraland.org/api/places?positions=${position}`
-  const resp = await fetch(url)
-  const data: { data: Metadata[] } = await resp.json()
-  return data.data[0]
+  const url = isEns(realm)
+    ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}`
+    : `https://places.decentraland.org/api/places?positions=${position}`;
+  const resp = await fetch(url);
+  const data: { data: Metadata[] } = await resp.json();
+  return data.data[0];
 }
 
 export interface GithubReleaseResponse {
@@ -25,20 +27,20 @@ export interface GithubReleaseResponse {
   version: string;
 }
 
-export let latestRelease: GithubReleaseResponse
+export let latestRelease: GithubReleaseResponse;
 
 export async function getLatestRelease(): Promise<GithubReleaseResponse> {
-  if (latestRelease) return latestRelease
+  if (latestRelease) return latestRelease;
   const resp = await fetch(`https://api.github.com/repos/decentraland/unity-explorer/releases/latest`);
   if (resp.status === 200) {
     const data = (await resp.json()) as { assets: Record<string, string>[]; name: string };
     const os = getOSName();
     const asset = data.assets.find((asset: Record<string, string>) => asset.name.includes(os.toLowerCase()));
     if (asset) {
-      return latestRelease = {
+      return (latestRelease = {
         browser_download_url: asset.browser_download_url,
         version: data.name,
-      }
+      });
     } else {
       throw new Error('No asset found for your platform');
     }
@@ -46,22 +48,21 @@ export async function getLatestRelease(): Promise<GithubReleaseResponse> {
 
   throw new Error('Failed to fetch latest release: ' + JSON.stringify(resp));
 }
-getLatestRelease()
+getLatestRelease();
 
-type OSName = 'windows' | 'macos' | 'Unknown'
+type OSName = 'windows' | 'macos' | 'Unknown';
 
 function getOSName(): OSName {
   const userAgent = window.navigator.userAgent.toLowerCase();
 
   if (userAgent.indexOf('win') > -1) {
-    return 'windows'
+    return 'windows';
   } else if (userAgent.indexOf('mac') > -1) {
-    return 'macos'
+    return 'macos';
   }
 
-  return 'Unknown'
+  return 'Unknown';
 }
-
 
 /**
  * Try to launch the desktop version using the custom protocol `dcl://position=x,y&realm=zzz`
@@ -71,11 +72,11 @@ function getOSName(): OSName {
 export const launchDesktopApp = async (url: string) => {
   // assume that the desktop version is installed only if
   // we detect a loss of focus on window
-  let installed = false
+  let installed = false;
   const isInstalled = () => {
-    installed = true
-  }
-  window.addEventListener('blur', isInstalled)
+    installed = true;
+  };
+  window.addEventListener('blur', isInstalled);
 
   // inject an iframe that open the desktop version
   // NOTE: this can be also achieved with
@@ -84,19 +85,19 @@ export const launchDesktopApp = async (url: string) => {
   // ```
   // but in safari redirects into an invalid url if the desktop
   // client is not installed
-  const iframe = document.createElement('iframe')
-  iframe.setAttribute('style', 'display: none')
-  iframe.src = url
-  document.body.appendChild(iframe)
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute('style', 'display: none');
+  iframe.src = url;
+  document.body.appendChild(iframe);
 
   // wait half of a second to detect the loss of focus because
   // the time it takes for the `blur` event to be fired varies
   // depending on the browser
-  return new Promise<boolean>((resolve) => {
+  return new Promise<boolean>(resolve => {
     setTimeout(() => {
-      window.removeEventListener('blur', isInstalled)
-      document.body.removeChild(iframe)
-      resolve(installed)
-    }, 500)
-  })
-}
+      window.removeEventListener('blur', isInstalled);
+      document.body.removeChild(iframe);
+      resolve(installed);
+    }, 500);
+  });
+};
