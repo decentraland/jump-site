@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from './Card.module.css';
+import React, { memo } from 'react';
 import { Button } from 'decentraland-ui2';
+
+import styles from './Card.module.css';
 
 interface CardProps {
   imageUrl: string;
@@ -10,7 +11,7 @@ interface CardProps {
   onButtonClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ imageUrl, title, subtitle, buttonText, onButtonClick }) => {
+export const Card: React.FC<CardProps> = memo(({ imageUrl, title, subtitle, buttonText, onButtonClick }) => {
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -27,6 +28,4 @@ const Card: React.FC<CardProps> = ({ imageUrl, title, subtitle, buttonText, onBu
       </div>
     </div>
   );
-};
-
-export default Card;
+});
