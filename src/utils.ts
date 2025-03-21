@@ -4,23 +4,23 @@
  */
 
 export type Metadata = {
-  description: string;
-  title: string;
-  image: string;
-  owner: string;
-};
+  description: string
+  title: string
+  image: string
+  owner: string
+}
 
 export function isEns(str: string | undefined): str is `${string}.eth` {
-  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length;
+  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
   const url = isEns(realm)
     ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}`
-    : `https://places.decentraland.org/api/places?positions=${position}`;
-  const resp = await fetch(url);
-  const data: { data: Metadata[] } = await resp.json();
-  return data.data[0];
+    : `https://places.decentraland.org/api/places?positions=${position}`
+  const resp = await fetch(url)
+  const data: { data: Metadata[] } = await resp.json()
+  return data.data[0]
 }
 
 /**
@@ -31,11 +31,11 @@ export async function queryData(realm: string, position: string): Promise<Metada
 export const launchDesktopApp = async (url: string) => {
   // assume that the desktop version is installed only if
   // we detect a loss of focus on window
-  let installed = false;
+  let installed = false
   const isInstalled = () => {
-    installed = true;
-  };
-  window.addEventListener('blur', isInstalled);
+    installed = true
+  }
+  window.addEventListener('blur', isInstalled)
 
   // inject an iframe that open the desktop version
   // NOTE: this can be also achieved with
@@ -44,19 +44,19 @@ export const launchDesktopApp = async (url: string) => {
   // ```
   // but in safari redirects into an invalid url if the desktop
   // client is not installed
-  const iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'display: none');
-  iframe.src = url;
-  document.body.appendChild(iframe);
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('style', 'display: none')
+  iframe.src = url
+  document.body.appendChild(iframe)
 
   // wait half of a second to detect the loss of focus because
   // the time it takes for the `blur` event to be fired varies
   // depending on the browser
   return new Promise<boolean>(resolve => {
     setTimeout(() => {
-      window.removeEventListener('blur', isInstalled);
-      document.body.removeChild(iframe);
-      resolve(installed);
-    }, 500);
-  });
-};
+      window.removeEventListener('blur', isInstalled)
+      document.body.removeChild(iframe)
+      resolve(installed)
+    }, 500)
+  })
+}

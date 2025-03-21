@@ -1,67 +1,64 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useAdvancedUserAgentData } from '@dcl/hooks';
-import { Box, Button, Typography } from 'decentraland-ui2';
+import { memo, useCallback, useEffect, useMemo, useState, type FC } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { useAdvancedUserAgentData } from '@dcl/hooks'
+import { Box, Button, Typography } from 'decentraland-ui2'
+import image from '../../../assets/dcl.webp'
+import { Events, useAnalytics } from '../../../hooks/useAnalytics'
+import { Metadata, isEns, launchDesktopApp, queryData } from '../../../utils'
+import { Card } from '../../Card/Card'
+import { DownloadButton } from '../../DownloadButton/DownloadButton'
+import styles from './MainPage.module.css'
 
-import { Events, useAnalytics } from '../../../hooks/useAnalytics';
-import { Metadata, isEns, launchDesktopApp, queryData } from '../../../utils';
-import Image from '../../../assets/dcl.webp';
+const DEFAULT_POSITION = '0,0'
+const DEFAULT_REALM = 'main'
 
-import { Card } from '../../Card/Card';
-import { DownloadButton } from '../../DownloadButton/DownloadButton';
+export const MainPage: FC = memo(() => {
+  const [searchParams] = useSearchParams()
+  const [, advancedUserAgent] = useAdvancedUserAgentData()
+  const { track } = useAnalytics()
+  const [metadata, setMetadata] = useState<Metadata | undefined>()
+  const [downloadOption, setShowDownloadOption] = useState<boolean>(false)
 
-import styles from './MainPage.module.css';
+  const position = searchParams.get('position') ?? DEFAULT_POSITION
+  const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
-const DEFAULT_POSITION = '0,0';
-const DEFAULT_REALM = 'main';
+  const osName = advancedUserAgent?.os?.name?.toLowerCase() ?? 'unknown'
+  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
-export const MainPage: React.FC = React.memo(() => {
-  const [searchParams] = useSearchParams();
-  const [, advancedUserAgent] = useAdvancedUserAgentData();
-  const { track } = useAnalytics();
-  const [metadata, setMetadata] = useState<Metadata | undefined>();
-  const [downloadOption, setShowDownloadOption] = useState<boolean>(false);
-
-  const position = searchParams.get('position') ?? DEFAULT_POSITION;
-  const realm = searchParams.get('realm') ?? DEFAULT_REALM;
-
-  const osName = advancedUserAgent?.os?.name?.toLowerCase() ?? 'unknown';
-  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown';
-
-  const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position]);
+  const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position])
 
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const metadata = await queryData(realm, position);
-        setMetadata(metadata);
+        const metadata = await queryData(realm, position)
+        setMetadata(metadata)
       } catch (error) {
-        console.error('Error fetching metadata:', error);
+        console.error('Error fetching metadata:', error)
       }
-    };
-    fetchMetadata();
-  }, [position, realm]);
+    }
+    fetchMetadata()
+  }, [position, realm])
 
   const handleClickJumpIn = useCallback(async () => {
-    const appUrl = new URL('decentraland://');
+    const appUrl = new URL('decentraland://')
 
     if (realm !== DEFAULT_REALM) {
-      appUrl.searchParams.set('realm', realm);
+      appUrl.searchParams.set('realm', realm)
     }
 
     if (position !== DEFAULT_POSITION) {
-      appUrl.searchParams.set('position', position);
+      appUrl.searchParams.set('position', position)
     }
 
-    track(Events.CLICK_JUMP_IN, { deepLink: appUrl.toString(), osName, arch });
+    track(Events.CLICK_JUMP_IN, { deepLink: appUrl.toString(), osName, arch })
 
-    const resp = await launchDesktopApp(appUrl.toString());
+    const resp = await launchDesktopApp(appUrl.toString())
 
     if (!resp) {
-      setShowDownloadOption(true);
-      track(Events.CLIENT_NOT_INSTALLED, { osName, arch });
+      setShowDownloadOption(true)
+      track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
     }
-  }, [realm, position, osName, arch, track]);
+  }, [realm, position, osName, arch, track])
 
   return (
     <Box height="100vh" pt={12} display="flex" flexDirection="column" alignItems="center" className={styles.explorerWebsiteStart}>
@@ -76,7 +73,7 @@ export const MainPage: React.FC = React.memo(() => {
         ) : null}
       </Box>
       <Box mb={5}>
-        <Card imageUrl={metadata?.image ?? Image} title={metadata?.title ?? ''} subtitle={metadata?.description ?? ''} />
+        <Card imageUrl={metadata?.image ?? image} title={metadata?.title ?? ''} subtitle={metadata?.description ?? ''} />
       </Box>
       <Box mb={4}>
         <Button variant="contained" size="large" className={styles.jumpInButton} onClick={handleClickJumpIn}>
@@ -95,5 +92,5 @@ export const MainPage: React.FC = React.memo(() => {
         </Box>
       ) : null}
     </Box>
-  );
-});
+  )
+})

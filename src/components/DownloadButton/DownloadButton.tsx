@@ -1,65 +1,63 @@
-import React, { useCallback } from 'react';
-import { Box } from 'decentraland-ui2';
-import { DownloadButton as DCLDownloadButton } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton';
-import { useAdvancedUserAgentData } from '@dcl/hooks';
+import { memo, useCallback, type FC } from 'react'
+import { useAdvancedUserAgentData } from '@dcl/hooks'
+import { DownloadButton as DCLDownloadButton } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton'
+import { Box } from 'decentraland-ui2'
+import appleLogo from '../../assets/apple-logo.svg'
+import windowsLogo from '../../assets/windows-logo.svg'
+import { Events, useAnalytics } from '../../hooks/useAnalytics'
+import styles from './DownloadButton.module.css'
 
-import { Events, useAnalytics } from '../../hooks/useAnalytics';
-import AppleLogo from '../../assets/apple-logo.svg';
-import WindowsLogo from '../../assets/windows-logo.svg';
-
-import styles from './DownloadButton.module.css';
-
-const DOWNLOAD_URL_BASE = 'https://explorer-artifacts.decentraland.org/launcher/dcl/';
+const DOWNLOAD_URL_BASE = 'https://explorer-artifacts.decentraland.org/launcher/dcl/'
 
 enum OS {
   MACOS = 'macos',
-  WINDOWS = 'windows',
+  WINDOWS = 'windows'
 }
 
 enum ARCH {
   ARM64 = 'arm64',
-  X64 = 'x64',
+  X64 = 'x64'
 }
 
 const DOWNLOAD_URLS = {
   [OS.MACOS]: {
     arm64: `${DOWNLOAD_URL_BASE}Decentraland%20Launcher-mac-arm64.dmg`,
     x64: `${DOWNLOAD_URL_BASE}Decentraland%20Launcher-mac-x64.dmg`,
-    icon: AppleLogo,
-    alt: 'Apple Logo',
+    icon: appleLogo,
+    alt: 'Apple Logo'
   },
   [OS.WINDOWS]: {
     x64: `${DOWNLOAD_URL_BASE}Decentraland%20Launcher-win-x64.exe`,
-    icon: WindowsLogo,
-    alt: 'Windows Logo',
-  },
-};
+    icon: windowsLogo,
+    alt: 'Windows Logo'
+  }
+}
 
-export const DownloadButton: React.FC = React.memo(() => {
-  const [, advancedUserAgent] = useAdvancedUserAgentData();
-  const { track } = useAnalytics();
+export const DownloadButton: FC = memo(() => {
+  const [, advancedUserAgent] = useAdvancedUserAgentData()
+  const { track } = useAnalytics()
 
-  const osName = advancedUserAgent?.os?.name?.toLowerCase() ?? 'unknown';
-  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown';
+  const osName = advancedUserAgent?.os?.name?.toLowerCase() ?? 'unknown'
+  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
   const handleClickDownload = useCallback(() => {
-    track(Events.CLICK_DOWNLOAD, { osName, arch });
-  }, [osName, arch, track]);
+    track(Events.CLICK_DOWNLOAD, { osName, arch })
+  }, [osName, arch, track])
 
   const getDownloadUrl = useCallback(
     (os: OS) => {
-      const config = DOWNLOAD_URLS[os];
+      const config = DOWNLOAD_URLS[os]
       if (osName === OS.MACOS && arch === ARCH.ARM64) {
-        return (config as (typeof DOWNLOAD_URLS)[OS.MACOS]).arm64;
+        return (config as (typeof DOWNLOAD_URLS)[OS.MACOS]).arm64
       }
-      return config.x64;
+      return config.x64
     },
-    [osName, arch],
-  );
+    [osName, arch]
+  )
 
   const renderButton = useCallback(
     (os: OS) => {
-      const config = DOWNLOAD_URLS[os];
+      const config = DOWNLOAD_URLS[os]
       return (
         <DCLDownloadButton
           key={os}
@@ -68,10 +66,10 @@ export const DownloadButton: React.FC = React.memo(() => {
           href={getDownloadUrl(os)}
           onClick={handleClickDownload}
         />
-      );
+      )
     },
-    [handleClickDownload, getDownloadUrl],
-  );
+    [handleClickDownload, getDownloadUrl]
+  )
 
   if (osName === 'unknown') {
     return (
@@ -79,8 +77,8 @@ export const DownloadButton: React.FC = React.memo(() => {
         {renderButton(OS.MACOS)}
         {renderButton(OS.WINDOWS)}
       </Box>
-    );
+    )
   }
 
-  return renderButton(osName as OS);
-});
+  return renderButton(osName as OS)
+})

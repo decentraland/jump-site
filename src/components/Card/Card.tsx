@@ -1,14 +1,13 @@
-import React from 'react';
-
-import styles from './Card.module.css';
+import { memo, type FC } from 'react'
+import styles from './Card.module.css'
 
 interface CardProps {
-  imageUrl: string;
-  title: string;
-  subtitle: string;
+  imageUrl: string
+  title: string
+  subtitle: string
 }
 
-export const Card: React.FC<CardProps> = React.memo(({ imageUrl, title, subtitle }) => {
+export const Card: FC<CardProps> = memo(({ imageUrl, title, subtitle }) => {
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -21,5 +20,5 @@ export const Card: React.FC<CardProps> = React.memo(({ imageUrl, title, subtitle
         </div>
       </div>
     </div>
-  );
-});
+  )
+})
