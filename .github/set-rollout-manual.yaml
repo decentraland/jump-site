@@ -14,7 +14,6 @@ on:
         default: 'zone'
         options:
           - zone
-          - today
           - org
       rolloutPercentage:
         description: 'The percentage for this rollout'
