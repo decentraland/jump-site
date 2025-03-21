@@ -57,7 +57,7 @@ export const MainPage: React.FC = React.memo(() => {
 
     const resp = await launchDesktopApp(appUrl.toString());
 
-    if (resp) {
+    if (!resp) {
       setShowDownloadOption(true);
       track(Events.CLIENT_NOT_INSTALLED, { osName, arch });
     }
