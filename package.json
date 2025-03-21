@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
+    "prebuild": "node scripts/prebuild.cjs",
     "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:code": "eslint -c .eslintrc.cjs src",
+    "fix:code": "npm run check:code -- --fix",
+    "pre-commit:fix:code": "eslint -c .eslintrc.cjs --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@dcl/hooks": "^0.0.2",
@@ -27,11 +31,14 @@
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
-  }
+  },
+  "homepage": ""
 }
