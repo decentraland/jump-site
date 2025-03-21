@@ -24,13 +24,7 @@ publicPackageJson.homepage = packageJson.homepage;
 if (packageJson.homepage) {
   // github action outputs. Do not touch.
   console.log('::set-output name=public_url::' + packageJson.homepage);
-  let pathname = '';
-  try {
-    pathname = new URL(packageJson.homepage).pathname;
-  } catch {
-    pathname = packageJson.homepage;
-  }
-  console.log('::set-output name=public_path::' + pathname);
+  console.log('::set-output name=public_path::' + new URL(packageJson.homepage).pathname);
 }
 
 // log stuff
@@ -43,8 +37,8 @@ fs.writeFileSync(
     .map(e => e[0] + '=' + JSON.stringify(e[1]))
     .join('\n') + '\n',
 );
-fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2) + '\n');
-fs.writeFileSync('./public/package.json', JSON.stringify(publicPackageJson, null, 2) + '\n');
+fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
+fs.writeFileSync('./public/package.json', JSON.stringify(publicPackageJson, null, 2));
 
 // public url logic
 function getPublicUrls() {
@@ -62,11 +56,6 @@ function getPublicUrls() {
     console.log(`Using CDN as public url: "${cdnUrl}"`);
     return {
       VITE_BASE_URL: cdnUrl,
-    };
-  }
-  if (isVercel) {
-    return {
-      VITE_BASE_URL: '/',
     };
   }
   // localhost
