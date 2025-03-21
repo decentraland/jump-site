@@ -17,6 +17,7 @@ export const MainPage: FC = memo(() => {
   const [, advancedUserAgent] = useAdvancedUserAgentData()
   const { track } = useAnalytics()
   const [metadata, setMetadata] = useState<Metadata | undefined>()
+  const [isLoading, setIsLoading] = useState(true)
   const [downloadOption, setShowDownloadOption] = useState<boolean>(false)
 
   const position = searchParams.get('position') ?? DEFAULT_POSITION
@@ -29,11 +30,14 @@ export const MainPage: FC = memo(() => {
 
   useEffect(() => {
     const fetchMetadata = async () => {
+      setIsLoading(true)
       try {
         const metadata = await queryData(realm, position)
         setMetadata(metadata)
       } catch (error) {
         console.error('Error fetching metadata:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchMetadata()
@@ -66,14 +70,19 @@ export const MainPage: FC = memo(() => {
         <Typography variant="h3" sx={{ textAlign: 'center' }}>
           {title}
         </Typography>
-        {metadata?.owner ? (
+        {metadata?.owner && !isLoading ? (
           <Typography variant="body1" sx={{ textAlign: 'center', fontSize: 30, fontWeight: 700 }}>
             Created by {metadata.owner}
           </Typography>
         ) : null}
       </Box>
       <Box mb={5}>
-        <Card imageUrl={metadata?.image ?? image} title={metadata?.title ?? ''} subtitle={metadata?.description ?? ''} />
+        <Card
+          isLoading={isLoading}
+          imageUrl={metadata?.image ?? image}
+          title={metadata?.title ?? ''}
+          subtitle={metadata?.description ?? ''}
+        />
       </Box>
       <Box mb={4}>
         <Button variant="contained" size="large" className={styles.jumpInButton} onClick={handleClickJumpIn}>
