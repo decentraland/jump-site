@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       packageVersion:
-        description: 'NPM Version of the release (@dcl/profile-site)'
+        description: 'NPM Version of the release (@dcl/jump-site)'
         required: true
         default: ''
       deploymentEnvironment:
