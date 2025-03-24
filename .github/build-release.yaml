@@ -10,6 +10,8 @@ on:
 
 jobs:
   build-release:
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -28,13 +30,11 @@ jobs:
         run: npm run build
         env:
           NODE_PATH: 'src'
-          NODE_OPTIONS: '--max-old-space-size=6144'
       - name: Publish
         uses: decentraland/oddish-action@master
         with:
           cwd: './dist'
           deterministic-snapshot: true
-          provenance: false
           registry-url: 'https://registry.npmjs.org'
           access: public
           gitlab-token: ${{ secrets.GITLAB_CDN_DEPLOYER_TOKEN }}
