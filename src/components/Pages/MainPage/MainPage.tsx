@@ -23,7 +23,7 @@ export const MainPage: FC = memo(() => {
   const position = searchParams.get('position') ?? DEFAULT_POSITION
   const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
-  const osName = advancedUserAgent?.os?.name?.toLowerCase() ?? 'unknown'
+  const osName = advancedUserAgent?.os?.name ?? 'unknown'
   const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
   const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position])
