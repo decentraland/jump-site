@@ -30,6 +30,8 @@ jobs:
         run: npm run build
         env:
           NODE_PATH: 'src'
+          VITE_SEGMENT_DEV_API_KEY: ${{ secrets.SEGMENT_DEV_API_KEY }}
+          VITE_SEGMENT_PRD_API_KEY: ${{ secrets.SEGMENT_PRD_API_KEY }}
       - name: Publish
         uses: decentraland/oddish-action@master
         with:

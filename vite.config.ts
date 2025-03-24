@@ -10,7 +10,11 @@ export default defineConfig(({ command, mode }) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'process.env': {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        VITE_REACT_APP_DCL_DEFAULT_ENV: envVariables.VITE_REACT_APP_DCL_DEFAULT_ENV
+        VITE_REACT_APP_DCL_DEFAULT_ENV: envVariables.VITE_REACT_APP_DCL_DEFAULT_ENV,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        VITE_SEGMENT_DEV_API_KEY: envVariables.VITE_SEGMENT_DEV_API_KEY,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        VITE_SEGMENT_PRD_API_KEY: envVariables.VITE_SEGMENT_PRD_API_KEY
       }
     },
     ...(command === 'build' ? { base: envVariables.VITE_BASE_URL } : undefined)
