@@ -1,8 +1,8 @@
 import { memo, type FC } from 'react'
 import { CircularProgress, Skeleton } from 'decentraland-ui2'
-import styles from './Card.module.css'
+import { CardContainer, ImageContainer, Image, Content, Text, Title, Subtitle, LoadingContainer } from './Card.styled'
 
-interface CardProps {
+type CardProps = {
   imageUrl: string
   title: string
   subtitle: string
@@ -11,18 +11,18 @@ interface CardProps {
 
 export const Card: FC<CardProps> = memo(({ imageUrl, title, subtitle, isLoading = false }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.imageContainer}>
+    <CardContainer>
+      <ImageContainer>
         {isLoading ? (
-          <div className={styles.loadingContainer}>
+          <LoadingContainer>
             <CircularProgress disableShrink />
-          </div>
+          </LoadingContainer>
         ) : (
-          <img src={imageUrl} alt={title} className={styles.image} />
+          <Image src={imageUrl} alt={title} />
         )}
-      </div>
-      <div className={styles.content}>
-        <div className={styles.text}>
+      </ImageContainer>
+      <Content>
+        <Text>
           {isLoading ? (
             <>
               <Skeleton variant="text" animation="wave" sx={{ fontSize: 24, fontWeight: 700, marginBottom: '10px' }} />
@@ -30,12 +30,12 @@ export const Card: FC<CardProps> = memo(({ imageUrl, title, subtitle, isLoading 
             </>
           ) : (
             <>
-              <h2 className={styles.title}>{title}</h2>
-              <p className={styles.subtitle}>{subtitle}</p>
+              <Title>{title}</Title>
+              <Subtitle>{subtitle}</Subtitle>
             </>
           )}
-        </div>
-      </div>
-    </div>
+        </Text>
+      </Content>
+    </CardContainer>
   )
 })

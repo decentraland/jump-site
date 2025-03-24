@@ -7,7 +7,7 @@ import { Events, useAnalytics } from '../../../hooks/useAnalytics'
 import { Metadata, isEns, launchDesktopApp, queryData } from '../../../utils'
 import { Card } from '../../Card/Card'
 import { DownloadButton } from '../../DownloadButton/DownloadButton'
-import styles from './MainPage.module.css'
+import { MainPageContainer } from './MainPage.styled'
 
 const DEFAULT_POSITION = '0,0'
 const DEFAULT_REALM = 'main'
@@ -65,7 +65,7 @@ export const MainPage: FC = memo(() => {
   }, [realm, position, osName, arch, track])
 
   return (
-    <Box height="100vh" pt={12} display="flex" flexDirection="column" alignItems="center" className={styles.explorerWebsiteStart}>
+    <MainPageContainer>
       <Box mb={4}>
         <Typography variant="h3" sx={{ textAlign: 'center' }}>
           {title}
@@ -85,7 +85,7 @@ export const MainPage: FC = memo(() => {
         />
       </Box>
       <Box mb={4}>
-        <Button variant="contained" size="large" className={styles.jumpInButton} onClick={handleClickJumpIn}>
+        <Button variant="contained" size="large" onClick={handleClickJumpIn} sx={{ width: '300px', height: '65px' }}>
           <Typography variant="body1" sx={{ fontSize: 30, fontWeight: 700 }}>
             Jump in
           </Typography>
@@ -100,6 +100,6 @@ export const MainPage: FC = memo(() => {
           <DownloadButton />
         </Box>
       ) : null}
-    </Box>
+    </MainPageContainer>
   )
 })

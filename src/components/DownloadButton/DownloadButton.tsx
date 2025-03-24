@@ -7,7 +7,7 @@ import { Box } from 'decentraland-ui2'
 import appleLogo from '../../assets/apple-logo.svg'
 import windowsLogo from '../../assets/windows-logo.svg'
 import { Events, useAnalytics } from '../../hooks/useAnalytics'
-import styles from './DownloadButton.module.css'
+import { DownloadButtonIcon } from './DownloadButton.styled'
 
 const DEFAULT_DOWNLOAD_URL = 'https://decentraland.org/download'
 
@@ -65,7 +65,7 @@ export const DownloadButton: FC = memo(() => {
         <DCLDownloadButton
           key={os}
           label={`Download for ${os}`}
-          endIcon={<img src={config.icon} alt={config.alt} className={styles.downloadButtonIcon} />}
+          endIcon={<DownloadButtonIcon src={config.icon} alt={config.alt} />}
           href={getDownloadUrl(os)}
           onClick={() => handleClickDownload(os)}
         />
