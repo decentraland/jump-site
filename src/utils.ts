@@ -3,6 +3,10 @@
  * Thanks kernel
  */
 
+import { config } from './config'
+
+const PLACES_URL = config.get('PLACES_URL', '')
+
 export type Metadata = {
   description: string
   title: string
@@ -15,9 +19,7 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
-  const url = isEns(realm)
-    ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}`
-    : `https://places.decentraland.org/api/places?positions=${position}`
+  const url = isEns(realm) ? `${PLACES_URL}/api/worlds?names=${realm.toLowerCase()}` : `${PLACES_URL}/api/places?positions=${position}`
   const resp = await fetch(url)
   const data: { data: Metadata[] } = await resp.json()
   return data.data[0]
