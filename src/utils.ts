@@ -3,10 +3,15 @@
  * Thanks kernel
  */
 
+import { config } from './config'
+
+const PLACES_URL = config.get('PLACES_URL', '')
+
 export type Metadata = {
   description: string
   title: string
   image: string
+  owner: string
 }
 
 export function isEns(str: string | undefined): str is `${string}.eth` {
@@ -14,54 +19,11 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
-  const url = isEns(realm) ? `https://places.decentraland.org/api/worlds?names=${realm.toLowerCase()}` : `https://places.decentraland.org/api/places?positions=${position}`
+  const url = isEns(realm) ? `${PLACES_URL}/api/worlds?names=${realm.toLowerCase()}` : `${PLACES_URL}/api/places?positions=${position}`
   const resp = await fetch(url)
   const data: { data: Metadata[] } = await resp.json()
   return data.data[0]
 }
-
-export interface GithubReleaseResponse {
-  browser_download_url: string;
-  version: string;
-}
-
-export let latestRelease: GithubReleaseResponse
-
-export async function getLatestRelease(): Promise<GithubReleaseResponse> {
-  if (latestRelease) return latestRelease
-  const resp = await fetch(`https://api.github.com/repos/decentraland/unity-explorer/releases/latest`);
-  if (resp.status === 200) {
-    const data = (await resp.json()) as { assets: Record<string, string>[]; name: string };
-    const os = getOSName();
-    const asset = data.assets.find((asset: Record<string, string>) => asset.name.includes(os.toLowerCase()));
-    if (asset) {
-      return latestRelease = {
-        browser_download_url: asset.browser_download_url,
-        version: data.name,
-      }
-    } else {
-      throw new Error('No asset found for your platform');
-    }
-  }
-
-  throw new Error('Failed to fetch latest release: ' + JSON.stringify(resp));
-}
-getLatestRelease()
-
-type OSName = 'windows' | 'macos' | 'Unknown'
-
-function getOSName(): OSName {
-  const userAgent = window.navigator.userAgent.toLowerCase();
-
-  if (userAgent.indexOf('win') > -1) {
-    return 'windows'
-  } else if (userAgent.indexOf('mac') > -1) {
-    return 'macos'
-  }
-
-  return 'Unknown'
-}
-
 
 /**
  * Try to launch the desktop version using the custom protocol `dcl://position=x,y&realm=zzz`
@@ -92,7 +54,7 @@ export const launchDesktopApp = async (url: string) => {
   // wait half of a second to detect the loss of focus because
   // the time it takes for the `blur` event to be fired varies
   // depending on the browser
-  return new Promise<boolean>((resolve) => {
+  return new Promise<boolean>(resolve => {
     setTimeout(() => {
       window.removeEventListener('blur', isInstalled)
       document.body.removeChild(iframe)

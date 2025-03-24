@@ -1,0 +1,21 @@
+{
+  "name": "@dcl/jump-site",
+  "version": "0.0.0",
+  "description": "Jump In site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "decentraland",
+    "jump",
+    "site"
+  ],
+  "author": "Decentraland",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/decentraland/deep-link-preview.git"
+  },
+  "homepage": ""
+}
