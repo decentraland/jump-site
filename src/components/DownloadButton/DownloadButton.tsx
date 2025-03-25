@@ -1,5 +1,4 @@
 import { memo, useCallback, type FC } from 'react'
-import { useAdvancedUserAgentData } from '@dcl/hooks'
 import { DownloadButton as DCLDownloadButton } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton'
 import { OperativeSystem } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton.types'
 import { CDNSource, getCDNRelease } from 'decentraland-ui2/dist/modules/cdnReleases'
@@ -31,12 +30,8 @@ const DOWNLOAD_URLS = {
   }
 }
 
-export const DownloadButton: FC = memo(() => {
-  const [, advancedUserAgent] = useAdvancedUserAgentData()
+export const DownloadButton: FC<{ osName: string | undefined; arch: string | undefined }> = memo(({ osName, arch }) => {
   const { track } = useAnalytics()
-
-  const osName = advancedUserAgent?.os?.name ?? 'unknown'
-  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
   const getDownloadUrl = useCallback(
     (os: OperativeSystem) => {

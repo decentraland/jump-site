@@ -23,8 +23,8 @@ export const MainPage: FC = memo(() => {
   const position = searchParams.get('position') ?? DEFAULT_POSITION
   const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
-  const osName = advancedUserAgent?.os?.name ?? 'unknown'
-  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
+  const osName = advancedUserAgent?.os?.name
+  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase()
 
   const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position])
 
@@ -43,26 +43,30 @@ export const MainPage: FC = memo(() => {
     fetchMetadata()
   }, [position, realm])
 
-  const handleClickJumpIn = useCallback(async () => {
-    const appUrl = new URL('decentraland://')
+  const handleClickJumpIn = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      const { target } = event
+      const appUrl = new URL('decentraland://')
 
-    if (realm !== DEFAULT_REALM) {
-      appUrl.searchParams.set('realm', realm)
-    }
+      if (realm !== DEFAULT_REALM) {
+        appUrl.searchParams.set('realm', realm)
+      }
 
-    if (position !== DEFAULT_POSITION) {
-      appUrl.searchParams.set('position', position)
-    }
+      if (position !== DEFAULT_POSITION) {
+        appUrl.searchParams.set('position', position)
+      }
 
-    track(Events.CLICK_JUMP_IN, { deepLink: appUrl.toString(), osName, arch })
+      track(Events.CLICK_JUMP_IN, { deepLink: appUrl.toString(), osName, arch })
 
-    const resp = await launchDesktopApp(appUrl.toString())
+      const resp = await launchDesktopApp(target, appUrl.toString())
 
-    if (!resp) {
-      setShowDownloadOption(true)
-      track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
-    }
-  }, [realm, position, osName, arch, track])
+      if (!resp) {
+        setShowDownloadOption(true)
+        track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
+      }
+    },
+    [realm, position, osName, arch, track]
+  )
 
   return (
     <MainPageContainer>
@@ -97,7 +101,7 @@ export const MainPage: FC = memo(() => {
             Haven't downloaded decentraland yet? <br />
             Download now to jump in
           </Typography>
-          <DownloadButton />
+          <DownloadButton osName={osName} arch={arch} />
         </Box>
       ) : null}
     </MainPageContainer>
