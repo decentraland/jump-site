@@ -30,53 +30,55 @@ const DOWNLOAD_URLS = {
   }
 }
 
-export const DownloadButton: FC<{ osName: string | undefined; arch: string | undefined }> = memo(({ osName, arch }) => {
-  const { track } = useAnalytics()
+export const DownloadButton: FC<{ osName: string | undefined; arch: string | undefined }> = memo(
+  ({ osName = 'unknown', arch = 'unknown' }) => {
+    const { track } = useAnalytics()
 
-  const getDownloadUrl = useCallback(
-    (os: OperativeSystem) => {
-      const config = DOWNLOAD_URLS[os]
-      const defaultDownloadUrl = `${DEFAULT_DOWNLOAD_URL}/?os=${os}`
+    const getDownloadUrl = useCallback(
+      (os: OperativeSystem) => {
+        const config = DOWNLOAD_URLS[os]
+        const defaultDownloadUrl = `${DEFAULT_DOWNLOAD_URL}/?os=${os}`
 
-      if (os === OperativeSystem.MACOS && arch === ARCH.ARM64) {
+        if (os === OperativeSystem.MACOS && arch === ARCH.ARM64) {
+          return config.amd64 ?? defaultDownloadUrl
+        }
         return config.amd64 ?? defaultDownloadUrl
-      }
-      return config.amd64 ?? defaultDownloadUrl
-    },
-    [arch]
-  )
-
-  const handleClickDownload = useCallback(
-    (os: OperativeSystem) => {
-      track(Events.CLICK_DOWNLOAD, { osName: os, arch, url: getDownloadUrl(os) })
-    },
-    [arch, track]
-  )
-
-  const renderButton = useCallback(
-    (os: OperativeSystem) => {
-      const config = DOWNLOAD_URLS[os]
-      return (
-        <DCLDownloadButton
-          key={os}
-          label={`Download for ${os}`}
-          endIcon={<DownloadButtonIcon src={config.icon} alt={config.alt} />}
-          href={getDownloadUrl(os)}
-          onClick={() => handleClickDownload(os)}
-        />
-      )
-    },
-    [handleClickDownload, getDownloadUrl]
-  )
-
-  if (osName === 'unknown') {
-    return (
-      <Box display="flex" gap={2} mt={2}>
-        {renderButton(OperativeSystem.MACOS)}
-        {renderButton(OperativeSystem.WINDOWS)}
-      </Box>
+      },
+      [arch]
     )
-  }
 
-  return renderButton(osName as OperativeSystem)
-})
+    const handleClickDownload = useCallback(
+      (os: OperativeSystem) => {
+        track(Events.CLICK_DOWNLOAD, { osName: os, arch, url: getDownloadUrl(os) })
+      },
+      [arch, track]
+    )
+
+    const renderButton = useCallback(
+      (os: OperativeSystem) => {
+        const config = DOWNLOAD_URLS[os]
+        return (
+          <DCLDownloadButton
+            key={os}
+            label={`Download for ${os}`}
+            endIcon={<DownloadButtonIcon src={config.icon} alt={config.alt} />}
+            href={getDownloadUrl(os)}
+            onClick={() => handleClickDownload(os)}
+          />
+        )
+      },
+      [handleClickDownload, getDownloadUrl]
+    )
+
+    if (osName === 'unknown') {
+      return (
+        <Box display="flex" gap={2} mt={2}>
+          {renderButton(OperativeSystem.MACOS)}
+          {renderButton(OperativeSystem.WINDOWS)}
+        </Box>
+      )
+    }
+
+    return renderButton(osName as OperativeSystem)
+  }
+)
