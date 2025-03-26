@@ -34,10 +34,18 @@ export const launchDesktopApp = async (buttonTarget: EventTarget, url: string) =
   // assume that the desktop version is installed only if
   // we detect a loss of focus on window
   let installed = false
+  let isButtonReleased = false
+
   const isInstalled = () => {
     installed = true
   }
+
+  const handleMouseUp = () => {
+    isButtonReleased = true
+  }
+
   window.addEventListener('blur', isInstalled)
+  buttonTarget.addEventListener('mouseup', handleMouseUp)
 
   // inject an iframe that open the desktop version
   // NOTE: this can be also achieved with
@@ -57,11 +65,12 @@ export const launchDesktopApp = async (buttonTarget: EventTarget, url: string) =
   return new Promise<boolean>(resolve => {
     setTimeout(() => {
       window.removeEventListener('blur', isInstalled)
+      buttonTarget.removeEventListener('mouseup', handleMouseUp)
       document.body.removeChild(iframe)
 
       // in modern browsers, the `blur` event is not fired when a custom protocol url is opened
-      // so we need to check if the button is still focused after the timeout
-      if ((buttonTarget as Element).matches(':hover')) {
+      // so we need to check if the button was clicked and released
+      if (!isButtonReleased && (buttonTarget as Element).matches(':hover')) {
         isInstalled()
       }
       resolve(installed)

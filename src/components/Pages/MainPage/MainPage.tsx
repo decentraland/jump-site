@@ -89,7 +89,7 @@ export const MainPage: FC = memo(() => {
         />
       </Box>
       <Box mb={4}>
-        <Button variant="contained" size="large" onClick={handleClickJumpIn} sx={{ width: '300px', height: '65px' }}>
+        <Button variant="contained" size="large" onMouseDown={handleClickJumpIn} sx={{ width: '300px', height: '65px' }}>
           <Typography variant="body1" sx={{ fontSize: 30, fontWeight: 700 }}>
             Jump in
           </Typography>
