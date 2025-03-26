@@ -1,6 +1,7 @@
 import { memo, useCallback, type FC } from 'react'
 import { DownloadButton as DCLDownloadButton } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton'
 import { OperativeSystem } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton.types'
+import { config as DCLConfig } from 'decentraland-ui2/dist/config'
 import { CDNSource, getCDNRelease } from 'decentraland-ui2/dist/modules/cdnReleases'
 import { Box } from 'decentraland-ui2'
 import appleLogo from '../../assets/apple-logo.svg'
@@ -50,6 +51,7 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
     const handleClickDownload = useCallback(
       (os: OperativeSystem) => {
         track(Events.CLICK_DOWNLOAD, { osName: os, arch, url: getDownloadUrl(os) })
+        window.open(DCLConfig.get('DOWNLOAD_SUCCESS_URL'), '_blank', 'noopener')
       },
       [arch, track]
     )
