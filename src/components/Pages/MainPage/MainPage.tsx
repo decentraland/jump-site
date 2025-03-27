@@ -6,7 +6,7 @@ import image from '../../../assets/dcl.webp'
 import { Events, useAnalytics } from '../../../hooks/useAnalytics'
 import { Metadata, isEns, launchDesktopApp, queryData } from '../../../utils'
 import { Card } from '../../Card/Card'
-import { DownloadButton } from '../../DownloadButton/DownloadButton'
+import { DownloadModal } from '../../DownloadModal/DownloadModal'
 import { MainPageContainer } from './MainPage.styled'
 
 const DEFAULT_POSITION = '0,0'
@@ -23,8 +23,8 @@ export const MainPage: FC = memo(() => {
   const position = searchParams.get('position') ?? DEFAULT_POSITION
   const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
-  const osName = advancedUserAgent?.os?.name
-  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase()
+  const osName = advancedUserAgent?.os?.name ?? 'unknown'
+  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
   const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position])
 
@@ -68,6 +68,11 @@ export const MainPage: FC = memo(() => {
     [realm, position, osName, arch, track]
   )
 
+  const handleCloseDownloadModal = useCallback(() => {
+    track(Events.CLICK_DOWNLOAD_MODAL_CLOSE)
+    setShowDownloadOption(false)
+  }, [setShowDownloadOption, track])
+
   return (
     <MainPageContainer>
       <Box mb={4}>
@@ -95,15 +100,7 @@ export const MainPage: FC = memo(() => {
           </Typography>
         </Button>
       </Box>
-      {downloadOption ? (
-        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-          <Typography variant="h4" sx={{ textAlign: 'center', textTransform: 'uppercase', fontSize: 30, fontWeight: 700 }}>
-            Haven't downloaded decentraland yet? <br />
-            Download now to jump in
-          </Typography>
-          <DownloadButton osName={osName} arch={arch} />
-        </Box>
-      ) : null}
+      <DownloadModal open={downloadOption} onClose={handleCloseDownloadModal} osName={osName} arch={arch} />
     </MainPageContainer>
   )
 })
