@@ -26,7 +26,7 @@ A web application that serves as an entry point to the Decentraland virtual worl
 - TypeScript
 - Material UI (via decentraland-ui2)
 - React Router
-- CSS Modules
+- CSS Styled components
 - Vite
 
 ## Getting Started
