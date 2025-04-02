@@ -29,5 +29,6 @@ export enum Events {
   CLICK_JUMP_IN = 'Click on Jump In',
   CLICK_DOWNLOAD = 'Click on Download',
   CLIENT_NOT_INSTALLED = 'Client not installed',
-  CLICK_DOWNLOAD_MODAL_CLOSE = 'Click on Download Modal Close'
+  CLICK_DOWNLOAD_MODAL_CLOSE = 'Click on Download Modal Close',
+  CLICK_MOBILE_DISCLAIMER_MODAL_CLOSE = 'Click on Mobile Disclaimer Modal Close'
 }
