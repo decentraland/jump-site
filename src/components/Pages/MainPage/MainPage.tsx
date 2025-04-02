@@ -55,7 +55,7 @@ export const MainPage: FC = memo(() => {
       }
 
       const { target } = event
-      const appUrl = new URL('becentraland://')
+      const appUrl = new URL('decentraland://')
 
       if (realm !== DEFAULT_REALM) {
         appUrl.searchParams.set('realm', realm)
