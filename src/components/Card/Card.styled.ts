@@ -16,7 +16,7 @@ export const Image = styled('img')({
   transition: 'transform 0.3s ease'
 })
 
-export const CardContainer = styled('div')({
+export const CardContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   height: '400px',
   width: '600px',
@@ -25,10 +25,20 @@ export const CardContainer = styled('div')({
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   ['&:hover img']: {
     transform: 'scale(1.1)'
+  },
+  [theme.breakpoints.down('xs')]: {
+    width: 'calc(100vw - 32px)',
+    height: '250px',
+    margin: '0 16px'
+  },
+  [theme.breakpoints.between('xs', 'sm')]: {
+    width: 'calc(100vw - 32px)',
+    height: '300px',
+    margin: '0 16px'
   }
-})
+}))
 
-export const Content = styled('div')({
+export const Content = styled('div')(({ theme }) => ({
   display: 'flex',
   position: 'absolute',
   alignItems: 'center',
@@ -37,25 +47,36 @@ export const Content = styled('div')({
   right: 0,
   padding: '20px',
   background: 'rgba(0, 0, 0, 0.6)',
-  color: 'white'
-})
+  color: 'white',
+  [theme.breakpoints.down('xs')]: {
+    padding: '16px'
+  }
+}))
 
 export const Text = styled('div')({
   flexGrow: 1
 })
 
-export const Title = styled('h2')({
+export const Title = styled('h2')(({ theme }) => ({
   fontSize: '24px',
   fontWeight: 700,
   margin: '0 0 10px',
-  color: 'white'
-})
+  color: 'white',
+  [theme.breakpoints.down('xs')]: {
+    fontSize: '20px',
+    margin: '0 0 6px'
+  }
+}))
 
-export const Subtitle = styled('p')({
+export const Subtitle = styled('p')(({ theme }) => ({
   margin: '4px 0 0',
   fontSize: '0.9em',
-  opacity: 1
-})
+  opacity: 1,
+  [theme.breakpoints.down('xs')]: {
+    fontSize: '0.8em',
+    margin: '2px 0 0'
+  }
+}))
 
 export const LoadingContainer = styled('div')({
   display: 'flex',
