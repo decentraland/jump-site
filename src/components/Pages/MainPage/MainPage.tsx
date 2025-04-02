@@ -121,7 +121,7 @@ export const MainPage: FC = memo(() => {
           variant="contained"
           size="large"
           onMouseDown={handleClickJumpIn}
-          sx={theme => ({ width: 300, height: '65px', [theme.breakpoints.down('xs')]: { width: 200 } })}
+          sx={theme => ({ width: 300, height: 65, [theme.breakpoints.down('xs')]: { width: 200 } })}
         >
           <Typography variant="body1" sx={theme => ({ fontSize: 30, fontWeight: 700, [theme.breakpoints.down('xs')]: { fontSize: 20 } })}>
             Jump in
