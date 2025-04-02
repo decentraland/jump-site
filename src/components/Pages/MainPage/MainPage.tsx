@@ -50,11 +50,12 @@ export const MainPage: FC = memo(() => {
     async (event: React.MouseEvent<HTMLButtonElement>) => {
       if (isMobile) {
         setMobileModalOpen(true)
+        track(Events.CLICK_JUMP_IN_MOBILE, { osName, arch })
         return
       }
 
       const { target } = event
-      const appUrl = new URL('decentraland://')
+      const appUrl = new URL('becentraland://')
 
       if (realm !== DEFAULT_REALM) {
         appUrl.searchParams.set('realm', realm)
