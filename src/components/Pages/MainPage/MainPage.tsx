@@ -7,6 +7,7 @@ import { Events, useAnalytics } from '../../../hooks/useAnalytics'
 import { Metadata, isEns, launchDesktopApp, queryData } from '../../../utils'
 import { Card } from '../../Card/Card'
 import { DownloadModal } from '../../DownloadModal/DownloadModal'
+import { MobileDisclaimerModal } from '../../MobileDisclaimerModal/MobileDisclaimerModal'
 import { MainPageContainer } from './MainPage.styled'
 
 const DEFAULT_POSITION = '0,0'
@@ -19,12 +20,14 @@ export const MainPage: FC = memo(() => {
   const [metadata, setMetadata] = useState<Metadata | undefined>()
   const [isLoading, setIsLoading] = useState(true)
   const [downloadOption, setShowDownloadOption] = useState<boolean>(false)
+  const [showMobileModal, setMobileModalOpen] = useState(false)
 
   const position = searchParams.get('position') ?? DEFAULT_POSITION
   const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
   const osName = advancedUserAgent?.os?.name ?? 'unknown'
   const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
+  const isMobile = !!advancedUserAgent?.mobile
 
   const title = useMemo(() => (realm && isEns(realm) ? `World: ${realm}` : `Genesis City at ${position}`), [realm, position])
 
@@ -45,6 +48,11 @@ export const MainPage: FC = memo(() => {
 
   const handleClickJumpIn = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (isMobile) {
+        setMobileModalOpen(true)
+        return
+      }
+
       const { target } = event
       const appUrl = new URL('decentraland://')
 
@@ -65,22 +73,37 @@ export const MainPage: FC = memo(() => {
         track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
       }
     },
-    [realm, position, osName, arch, track]
+    [realm, position, osName, arch, isMobile, track, setMobileModalOpen]
   )
 
   const handleCloseDownloadModal = useCallback(() => {
-    track(Events.CLICK_DOWNLOAD_MODAL_CLOSE)
+    track(Events.CLICK_DOWNLOAD_MODAL_CLOSE, { osName, arch })
     setShowDownloadOption(false)
-  }, [setShowDownloadOption, track])
+  }, [osName, arch, setShowDownloadOption, track])
+
+  const handleCloseMobileDisclaimerModal = useCallback(() => {
+    track(Events.CLICK_MOBILE_DISCLAIMER_MODAL_CLOSE, { osName, arch })
+    setMobileModalOpen(false)
+  }, [osName, arch, setMobileModalOpen, track])
 
   return (
     <MainPageContainer>
       <Box mb={4}>
-        <Typography variant="h3" sx={{ textAlign: 'center' }}>
+        <Typography
+          variant="h3"
+          align="center"
+          sx={theme => ({
+            [theme.breakpoints.down('xs')]: { fontSize: 36 }
+          })}
+        >
           {title}
         </Typography>
         {metadata?.owner && !isLoading ? (
-          <Typography variant="body1" sx={{ textAlign: 'center', fontSize: 30, fontWeight: 700 }}>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={theme => ({ fontSize: 36, fontWeight: 700, [theme.breakpoints.down('xs')]: { fontSize: 28 } })}
+          >
             Created by {metadata.owner}
           </Typography>
         ) : null}
@@ -94,13 +117,19 @@ export const MainPage: FC = memo(() => {
         />
       </Box>
       <Box mb={4}>
-        <Button variant="contained" size="large" onMouseDown={handleClickJumpIn} sx={{ width: '300px', height: '65px' }}>
-          <Typography variant="body1" sx={{ fontSize: 30, fontWeight: 700 }}>
+        <Button
+          variant="contained"
+          size="large"
+          onMouseDown={handleClickJumpIn}
+          sx={theme => ({ width: 300, height: '65px', [theme.breakpoints.down('xs')]: { width: 200 } })}
+        >
+          <Typography variant="body1" sx={theme => ({ fontSize: 30, fontWeight: 700, [theme.breakpoints.down('xs')]: { fontSize: 20 } })}>
             Jump in
           </Typography>
         </Button>
       </Box>
       <DownloadModal open={downloadOption} onClose={handleCloseDownloadModal} osName={osName} arch={arch} />
+      <MobileDisclaimerModal open={showMobileModal} onClose={handleCloseMobileDisclaimerModal} />
     </MainPageContainer>
   )
 })
