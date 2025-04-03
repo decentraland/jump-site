@@ -7,7 +7,7 @@ export const MainPageContainer = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   height: '100vh',
-  paddingTop: '96px',
+  paddingTop: 96,
   backgroundImage: `url(${backgroundImage})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
