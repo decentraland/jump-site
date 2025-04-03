@@ -8,7 +8,6 @@ export const AppRoutes: FC = memo(() => {
 
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
       <Route path="*" element={<MainPage />} />
     </Routes>
   )
