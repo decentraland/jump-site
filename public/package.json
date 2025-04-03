@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/decentraland/deep-link-preview.git"
+    "url": "https://github.com/decentraland/jump-site.git"
   },
   "homepage": ""
 }
