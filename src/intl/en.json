@@ -1,0 +1,21 @@
+{
+  "footer": {
+    "subscribe": {
+      "stay_updated_with": "Stay updated with",
+      "decentraland": "Decentraland"
+    },
+    "social": {
+      "resources": "Resources",
+      "connect": "Connect",
+      "marketplace": "Marketplace",
+      "creator_hub": "Creator Hub",
+      "docs": "Docs",
+      "events": "Events",
+      "blog": "Blog",
+      "support": "Support",
+      "email": "Email",
+      "dao": "DAO",
+      "faq": "FAQ"
+    }
+  }
+}
