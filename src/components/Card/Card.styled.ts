@@ -156,22 +156,38 @@ export const CardLocation = styled('div')({
   width: 'fit-content'
 })
 
+export const CardDescriptionWrapper = styled('div')({
+  position: 'relative',
+  flex: 1,
+  minHeight: 0,
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 4,
+    height: 24,
+    background: 'linear-gradient(transparent, #380A4D)',
+    pointerEvents: 'none',
+    zIndex: 1
+  }
+})
+
 export const CardDescription = styled('div')(props => {
   const theme = props.theme as Theme
   return {
-    position: 'relative',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     fontSize: 20,
     color: '#ffffff',
     lineHeight: 1.6,
     letterSpacing: 0,
     margin: 0,
-    overflow: 'hidden',
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    maxHeight: '128px', // 4 lines * 32px (20px font + 1.6 line-height)
     overflowY: 'auto',
-    paddingRight: 4, // Space for scrollbar
+    paddingRight: 4,
     '&::-webkit-scrollbar': {
       width: 4,
       opacity: 0,
@@ -198,19 +214,8 @@ export const CardDescription = styled('div')(props => {
         }
       }
     },
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: 24,
-      background: 'linear-gradient(transparent, #380A4D)',
-      pointerEvents: 'none'
-    },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 18,
-      maxHeight: '115.2px' // Adjust for smaller font
+      fontSize: 18
     }
   }
 })

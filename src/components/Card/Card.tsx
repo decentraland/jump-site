@@ -11,9 +11,11 @@ import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.png
 import { config } from '../../config'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
+import { formatDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
 import { JumpInButton } from '../JumpInButton'
+import { TextWrapper } from '../TextWrapper/TextWrapper'
 import {
   CardContainer,
   LeftSection,
@@ -25,7 +27,6 @@ import {
   CardCreator,
   CardDate,
   CardLocation,
-  CardDescription,
   LoadingContainer,
   CreatorLabel,
   CreatorAvatar,
@@ -67,22 +68,6 @@ type CardProps = {
 
 const formatLocation = (coordinates: [number, number]): string => {
   return `${coordinates[0]}, ${coordinates[1]}`
-}
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString)
-  const options: Intl.DateTimeFormatOptions = {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: 'UTC'
-  }
-
-  const formatted = date.toLocaleDateString('en-US', options)
-  const [datePart, timePart] = formatted.split(', ')
-  return `${datePart} - ${timePart} (UTC)`
 }
 
 export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, creator }) => {
@@ -150,10 +135,10 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
       </LeftSection>
       <RightSection>
         <CardContent>
-          <CardTitle>{data.title}</CardTitle>
+          <CardTitle style={{ marginBottom: '16px' }}>{data.title}</CardTitle>
           <CardCreator>
             <CreatorAvatar src={displayAvatar} alt={formatMessage('card.accessibility.creator_avatar', { userName: displayUserName })} />
-            <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
+            <CreatorLabel>{formatMessage('card.event.by')} </CreatorLabel>
             {displayUser ? (
               <UserProfileLink
                 href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
@@ -164,37 +149,24 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
                 {displayUserName}
               </UserProfileLink>
             ) : (
-              <span style={{ color: '#FF2D55', fontSize: 20, fontWeight: 500 }}>{displayUserName}</span>
+              displayUserName
             )}
           </CardCreator>
-          <Box sx={{ display: 'flex', gap: '12px' }} mb="48px">
+          <Box sx={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '48px' }}>
             {isEvent && data.date && (
               <CardDate>
-                <AccessTimeIcon sx={{ fontSize: 18 }} />
+                <AccessTimeIcon sx={{ fontSize: 16 }} />
                 {formatDate(data.date)}
               </CardDate>
             )}
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <CardLocation>
-                <PlaceOutlinedIcon sx={{ fontSize: 18 }} />
-                {data?.realm ?? formatLocation(data.coordinates)}
-                {isEvent && !data.live && (
-                  <Box
-                    sx={{
-                      height: '36px',
-                      width: '36px',
-                      marginRight: '-8px',
-                      marginTop: '-4px',
-                      marginBottom: '-4px'
-                    }}
-                  >
-                    <JumpInButton realm={data.realm} position={data.position} onlyIcon />
-                  </Box>
-                )}
-              </CardLocation>
-            </Box>
+            <CardLocation>
+              <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
+              {data?.realm ?? formatLocation(data.coordinates)}
+            </CardLocation>
           </Box>
-          <CardDescription>{data.description || formatMessage('card.place.default_description')}</CardDescription>
+          <TextWrapper maxHeight={128} gradientColor="#380A4D">
+            {data.description || formatMessage('card.place.default_description')}
+          </TextWrapper>
         </CardContent>
 
         {/* Actions Outlet - Children are rendered here */}
