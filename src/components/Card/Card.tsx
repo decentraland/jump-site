@@ -6,6 +6,8 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { Box, CircularProgress, Skeleton } from 'decentraland-ui2'
 import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.png'
+import cardImageEventsPlaceholder from '../../assets/card-events-placeholder.png'
+import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.png'
 import { config } from '../../config'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
@@ -120,7 +122,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
     <CardContainer>
       <LeftSection>
         <CardImage
-          src={data.image}
+          src={data.image || (isPlace ? cardImagePlacesPlaceholder : cardImageEventsPlaceholder)}
           alt={formatMessage(isEvent ? 'card.accessibility.event_image' : 'card.accessibility.place_image', { title: data.title })}
         />
         {isEvent && (
@@ -151,7 +153,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
           <CardTitle>{data.title}</CardTitle>
           <CardCreator>
             <CreatorAvatar src={displayAvatar} alt={formatMessage('card.accessibility.creator_avatar', { userName: displayUserName })} />
-            <CreatorLabel>{formatMessage('card.event.by')} </CreatorLabel>
+            <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
             {displayUser ? (
               <UserProfileLink
                 href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
@@ -192,7 +194,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
               </CardLocation>
             </Box>
           </Box>
-          <CardDescription>{data.description}</CardDescription>
+          <CardDescription>{data.description || formatMessage('card.place.default_description')}</CardDescription>
         </CardContent>
 
         {/* Actions Outlet - Children are rendered here */}
