@@ -39,6 +39,16 @@ export const ShareLinkButton: FC<ShareLinkButtonProps> = ({ url, title }) => {
 
   return (
     <ShareLinkContainer>
+      <Typography
+        variant="h6"
+        align="center"
+        mb="8px"
+        sx={{
+          textWrapStyle: 'balance'
+        }}
+      >
+        {formatMessage('share.button.switch_to_computer')}
+      </Typography>
       <StyledShareLinkButton variant="contained" onClick={handleShare} startIcon={<ShareIcon />} fullWidth>
         <Typography variant="body1" sx={{ fontWeight: 600, fontSize: 16 }}>
           {formatMessage('share.button.text')}

@@ -9,7 +9,7 @@ export const ShareLinkContainer = styled('div')(props => {
     left: 0,
     right: 0,
     padding: '16px 24px 32px 24px',
-    backgroundColor: '#380A4D',
+    background: 'linear-gradient(100.12deg, #130119 0%, #320524 100%)',
     borderTop: '1px solid rgba(255, 255, 255, 0.1)',
     zIndex: 1000,
     display: 'none', // Hidden by default

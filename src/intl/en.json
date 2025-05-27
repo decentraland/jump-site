@@ -27,6 +27,7 @@
   },
   "share": {
     "button": {
+      "switch_to_computer": "Switch to a Computer to Use Decentraland",
       "text": "SHARE LINK"
     }
   },
