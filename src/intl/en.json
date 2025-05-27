@@ -17,5 +17,41 @@
       "dao": "DAO",
       "faq": "FAQ"
     }
+  },
+  "components": {
+    "button": {
+      "get_google_calendar": {
+        "jump_in": "Jump In"
+      }
+    }
+  },
+  "share": {
+    "button": {
+      "text": "SHARE LINK"
+    }
+  },
+  "card": {
+    "event": {
+      "add_to_calendar": "ADD TO CALENDAR",
+      "interested": "INTERESTED",
+      "live": "LIVE",
+      "by": "By"
+    },
+    "accessibility": {
+      "creator_avatar": "{userName} avatar",
+      "event_image": "{title} event image",
+      "place_image": "{title} place image",
+      "share_button": "Share",
+      "add_to_calendar_button": "Add to calendar",
+      "interested_button": "Mark as interested",
+      "user_profile_link": "View {userName}'s profile"
+    }
+  },
+  "event": {
+    "snackbar": {
+      "added_to_my_events": "\"{eventTitle}\" added to",
+      "removed_from_my_events": "\"{eventTitle}\" removed from",
+      "my_events": "My Events"
+    }
   }
 }
