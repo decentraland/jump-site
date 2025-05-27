@@ -4,6 +4,7 @@
   "LOCAL_STORAGE_KEY": "jump",
   "STORAGE_LOCALE_KEY": "dcl-locale",
   "JUMP_IN_URL": "https://decentraland.org/jump",
+  "HOME_URL": "https://decentraland.org",
   "AUTH_URL": "/auth",
   "PROFILE_URL": "https://decentraland.org/profile/",
   "PEER_URL": "https://peer.decentraland.org",

@@ -5,6 +5,7 @@
   "STORAGE_LOCALE_KEY": "dcl-locale",
   "JUMP_IN_URL": "https://decentraland.zone/jump",
   "AUTH_URL": "/auth",
+  "HOME_URL": "https://decentraland.zone",
   "PROFILE_URL": "https://decentraland.zone/profile/",
   "PEER_URL": "https://peer.decentraland.zone",
   "PLACES_URL": "https://places.decentraland.zone",
