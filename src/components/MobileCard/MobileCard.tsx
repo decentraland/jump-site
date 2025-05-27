@@ -111,7 +111,6 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
     )
   }
 
-  console.log({ isLoading, data })
   // Determine if this is an event (has date and total_attendees)
   const isEvent = data.date && data.total_attendees !== undefined
   const isPlace = data.user_count !== undefined
@@ -123,7 +122,6 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
 
   return (
     <MobileCardContainer>
-      {/* Top Section - Image */}
       <MobileTopSection>
         <MobileCardImage
           src={data.image}
@@ -153,7 +151,6 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
         ) : null}
       </MobileTopSection>
 
-      {/* Middle Section - Content */}
       <MobileMiddleSection>
         <MobileCardContent>
           <MobileCardTitle>{data.title}</MobileCardTitle>
