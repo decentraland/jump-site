@@ -3,7 +3,7 @@ import { type ButtonProps } from 'decentraland-ui2'
 import { StyledLinkButton } from './LinkButton.styled'
 
 export interface LinkButtonProps extends ButtonProps {
-  href?: string
+  href: string
   target?: string
   rel?: string
 }
