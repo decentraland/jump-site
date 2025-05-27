@@ -32,11 +32,16 @@
     }
   },
   "card": {
+    "creator": {
+      "by": "By"
+    },
     "event": {
       "add_to_calendar": "ADD TO CALENDAR",
       "interested": "INTERESTED",
-      "live": "LIVE",
-      "by": "By"
+      "live": "LIVE"
+    },
+    "place": {
+      "default_description": "Explore a virtual world built by its community and make new friends from anywhere."
     },
     "accessibility": {
       "creator_avatar": "{userName} avatar",
