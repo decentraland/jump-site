@@ -68,6 +68,7 @@
     "message": "Looks like that link was invalid. If you still want to explore, jump into Decentraland's virtual world or browse community events.",
     "jump_in_button": "Jump into Decentraland",
     "explore_events": "EXPLORE EVENTS",
-    "learn_more": "Learn more about <a>Decentraland</a>"
+    "learn_more": "Learn more about <a>Decentraland</a>",
+    "go_home_button": "Go to Homepage"
   }
 }
