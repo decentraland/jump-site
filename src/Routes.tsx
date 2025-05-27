@@ -1,7 +1,8 @@
 import { memo, type FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
-import { MainPage } from './components/Pages/MainPage'
+import { EventsPage } from './components/Pages/EventsPage'
+import { PlacesPage } from './components/Pages/PlacesPage'
 import { usePageTracking } from './hooks/usePageTracking'
 
 export const AppRoutes: FC = memo(() => {
@@ -10,7 +11,9 @@ export const AppRoutes: FC = memo(() => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="*" element={<MainPage />} />
+        <Route path="/places" element={<PlacesPage />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="*" element={<PlacesPage />} />
       </Route>
     </Routes>
   )
