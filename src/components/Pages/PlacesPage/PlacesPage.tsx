@@ -1,6 +1,5 @@
 import { memo, useEffect, useMemo, useState, type FC } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { Box, Typography } from 'decentraland-ui2'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { fromPlace, type CardData } from '../../../utils/cardDataTransformers'
 import { fetchPlaces } from '../../../utils/placesApi'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
@@ -10,9 +9,9 @@ const DEFAULT_POSITION = '0,0'
 
 export const PlacesPage: FC = memo(() => {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [places, setPlaces] = useState<CardData[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   const position = searchParams.get('position') ?? DEFAULT_POSITION
 
@@ -25,40 +24,24 @@ export const PlacesPage: FC = memo(() => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      setError(null)
       try {
         const response = await fetchPlaces(coordinates)
-        if (response.ok) {
+        if (response.ok && response.data.length > 0) {
           // Transform places data using the fromPlace utility
           const transformedPlaces = response.data.map(fromPlace)
           setPlaces(transformedPlaces)
         } else {
-          setError('Failed to fetch places')
+          navigate('/places/invalid')
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred')
+        navigate('/places/invalid')
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchData()
-  }, [coordinates])
-
-  if (error) {
-    return (
-      <MainPageContainer>
-        <Box mb={4}>
-          <Typography variant="h3" align="center" color="error">
-            Error Loading Places
-          </Typography>
-          <Typography variant="body1" align="center" sx={{ mt: 2 }}>
-            {error}
-          </Typography>
-        </Box>
-      </MainPageContainer>
-    )
-  }
+  }, [coordinates, navigate])
 
   return (
     <MainPageContainer>
