@@ -7,6 +7,7 @@ export interface Event {
   image: string
   description: string
   start_at: string
+  next_start_at: string
   finish_at: string
   coordinates: [number, number]
   user: string

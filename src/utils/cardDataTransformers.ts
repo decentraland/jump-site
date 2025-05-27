@@ -56,8 +56,9 @@ export const fromPlace = (data: Place): CardData => {
  */
 export const fromEvent = (data: Event): CardData => {
   // Format the date from start_at
-  const startDate = new Date(data.start_at)
+  const startDate = new Date(data.next_start_at)
   const formattedDate = startDate.toLocaleDateString('en-US', {
+    year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
