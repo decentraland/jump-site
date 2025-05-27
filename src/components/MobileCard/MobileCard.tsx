@@ -9,9 +9,11 @@ import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.png'
 import { config } from '../../config'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
+import { formatDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
 import { ShareLinkButton } from '../ShareLinkButton'
+import { TextWrapper } from '../TextWrapper/TextWrapper'
 import {
   MobileCardContainer,
   MobileTopSection,
@@ -24,7 +26,6 @@ import {
   MobileCardCreator,
   MobileCardDate,
   MobileCardLocation,
-  MobileCardDescription,
   MobileLoadingContainer,
   MobileCreatorLabel,
   MobileCreatorAvatar,
@@ -67,22 +68,6 @@ type MobileCardProps = {
 
 const formatLocation = (coordinates: [number, number]): string => {
   return `${coordinates[0]}, ${coordinates[1]}`
-}
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString)
-  const options: Intl.DateTimeFormatOptions = {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: 'UTC'
-  }
-
-  const formatted = date.toLocaleDateString('en-US', options)
-  const [datePart, timePart] = formatted.split(', ')
-  return `${datePart} - ${timePart} (UTC)`
 }
 
 export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, children, creator, stickyContent }) => {
@@ -159,7 +144,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
               src={displayAvatar}
               alt={formatMessage('card.accessibility.creator_avatar', { userName: displayUserName })}
             />
-            <MobileCreatorLabel>{formatMessage('card.event.by')} </MobileCreatorLabel>
+            <MobileCreatorLabel>{formatMessage('card.creator.by')} </MobileCreatorLabel>
             {displayUser ? (
               <MobileUserProfileLink
                 href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
@@ -185,7 +170,9 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
               {data?.realm ?? formatLocation(data.coordinates)}
             </MobileCardLocation>
           </Box>
-          <MobileCardDescription>{data.description}</MobileCardDescription>
+          <TextWrapper maxHeight={250} gradientColor="#2E013E">
+            {data.description}
+          </TextWrapper>
         </MobileCardContent>
       </MobileMiddleSection>
 

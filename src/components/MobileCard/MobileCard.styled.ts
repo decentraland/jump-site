@@ -4,21 +4,19 @@ export const MobileCardContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  minHeight: '100dvh',
-  background: 'linear-gradient(96.05deg, #2E013E 36.2%, #7F0D59 100.69%)'
+  background: 'linear-gradient(96.05deg, #2E013E 36.2%, #7F0D59 100.69%)',
+  paddingBottom: '25px'
 })
 
 export const MobileTopSection = styled('div')({
   position: 'relative',
   width: '100%',
-  height: '40vh', // 40% of viewport height
-  minHeight: '250px',
+  height: '250px',
   overflow: 'hidden'
 })
 
 export const MobileMiddleSection = styled('div')({
-  flex: 1,
-  padding: '20px 24px 120px 24px', // Extra bottom padding for sticky share button
+  padding: '32px 24px 0px 24px',
   display: 'flex',
   flexDirection: 'column'
 })
@@ -74,7 +72,7 @@ export const MobileCardTitle = styled('h1')({
   margin: 0,
   color: '#ffffff',
   lineHeight: 1.2,
-  marginBottom: 8
+  marginBottom: 16
 })
 
 export const MobileCardCreator = styled('div')({
@@ -84,7 +82,7 @@ export const MobileCardCreator = styled('div')({
   fontSize: 16,
   fontWeight: 500,
   color: '#FF2D55',
-  marginBottom: 8
+  marginBottom: 16
 })
 
 export const MobileCreatorLabel = styled('span')({
@@ -121,14 +119,35 @@ export const MobileCardLocation = styled('div')({
   width: 'fit-content'
 })
 
+export const MobileCardDescriptionWrapper = styled('div')<{ $hasGradient: boolean }>(({ $hasGradient }) => ({
+  position: 'relative',
+  height: '250px',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 3,
+    height: 24,
+    background: 'linear-gradient(transparent, #2E013E)',
+    pointerEvents: 'none',
+    zIndex: 1,
+    opacity: $hasGradient ? 1 : 0,
+    transition: 'opacity 0.2s ease'
+  }
+}))
+
 export const MobileCardDescription = styled('div')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
   fontSize: 16,
   color: '#ffffff',
   lineHeight: 1.5,
   letterSpacing: 0,
   margin: 0,
-  overflow: 'hidden',
-  maxHeight: '96px', // 4 lines * 24px (16px font + 1.5 line-height)
   overflowY: 'auto',
   paddingRight: 4,
   '&::-webkit-scrollbar': {
