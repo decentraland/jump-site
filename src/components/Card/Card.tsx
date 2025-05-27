@@ -173,7 +173,9 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
         {children}
 
         {/* Default JumpIn button for places or live events */}
-        {!children && (isPlace || (isEvent && data.live)) && <JumpInButton realm={data.realm} position={data.position} />}
+        {!children && (isPlace || (isEvent && data.live)) && (
+          <JumpInButton realm={data.realm} position={data.position} sx={{ width: '300px' }} />
+        )}
       </RightSection>
     </CardContainer>
   )
