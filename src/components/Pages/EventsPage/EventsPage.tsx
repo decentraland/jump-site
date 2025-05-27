@@ -32,8 +32,6 @@ export const EventsPage: FC = memo(() => {
   })
   const [originalEvents, setOriginalEvents] = useState<Event[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [retryCount, setRetryCount] = useState(0)
   const [loadingActions, setLoadingActions] = useState({
     calendar: false,
     interested: false,
@@ -72,7 +70,6 @@ export const EventsPage: FC = memo(() => {
   // Fetch events with retry logic
   const fetchData = useCallback(async () => {
     setIsLoading(true)
-    setError(null)
 
     try {
       // Use authenticated fetch for both API calls
@@ -106,7 +103,6 @@ export const EventsPage: FC = memo(() => {
         })
 
         setEvents(transformedEvents)
-        setRetryCount(0) // Reset retry count on success
       } else {
         navigate('/events/invalid')
       }
@@ -116,12 +112,6 @@ export const EventsPage: FC = memo(() => {
       setIsLoading(false)
     }
   }, [coordinates, authenticatedFetch, navigate])
-
-  // Retry function
-  const handleRetry = useCallback(() => {
-    setRetryCount(prev => prev + 1)
-    fetchData()
-  }, [fetchData])
 
   // Initial data fetch
   useEffect(() => {
@@ -204,29 +194,6 @@ export const EventsPage: FC = memo(() => {
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar(prev => ({ ...prev, open: false }))
   }, [])
-
-  if (error) {
-    return (
-      <MainPageContainer>
-        <Box mb={4}>
-          <Typography variant="h3" align="center" color="error">
-            Error Loading Events
-          </Typography>
-          <Typography variant="body1" align="center" sx={{ mt: 2, mb: 3 }}>
-            {error}
-          </Typography>
-          <Box textAlign="center">
-            <Button variant="contained" onClick={handleRetry} disabled={isLoading} sx={{ mr: 2 }}>
-              {isLoading ? 'Retrying...' : 'Try Again'}
-            </Button>
-            <Typography variant="caption" color="textSecondary">
-              {retryCount > 0 && `Attempt ${retryCount + 1}`}
-            </Typography>
-          </Box>
-        </Box>
-      </MainPageContainer>
-    )
-  }
 
   const currentEvent = events[0]
   const isEvent = currentEvent?.date && currentEvent?.total_attendees !== undefined
