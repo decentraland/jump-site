@@ -22,8 +22,8 @@ export const defaultFetchAvatar = async (address: string, peerUrl = 'https://pee
 
     const data = await response.json()
 
-    if (data?.profiles?.length > 0) {
-      return data.profiles[0].avatar
+    if (data.length > 0 && data[0]?.avatars?.length > 0) {
+      return data[0].avatars[0]
     }
 
     return undefined
