@@ -69,7 +69,7 @@ export const AttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ bac
   top: 16,
   left: 16,
   backgroundColor,
-  color: 'white',
+  color: '#161518',
   padding: '8px 16px',
   borderRadius: 8,
   display: 'flex',
@@ -82,6 +82,7 @@ export const AttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ bac
 
 export const CardContent = styled('div')({
   display: 'flex',
+  flexGrow: 1,
   flexDirection: 'column',
   gap: 12,
   marginBottom: 30
@@ -114,7 +115,8 @@ export const CardCreator = styled('div')({
   gap: 8,
   fontSize: 20,
   fontWeight: 500,
-  color: '#FF2D55'
+  color: '#FF2D55',
+  marginBottom: '24px'
 })
 
 export const CreatorLabel = styled('span')({
@@ -165,6 +167,8 @@ export const CardDescription = styled('div')(props => {
     margin: 0,
     overflow: 'hidden',
     flex: 1,
+    display: 'flex',
+    alignItems: 'center',
     maxHeight: '128px', // 4 lines * 32px (20px font + 1.6 line-height)
     overflowY: 'auto',
     paddingRight: 4, // Space for scrollbar
