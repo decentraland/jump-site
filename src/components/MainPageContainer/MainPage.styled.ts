@@ -20,7 +20,7 @@ export const MainPageContainer = styled(Box)(props => {
     [theme.breakpoints.down('sm')]: {
       paddingTop: 0,
       paddingBottom: 0,
-      minHeight: '100vh',
+      minHeight: 'calc(100vh - 210px)',
       alignItems: 'stretch',
       width: '100vw',
       margin: 0,
