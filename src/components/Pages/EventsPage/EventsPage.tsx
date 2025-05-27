@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState, useCallback, type FC } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import CheckIcon from '@mui/icons-material/Check'
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded'
 import ShareIcon from '@mui/icons-material/Share'
@@ -23,6 +23,7 @@ const DEFAULT_POSITION = '0,0'
 
 export const EventsPage: FC = memo(() => {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [events, setEvents] = useState<CardData[]>([])
   const [creator, setCreator] = useState<Creator>({
     user_name: '',
@@ -75,12 +76,9 @@ export const EventsPage: FC = memo(() => {
 
     try {
       // Use authenticated fetch for both API calls
-      const [eventsResponse, placesResponse] = await Promise.all([
-        eventsApi.fetchEvents(coordinates, authenticatedFetch),
-        fetchPlaces(coordinates, authenticatedFetch)
-      ])
+      const [eventsResponse, placesResponse] = await Promise.all([eventsApi.fetchEvents(coordinates), fetchPlaces(coordinates)])
 
-      if (eventsResponse.ok) {
+      if (eventsResponse.ok && eventsResponse.data.length > 0) {
         // Store original events data
         setOriginalEvents(eventsResponse.data)
 
@@ -110,16 +108,14 @@ export const EventsPage: FC = memo(() => {
         setEvents(transformedEvents)
         setRetryCount(0) // Reset retry count on success
       } else {
-        throw new Error('Failed to fetch events: No data available')
+        navigate('/events/invalid')
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred'
-      setError(errorMessage)
-      console.error('Error fetching events:', err)
+      navigate('/events/invalid')
     } finally {
       setIsLoading(false)
     }
-  }, [coordinates, authenticatedFetch])
+  }, [coordinates, authenticatedFetch, navigate])
 
   // Retry function
   const handleRetry = useCallback(() => {
@@ -480,6 +476,7 @@ export const EventsPage: FC = memo(() => {
         autoHideDuration={snackbar.autoHideDuration}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{ bottom: isMobile ? '160px' : 0 }}
       >
         <Box
           sx={{
