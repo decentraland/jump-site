@@ -9,7 +9,7 @@ export interface CardData {
   user?: string // User ID for profile links (events) or deployer address (places)
   coordinates: [number, number]
   image: string
-  description: string
+  description?: string
   // Event-specific fields
   date?: string
   total_attendees?: number
