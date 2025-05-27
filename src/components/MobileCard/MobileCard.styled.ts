@@ -51,7 +51,7 @@ export const MobileAttendeesBadge = styled('div')<{ backgroundColor?: string }>(
   top: 16,
   left: 16,
   backgroundColor,
-  color: 'white',
+  color: '#161518',
   padding: '6px 12px',
   borderRadius: 6,
   display: 'flex',

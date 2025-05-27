@@ -144,8 +144,8 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
         )}
         {isPlace && data.user_count && data.user_count > 0 ? (
           <MobileAttendeesBadge backgroundColor="#FCFCFC">
-            <CircleRoundedIcon sx={{ fontSize: 14, color: '#00A146' }} />
-            <PersonIcon sx={{ fontSize: 14, color: '#161518' }} />
+            <CircleRoundedIcon sx={{ fontSize: 14 }} htmlColor="#00A146" />
+            <PersonIcon sx={{ fontSize: 14 }} />
             {data.user_count}
           </MobileAttendeesBadge>
         ) : null}
