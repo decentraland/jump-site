@@ -1,5 +1,5 @@
-import type { Place } from '../components/Card/Card'
 import type { Event } from '../components/Pages/EventsPage/types'
+import type { Place } from '../components/Pages/PlacesPage/types'
 
 // Unified CardData interface for the Card component
 export interface CardData {

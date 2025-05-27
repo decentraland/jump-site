@@ -1,4 +1,4 @@
-import { type Place } from '../components/Card/Card'
+import { type Place } from '../components/Pages/PlacesPage/types'
 
 export interface PlacesApiResponse {
   ok: boolean
@@ -73,9 +73,4 @@ export class PlacesApi {
 export const fetchPlaces = async (position?: [number, number], fetchFn: FetchFunction = fetch): Promise<PlacesApiResponse> => {
   const placesApi = new PlacesApi('https://places.decentraland.org/api/places')
   return placesApi.fetchPlaces(position, fetchFn)
-}
-
-export const fetchPlace = async (placeId: string, fetchFn: FetchFunction = fetch): Promise<Place | null> => {
-  const placesApi = new PlacesApi('https://places.decentraland.org/api/places')
-  return placesApi.fetchPlace(placeId, fetchFn)
 }
