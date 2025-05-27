@@ -18,14 +18,19 @@ const FooterContainer = styled('footer')(() => {
     },
     [theme.breakpoints.down('md')]: {
       paddingLeft: '54px',
-      paddingRight: '54'
+      paddingRight: '54px'
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
-      alignItems: 'center',
-      paddingLeft: '8px',
-      paddingRight: '8px',
-      height: '630px'
+      alignItems: 'stretch',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      paddingTop: '32px',
+      paddingBottom: '32px',
+      height: 'auto',
+      width: '100vw',
+      marginLeft: 'calc(-50vw + 50%)',
+      marginRight: 'calc(-50vw + 50%)'
     }
   }
 })
@@ -36,11 +41,14 @@ const LinksContainer = styled(Box)(() => {
     display: 'flex',
     width: '710px',
     justifyContent: 'space-around',
-
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
       paddingLeft: '24px',
       paddingRight: '24px',
-      width: '100%'
+      paddingTop: 0,
+      justifyContent: 'space-between',
+      gap: '32px',
+      marginBottom: '120px'
     }
   }
 })
@@ -80,13 +88,15 @@ const IconButton = styled(Button)(() => {
     ['&:hover']: {
       backgroundColor: 'transparent'
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       ['&.MuiButton-sizeMedium.MuiButton-textSecondary:not(.Mui-disabled):not(.Mui-focusVisible):not(:hover)']: {
-        fontSize: '24px',
-        fontWeight: 700,
-        lineHeight: '32px',
+        fontSize: '16px',
+        fontWeight: 400,
+        lineHeight: '24px',
+        padding: '4px 8px',
+        minHeight: 'auto',
         ['& .MuiButton-startIcon svg.MuiSvgIcon-root']: {
-          fontSize: '24px'
+          fontSize: '16px'
         }
       }
     }
@@ -101,11 +111,13 @@ const SubscribeContainer = styled(Box)(() => {
     alignItems: 'flex-start',
     justifyContent: 'center',
     width: '470px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
-      paddingLeft: '16px',
-      paddingRight: '16px',
-      alignItems: 'center'
+      paddingLeft: '24px',
+      paddingRight: '24px',
+      paddingBottom: '24px',
+      alignItems: 'center',
+      textAlign: 'center'
     }
   }
 })
@@ -114,7 +126,8 @@ const SubscribeSubtitle = styled(Typography)(() => {
   const theme = useTheme()
   return {
     color: theme.palette.text.disabled,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.8rem',
       paddingLeft: '8px',
       paddingRight: '8px'
     }
@@ -127,18 +140,23 @@ const SubscribeTitle = styled(Typography)(() => {
     color: '#fff',
     marginBottom: '16px',
     fontFamily: 'DecentralandHero',
-    [theme.breakpoints.down('xs')]: {
-      paddingLeft: '8px',
-      paddingRight: '8px',
-      marginBottom: '24px'
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '3rem',
+      marginBottom: '16px'
     }
   }
 })
 
-const SubscriptionBeehiiv = styled('iframe')({
-  width: '100%',
-  border: 'none',
-  height: '125px'
+const SubscriptionBeehiiv = styled('iframe')(() => {
+  const theme = useTheme()
+  return {
+    width: '100%',
+    border: 'none',
+    height: '125px',
+    [theme.breakpoints.down('sm')]: {
+      height: '55px'
+    }
+  }
 })
 
 const SocialContainer = styled(Box)(() => {
