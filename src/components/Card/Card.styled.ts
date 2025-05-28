@@ -123,20 +123,23 @@ export const CreatorLabel = styled('span')({
   color: '#ffffff'
 })
 
-export const CardDate = styled('div')({
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: '4px 8px',
-  gap: '8px',
-  fontSize: 16,
-  fontWeight: 400,
-  lineHeight: 1.75,
-  letterSpacing: 0,
-  color: '#ffffff',
-  backgroundColor: '#00000066',
-  borderRadius: '8px',
-  backdropFilter: 'blur(4px)',
-  width: 'fit-content'
+export const CardDate = styled('div')<{ eventHasEnded: boolean }>(({ eventHasEnded }) => {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '4px 8px',
+    gap: '8px',
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 1.75,
+    letterSpacing: 0,
+    color: eventHasEnded ? '#fcfcfc' : '#ffffff',
+    backgroundColor: eventHasEnded ? '#716B7C' : '#00000066',
+    textTransform: eventHasEnded ? 'uppercase' : 'none',
+    borderRadius: '8px',
+    backdropFilter: 'blur(4px)',
+    width: 'fit-content'
+  }
 })
 
 export const CardLocation = styled('div')({

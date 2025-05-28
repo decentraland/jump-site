@@ -9,7 +9,9 @@ export interface Event {
   start_at: string
   next_start_at: string
   finish_at: string
+  next_finish_at: string
   coordinates: [number, number]
+  recurrent: boolean
   user: string
   user_name: string
   total_attendees: number

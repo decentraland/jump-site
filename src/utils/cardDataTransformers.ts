@@ -11,17 +11,15 @@ export interface CardData {
   image: string
   description?: string
   // Event-specific fields
-  date?: string
+  start_at?: string
+  finish_at?: string
+  recurrent?: boolean
   total_attendees?: number
   attending?: boolean
   live?: boolean
   // Place-specific fields
   user_count?: number
   favorites?: number
-  // Deployer information (for places)
-  deployer_name?: string
-  deployer_address?: string
-  deployer_avatar?: string
   // Common optional fields
   url?: string
   scene_name?: string
@@ -66,6 +64,16 @@ export const fromEvent = (data: Event): CardData => {
     timeZoneName: 'short'
   })
 
+  const nextFinishAt = new Date(data.next_finish_at)
+  const formattedNextFinishAt = nextFinishAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  })
+
   return {
     id: data.id,
     title: data.name,
@@ -74,7 +82,9 @@ export const fromEvent = (data: Event): CardData => {
     coordinates: data.coordinates,
     image: data.image,
     description: data.description,
-    date: formattedDate,
+    start_at: formattedDate,
+    finish_at: formattedNextFinishAt,
+    recurrent: data.recurrent,
     total_attendees: data.total_attendees,
     attending: data.attending,
     live: data.live,

@@ -9,7 +9,7 @@ import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.webp'
 import { config } from '../../config'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
-import { formatDate } from '../../utils/dateFormatter'
+import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
 import { ShareLinkButton } from '../ShareLinkButton'
@@ -97,7 +97,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
   }
 
   // Determine if this is an event (has date and total_attendees)
-  const isEvent = data.date && data.total_attendees !== undefined
+  const isEvent = data.start_at && data.total_attendees !== undefined
   const isPlace = data.user_count !== undefined
 
   // Use creator data if provided, otherwise fall back to data properties
@@ -158,10 +158,10 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
             )}
           </MobileCardCreator>
           <Box sx={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-            {isEvent && data.date && (
-              <MobileCardDate>
+            {isEvent && data.start_at && (
+              <MobileCardDate eventHasEnded={eventHasEnded(data)}>
                 <AccessTimeIcon sx={{ fontSize: 16 }} />
-                {formatDate(data.date)}
+                {eventHasEnded(data) ? formatMessage('event.has_ended') : formatEventDate(data.start_at)}
               </MobileCardDate>
             )}
             <MobileCardLocation>

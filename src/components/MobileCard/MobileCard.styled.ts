@@ -23,11 +23,12 @@ export const MobileMiddleSection = styled('div')({
 
 export const MobileStickyBottomContainer = styled('div')({
   position: 'fixed',
-  bottom: 0,
+  bottom: -1,
   left: 0,
   right: 0,
-  padding: '16px 24px 32px 24px',
-  backgroundColor: '#380A4D',
+  minHeight: '115px',
+  padding: '32px 24px 32px 24px',
+  background: 'linear-gradient(100.12deg, #130119 0%, #320524 100%)',
   borderTop: '1px solid rgba(255, 255, 255, 0.1)',
   zIndex: 1000,
   display: 'flex',
@@ -89,19 +90,22 @@ export const MobileCreatorLabel = styled('span')({
   color: '#ffffff'
 })
 
-export const MobileCardDate = styled('div')({
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: '4px 8px',
-  gap: '6px',
-  fontSize: 14,
-  fontWeight: 400,
-  lineHeight: 1.5,
-  color: '#ffffff',
-  backgroundColor: '#00000066',
-  borderRadius: '6px',
-  backdropFilter: 'blur(4px)',
-  width: 'fit-content'
+export const MobileCardDate = styled('div')<{ eventHasEnded: boolean }>(({ eventHasEnded }) => {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '4px 8px',
+    gap: '6px',
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: 1.5,
+    color: eventHasEnded ? '#fcfcfc' : '#ffffff',
+    backgroundColor: eventHasEnded ? '#716B7C' : '#00000066',
+    textTransform: eventHasEnded ? 'uppercase' : 'none',
+    borderRadius: '6px',
+    backdropFilter: 'blur(4px)',
+    width: 'fit-content'
+  }
 })
 
 export const MobileCardLocation = styled('div')({

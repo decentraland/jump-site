@@ -6,13 +6,16 @@ import ShareIcon from '@mui/icons-material/Share'
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
 import { Box, Typography, Button, IconButton, CircularProgress, Snackbar, useMobileMediaQuery } from 'decentraland-ui2'
+import { config } from '../../../config'
 import { useAuthenticatedFetch } from '../../../hooks/useAuthenticatedFetch'
 import { useFormatMessage } from '../../../hooks/useFormatMessage'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { fromEvent, type CardData } from '../../../utils/cardDataTransformers'
+import { eventHasEnded } from '../../../utils/dateFormatter'
 import { EventsApi } from '../../../utils/eventApi'
 import { Creator, PeerApi } from '../../../utils/peerApi'
 import { fetchPlaces } from '../../../utils/placesApi'
+import { JumpInButton } from '../../JumpInButton'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 import { ResponsiveCard } from '../../ResponsiveCard'
 import { EventCardActions, EventCardActionRow } from './EventCardActions.styled'
@@ -195,7 +198,8 @@ export const EventsPage: FC = memo(() => {
   }, [])
 
   const currentEvent = events[0]
-  const isEvent = currentEvent?.date && currentEvent?.total_attendees !== undefined
+  const isEvent = currentEvent?.start_at && currentEvent?.total_attendees !== undefined
+  const hasEventEnded = eventHasEnded(currentEvent)
   const shouldShowActions = !isLoading && isEvent && !currentEvent?.live
 
   return (
@@ -204,234 +208,269 @@ export const EventsPage: FC = memo(() => {
         {shouldShowActions && !isMobile ? (
           // Desktop: Use EventCardActions wrapper - single row
           <EventCardActions isMobile={false}>
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={
-                loadingActions.calendar ? (
-                  <CircularProgress size={16} sx={{ color: '#FCFCFC' }} />
-                ) : (
-                  <DateRangeRoundedIcon sx={{ fontSize: 16 }} />
-                )
-              }
-              aria-label={formatMessage('card.accessibility.add_to_calendar_button')}
-              disabled={loadingActions.calendar}
-              onClick={handleAddToCalendar}
-              sx={{
-                color: '#FCFCFC',
-                borderColor: '#FCFCFC',
-                borderRadius: 2,
-                textTransform: 'none',
-                fontWeight: 600,
-                fontSize: 14,
-                px: 3,
-                py: 1,
-                '&:hover': {
-                  backgroundColor: '#4A0F5F',
-                  borderColor: '#FCFCFC',
-                  color: '#FCFCFC !important'
-                },
-                '&:disabled': {
-                  color: '#FCFCFC',
-                  borderColor: '#FCFCFC',
-                  opacity: 0.7
-                }
-              }}
-            >
-              {formatMessage('card.event.add_to_calendar')}
-            </Button>
-
-            <Button
-              variant="outlined"
-              startIcon={
-                loadingActions.interested ? (
-                  <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
-                ) : currentEvent.attending ? (
-                  <StarRoundedIcon sx={{ fontSize: 16 }} />
-                ) : (
-                  <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
-                )
-              }
-              aria-label={formatMessage('card.accessibility.interested_button')}
-              disabled={loadingActions.interested}
-              onClick={handleInterested}
-              sx={{
-                backgroundColor: '#FCFCFC',
-                color: currentEvent.attending ? '#FF2D55' : '#161518',
-                borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
-                borderRadius: 2,
-                textTransform: 'none',
-                fontWeight: 600,
-                fontSize: 14,
-                px: 3,
-                py: 1,
-                '&:hover': {
-                  backgroundColor: '#F5F5F5',
-                  borderColor: currentEvent.attending ? '#FF2D55' : '#CCCCCC',
-                  color: currentEvent.attending ? '#FF2D55 !important' : '#161518 !important'
-                },
-                '&:disabled': {
-                  backgroundColor: '#FCFCFC',
-                  color: currentEvent.attending ? '#FF2D55' : '#161518',
-                  borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
-                  opacity: 0.7
-                }
-              }}
-            >
-              {formatMessage('card.event.interested')}
-            </Button>
-
-            <Button
-              variant="outlined"
-              aria-label={formatMessage('card.accessibility.share_button')}
-              disabled={loadingActions.share}
-              onClick={handleShare}
-              sx={{
-                backgroundColor: '#FCFCFC',
-                color: '#161518',
-                borderColor: '#E0E0E0',
-                borderRadius: 2,
-                minWidth: 'auto',
-                width: 48,
-                height: 40,
-                p: 0,
-                '&:hover': {
-                  backgroundColor: '#F5F5F5',
-                  borderColor: '#FF2D55'
-                },
-                '&:disabled': {
-                  backgroundColor: '#FCFCFC',
-                  color: '#161518',
-                  borderColor: '#E0E0E0',
-                  opacity: 0.7
-                }
-              }}
-            >
-              {loadingActions.share ? (
-                <CircularProgress size={16} sx={{ color: '#FF2D55' }} />
-              ) : (
-                <ShareIcon sx={{ fontSize: 16, color: '#FF2D55' }} />
-              )}
-            </Button>
-          </EventCardActions>
-        ) : shouldShowActions && isMobile ? (
-          <EventCardActions isMobile={true}>
-            {/* First row: Add to Calendar (full width) */}
-            <EventCardActionRow isMobile={true}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={
-                  loadingActions.calendar ? (
-                    <CircularProgress size={16} sx={{ color: '#FCFCFC' }} />
-                  ) : (
-                    <DateRangeRoundedIcon sx={{ fontSize: 16 }} />
-                  )
-                }
-                aria-label={formatMessage('card.accessibility.add_to_calendar_button')}
-                disabled={loadingActions.calendar}
-                onClick={handleAddToCalendar}
-                sx={{
-                  color: '#FCFCFC',
-                  borderColor: '#FCFCFC',
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: 14,
-                  px: 3,
-                  py: 1,
-                  width: '100%',
-                  '&:hover': {
-                    backgroundColor: '#4A0F5F',
-                    borderColor: '#FCFCFC',
-                    color: '#FCFCFC !important'
-                  },
-                  '&:disabled': {
+            {!hasEventEnded ? (
+              <>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={
+                    loadingActions.calendar ? (
+                      <CircularProgress size={16} sx={{ color: '#FCFCFC' }} />
+                    ) : (
+                      <DateRangeRoundedIcon sx={{ fontSize: 16 }} />
+                    )
+                  }
+                  aria-label={formatMessage('card.accessibility.add_to_calendar_button')}
+                  disabled={loadingActions.calendar}
+                  onClick={handleAddToCalendar}
+                  sx={{
                     color: '#FCFCFC',
                     borderColor: '#FCFCFC',
-                    opacity: 0.7
-                  }
-                }}
-              >
-                {formatMessage('card.event.add_to_calendar')}
-              </Button>
-            </EventCardActionRow>
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    px: 3,
+                    py: 1,
+                    '&:hover': {
+                      backgroundColor: '#4A0F5F',
+                      borderColor: '#FCFCFC',
+                      color: '#FCFCFC !important'
+                    },
+                    '&:disabled': {
+                      color: '#FCFCFC',
+                      borderColor: '#FCFCFC',
+                      opacity: 0.7
+                    }
+                  }}
+                >
+                  {formatMessage('card.event.add_to_calendar')}
+                </Button>
 
-            {/* Second row: Interested and Share (side by side) */}
-            <EventCardActionRow isMobile={true}>
-              <Button
-                variant="outlined"
-                startIcon={
-                  loadingActions.interested ? (
-                    <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
-                  ) : currentEvent.attending ? (
-                    <StarRoundedIcon sx={{ fontSize: 16 }} />
-                  ) : (
-                    <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
-                  )
-                }
-                aria-label={formatMessage('card.accessibility.interested_button')}
-                disabled={loadingActions.interested}
-                onClick={handleInterested}
-                sx={{
-                  backgroundColor: '#FCFCFC',
-                  color: currentEvent.attending ? '#FF2D55' : '#161518',
-                  borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: 14,
-                  px: 3,
-                  py: 1,
-                  flex: 1,
-                  '&:hover': {
-                    backgroundColor: '#F5F5F5',
-                    borderColor: currentEvent.attending ? '#FF2D55' : '#CCCCCC',
-                    color: currentEvent.attending ? '#FF2D55 !important' : '#161518 !important'
-                  },
-                  '&:disabled': {
+                <Button
+                  variant="outlined"
+                  startIcon={
+                    loadingActions.interested ? (
+                      <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
+                    ) : currentEvent.attending ? (
+                      <StarRoundedIcon sx={{ fontSize: 16 }} />
+                    ) : (
+                      <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
+                    )
+                  }
+                  aria-label={formatMessage('card.accessibility.interested_button')}
+                  disabled={loadingActions.interested}
+                  onClick={handleInterested}
+                  sx={{
                     backgroundColor: '#FCFCFC',
                     color: currentEvent.attending ? '#FF2D55' : '#161518',
                     borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
-                    opacity: 0.7
-                  }
-                }}
-              >
-                {formatMessage('card.event.interested')}
-              </Button>
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    px: 3,
+                    py: 1,
+                    '&:hover': {
+                      backgroundColor: '#F5F5F5',
+                      borderColor: currentEvent.attending ? '#FF2D55' : '#CCCCCC',
+                      color: currentEvent.attending ? '#FF2D55 !important' : '#161518 !important'
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#FCFCFC',
+                      color: currentEvent.attending ? '#FF2D55' : '#161518',
+                      borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
+                      opacity: 0.7
+                    }
+                  }}
+                >
+                  {formatMessage('card.event.interested')}
+                </Button>
 
-              <IconButton
-                aria-label={formatMessage('card.accessibility.share_button')}
-                disabled={loadingActions.share}
-                onClick={handleShare}
-                sx={{
-                  backgroundColor: '#FCFCFC',
-                  color: '#161518',
-                  borderColor: '#E0E0E0',
-                  borderRadius: 2,
-                  minWidth: 'auto',
-                  height: 40,
-                  width: 40,
-                  p: 0,
-                  '&:hover': {
-                    backgroundColor: '#F5F5F5',
-                    borderColor: '#FF2D55'
-                  },
-                  '&:disabled': {
+                <Button
+                  variant="outlined"
+                  aria-label={formatMessage('card.accessibility.share_button')}
+                  disabled={loadingActions.share}
+                  onClick={handleShare}
+                  sx={{
                     backgroundColor: '#FCFCFC',
                     color: '#161518',
                     borderColor: '#E0E0E0',
-                    opacity: 0.7
-                  }
-                }}
-              >
-                {loadingActions.share ? (
-                  <CircularProgress size={16} sx={{ color: '#FF2D55' }} />
-                ) : (
-                  <ShareIcon sx={{ fontSize: 16, color: '#FF2D55' }} />
-                )}
-              </IconButton>
-            </EventCardActionRow>
+                    borderRadius: 2,
+                    minWidth: 'auto',
+                    width: 48,
+                    height: 40,
+                    p: 0,
+                    '&:hover': {
+                      backgroundColor: '#F5F5F5',
+                      borderColor: '#FF2D55'
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#FCFCFC',
+                      color: '#161518',
+                      borderColor: '#E0E0E0',
+                      opacity: 0.7
+                    }
+                  }}
+                >
+                  {loadingActions.share ? (
+                    <CircularProgress size={16} sx={{ color: '#FF2D55' }} />
+                  ) : (
+                    <ShareIcon sx={{ fontSize: 16, color: '#FF2D55' }} />
+                  )}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href={config.get('EVENTS_URL')}
+                  size="large"
+                  fullWidth
+                  sx={{ color: '#161518 !important' }}
+                >
+                  {formatMessage('events_page.explore_events_button')}
+                </Button>
+                <JumpInButton realm={currentEvent.realm} position={currentEvent.position} size="large" fullWidth>
+                  {formatMessage('events_page.jump_in_button')}
+                </JumpInButton>
+              </>
+            )}
+          </EventCardActions>
+        ) : shouldShowActions && isMobile ? (
+          <EventCardActions isMobile={true}>
+            {!hasEventEnded ? (
+              <>
+                <EventCardActionRow isMobile={true}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    startIcon={
+                      loadingActions.calendar ? (
+                        <CircularProgress size={16} sx={{ color: '#FCFCFC' }} />
+                      ) : (
+                        <DateRangeRoundedIcon sx={{ fontSize: 16 }} />
+                      )
+                    }
+                    aria-label={formatMessage('card.accessibility.add_to_calendar_button')}
+                    disabled={loadingActions.calendar}
+                    onClick={handleAddToCalendar}
+                    sx={{
+                      color: '#FCFCFC',
+                      borderColor: '#FCFCFC',
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: 14,
+                      px: 3,
+                      py: 1,
+                      width: '100%',
+                      '&:hover': {
+                        backgroundColor: '#4A0F5F',
+                        borderColor: '#FCFCFC',
+                        color: '#FCFCFC !important'
+                      },
+                      '&:disabled': {
+                        color: '#FCFCFC',
+                        borderColor: '#FCFCFC',
+                        opacity: 0.7
+                      }
+                    }}
+                  >
+                    {formatMessage('card.event.add_to_calendar')}
+                  </Button>
+                </EventCardActionRow>
+
+                <EventCardActionRow isMobile={true}>
+                  <Button
+                    variant="outlined"
+                    startIcon={
+                      loadingActions.interested ? (
+                        <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
+                      ) : currentEvent.attending ? (
+                        <StarRoundedIcon sx={{ fontSize: 16 }} />
+                      ) : (
+                        <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
+                      )
+                    }
+                    aria-label={formatMessage('card.accessibility.interested_button')}
+                    disabled={loadingActions.interested}
+                    onClick={handleInterested}
+                    sx={{
+                      backgroundColor: '#FCFCFC',
+                      color: currentEvent.attending ? '#FF2D55' : '#161518',
+                      borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      fontSize: 14,
+                      px: 3,
+                      py: 1,
+                      flex: 1,
+                      '&:hover': {
+                        backgroundColor: '#F5F5F5',
+                        borderColor: currentEvent.attending ? '#FF2D55' : '#CCCCCC',
+                        color: currentEvent.attending ? '#FF2D55 !important' : '#161518 !important'
+                      },
+                      '&:disabled': {
+                        backgroundColor: '#FCFCFC',
+                        color: currentEvent.attending ? '#FF2D55' : '#161518',
+                        borderColor: currentEvent.attending ? '#FF2D55' : '#E0E0E0',
+                        opacity: 0.7
+                      }
+                    }}
+                  >
+                    {formatMessage('card.event.interested')}
+                  </Button>
+
+                  <IconButton
+                    aria-label={formatMessage('card.accessibility.share_button')}
+                    disabled={loadingActions.share}
+                    onClick={handleShare}
+                    sx={{
+                      backgroundColor: '#FCFCFC',
+                      color: '#161518',
+                      borderColor: '#E0E0E0',
+                      borderRadius: 2,
+                      minWidth: 'auto',
+                      height: 40,
+                      width: 40,
+                      p: 0,
+                      '&:hover': {
+                        backgroundColor: '#F5F5F5',
+                        borderColor: '#FF2D55'
+                      },
+                      '&:disabled': {
+                        backgroundColor: '#FCFCFC',
+                        color: '#161518',
+                        borderColor: '#E0E0E0',
+                        opacity: 0.7
+                      }
+                    }}
+                  >
+                    {loadingActions.share ? (
+                      <CircularProgress size={16} sx={{ color: '#FF2D55' }} />
+                    ) : (
+                      <ShareIcon sx={{ fontSize: 16, color: '#FF2D55' }} />
+                    )}
+                  </IconButton>
+                </EventCardActionRow>
+              </>
+            ) : (
+              <EventCardActionRow isMobile={true}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href={config.get('EVENTS_URL')}
+                  size="large"
+                  fullWidth
+                  sx={{ color: '#161518 !important' }}
+                >
+                  {formatMessage('events_page.explore_events_button')}
+                </Button>
+              </EventCardActionRow>
+            )}
           </EventCardActions>
         ) : null}
       </ResponsiveCard>

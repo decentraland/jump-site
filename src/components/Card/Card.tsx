@@ -11,7 +11,7 @@ import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.web
 import { config } from '../../config'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
-import { formatDate } from '../../utils/dateFormatter'
+import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
 import { JumpInButton } from '../JumpInButton'
@@ -69,7 +69,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   }
 
   // Determine if this is an event (has date and total_attendees)
-  const isEvent = data.date && data.total_attendees !== undefined
+  const isEvent = data.start_at && data.total_attendees !== undefined
   const isPlace = data.user_count !== undefined
 
   // Use creator data if provided, otherwise fall back to data properties
@@ -126,10 +126,10 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
             )}
           </CardCreator>
           <Box sx={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '48px' }}>
-            {isEvent && data.date && (
-              <CardDate>
+            {isEvent && data.start_at && (
+              <CardDate eventHasEnded={eventHasEnded(data)}>
                 <AccessTimeIcon sx={{ fontSize: 16 }} />
-                {formatDate(data.date)}
+                {eventHasEnded(data) ? formatMessage('event.has_ended') : formatEventDate(data.start_at)}
               </CardDate>
             )}
             <CardLocation>

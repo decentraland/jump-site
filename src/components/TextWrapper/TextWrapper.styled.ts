@@ -10,7 +10,7 @@ export const TextWrapperContainer = styled('div')<{
   '&::after': {
     content: '""',
     position: 'absolute',
-    bottom: 0,
+    bottom: -1,
     left: 0,
     right: 3,
     height: 24,
