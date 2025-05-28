@@ -12,10 +12,14 @@ export const AppRoutes: FC = memo(() => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/places" element={<PlacesPage />} />
-        <Route path="/events" element={<EventsPage />} />
-        <Route path="/places/invalid" element={<InvalidPage isEventPage={false} />} />
-        <Route path="/events/invalid" element={<InvalidPage isEventPage={true} />} />
+        <Route path="/places">
+          <Route index element={<PlacesPage />} />
+          <Route path="invalid" element={<InvalidPage isEventPage={false} />} />
+        </Route>
+        <Route path="/events">
+          <Route index element={<EventsPage />} />
+          <Route path="invalid" element={<InvalidPage isEventPage={true} />} />
+        </Route>
         <Route path="*" element={<PlacesPage />} />
       </Route>
     </Routes>
