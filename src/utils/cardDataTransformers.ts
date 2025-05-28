@@ -42,7 +42,7 @@ export const fromPlace = (data: Place): CardData => {
     coordinates,
     image: data.image,
     description: data.description,
-    user_count: data.user_visits || 0,
+    user_count: data.user_count || 0,
     favorites: data.favorites,
     scene_name: data.title,
     url: data.url,
