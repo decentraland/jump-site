@@ -1,3 +1,6 @@
+import { formatMessage } from '../contexts/locale/utils'
+import type { CardData } from './cardDataTransformers'
+
 const formatDetailedDate = (date: Date): string => {
   // Get local timezone offset in minutes and convert to hours
   const offsetInHours = -new Date().getTimezoneOffset() / 60
@@ -18,7 +21,7 @@ const formatDetailedDate = (date: Date): string => {
   return `${datePart} - ${timePart} (${timezoneString})`
 }
 
-const formatRelativeTime = (date: Date): string => {
+const formatRelativeTime = (date: Date): { key: string; value: number } => {
   const now = new Date()
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
 
@@ -30,29 +33,29 @@ const formatRelativeTime = (date: Date): string => {
   const year = day * 365
 
   if (diffInSeconds < minute) {
-    return 'just now'
+    return { key: 'event.time_ago.just_now', value: 0 }
   } else if (diffInSeconds < hour) {
-    const minutes = Math.floor(diffInSeconds / minute)
-    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / minute)
+    return { key: 'event.time_ago.minutes_ago', value }
   } else if (diffInSeconds < day) {
-    const hours = Math.floor(diffInSeconds / hour)
-    return `${hours} hour${hours > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / hour)
+    return { key: 'event.time_ago.hours_ago', value }
   } else if (diffInSeconds < week) {
-    const days = Math.floor(diffInSeconds / day)
-    return `${days} day${days > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / day)
+    return { key: 'event.time_ago.days_ago', value }
   } else if (diffInSeconds < month) {
-    const weeks = Math.floor(diffInSeconds / week)
-    return `${weeks} week${weeks > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / week)
+    return { key: 'event.time_ago.weeks_ago', value }
   } else if (diffInSeconds < year) {
-    const months = Math.floor(diffInSeconds / month)
-    return `${months} month${months > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / month)
+    return { key: 'event.time_ago.months_ago', value }
   } else {
-    const years = Math.floor(diffInSeconds / year)
-    return `${years} year${years > 1 ? 's' : ''} ago`
+    const value = Math.floor(diffInSeconds / year)
+    return { key: 'event.time_ago.years_ago', value }
   }
 }
 
-export const formatDate = (dateString: string): string => {
+export const formatEventDate = (dateString: string): string => {
   const date = new Date(dateString)
   const now = new Date()
 
@@ -62,5 +65,18 @@ export const formatDate = (dateString: string): string => {
   }
 
   // If the date is in the past, use relative format
-  return formatRelativeTime(date)
+  const { key, value } = formatRelativeTime(date)
+  return `${formatMessage('event.time_ago.started')} ${formatMessage(key, { value })}`
+}
+
+export const eventHasEnded = (event?: CardData): boolean => {
+  if (!event?.start_at || !event?.finish_at) {
+    return false
+  }
+
+  const startAtDate = new Date(event.start_at)
+  const finishAtDate = new Date(event.finish_at)
+  const now = new Date()
+
+  return now > finishAtDate && finishAtDate > startAtDate
 }
