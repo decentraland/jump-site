@@ -183,13 +183,12 @@ export const EventsPage: FC = memo(() => {
         text: originalEvents[0].description,
         url: getJumpInUrl(originalEvents[0])
       })
-      console.log('share')
     } catch (error) {
       console.error('Error sharing:', error)
     } finally {
       setLoadingActions(prev => ({ ...prev, share: false }))
     }
-  }, [])
+  }, [originalEvents])
 
   const handleCloseSnackbar = useCallback(() => {
     setSnackbar(prev => ({ ...prev, open: false }))
