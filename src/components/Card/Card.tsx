@@ -112,7 +112,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
           <CardTitle style={{ marginBottom: '16px' }}>{data.title}</CardTitle>
           <CardCreator>
             <CreatorAvatar src={displayAvatar} alt={formatMessage('card.accessibility.creator_avatar', { userName: displayUserName })} />
-            <CreatorLabel>{formatMessage('card.event.by')} </CreatorLabel>
+            <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
             {displayUser ? (
               <UserProfileLink
                 href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
