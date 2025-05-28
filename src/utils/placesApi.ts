@@ -1,4 +1,5 @@
 import { type Place } from '../components/Pages/PlacesPage/types'
+import { config } from '../config'
 
 export interface PlacesApiResponse {
   ok: boolean
@@ -11,8 +12,8 @@ export class PlacesApi {
   private baseUrl: string
   private authenticatedFetch?: FetchFunction
 
-  constructor(baseUrl: string, authenticatedFetch?: FetchFunction) {
-    this.baseUrl = baseUrl
+  constructor(authenticatedFetch?: FetchFunction) {
+    this.baseUrl = config.get('PLACES_API_URL')
     this.authenticatedFetch = authenticatedFetch
   }
 
@@ -26,7 +27,7 @@ export class PlacesApi {
     const useFetch = fetchFn || this.authenticatedFetch || fetch
 
     try {
-      const url = position ? `${this.baseUrl}?positions=${position[0]},${position[1]}` : this.baseUrl
+      const url = position ? `${this.baseUrl}/places/?positions=${position[0]},${position[1]}` : this.baseUrl
       const response = await useFetch(url)
 
       if (!response.ok) {
@@ -51,7 +52,7 @@ export class PlacesApi {
     const useFetch = fetchFn || this.authenticatedFetch || fetch
 
     try {
-      const response = await useFetch(`${this.baseUrl}/${placeId}`)
+      const response = await useFetch(`${this.baseUrl}/places/${placeId}`)
 
       if (!response.ok) {
         if (response.status === 404) {
@@ -71,6 +72,6 @@ export class PlacesApi {
 
 // Backward compatibility functions
 export const fetchPlaces = async (position?: [number, number], fetchFn: FetchFunction = fetch): Promise<PlacesApiResponse> => {
-  const placesApi = new PlacesApi('https://places.decentraland.org/api/places')
+  const placesApi = new PlacesApi()
   return placesApi.fetchPlaces(position, fetchFn)
 }
