@@ -93,8 +93,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
               </>
             ) : (
               <>
-                <StarRoundedIcon sx={{ fontSize: 16, color: '#FF2D55' }} />
-                {data.total_attendees}
+                <StarRoundedIcon sx={{ fontSize: 16, color: '#FF2D55' }} />+{data.total_attendees}
               </>
             )}
           </AttendeesBadge>

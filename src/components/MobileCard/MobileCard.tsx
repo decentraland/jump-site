@@ -121,8 +121,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
               </>
             ) : (
               <>
-                <StarRoundedIcon sx={{ fontSize: 14, color: '#FF2D55' }} />
-                {data.total_attendees}
+                <StarRoundedIcon sx={{ fontSize: 14, color: '#FF2D55' }} />+{data.total_attendees}
               </>
             )}
           </MobileAttendeesBadge>
