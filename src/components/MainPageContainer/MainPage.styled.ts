@@ -8,6 +8,7 @@ export const MainPageContainer = styled(Box)(props => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 'calc(100vh - 64px)',
     paddingTop: 32,
     paddingBottom: 32,
