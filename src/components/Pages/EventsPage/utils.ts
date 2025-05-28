@@ -1,5 +1,5 @@
 import { config } from '../../../config'
-import { formatMessage } from '../../../utils/formatMessage'
+import { formatMessage } from '../../../contexts/locale/utils'
 import type { Event } from './types'
 
 export function getJumpInUrl(event: Pick<Event, 'x' | 'y' | 'server' | 'world'>): string {

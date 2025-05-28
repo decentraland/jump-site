@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { IntlProvider } from 'react-intl'
+import { updateIntl } from './intlSingleton'
 import { LocaleConfig, LocaleContextValue, UseLocaleOptions, Messages } from './types'
 import {
   createDefaultLocaleConfig,
@@ -125,6 +126,11 @@ export const LocaleProvider = ({
 
   // Get the flattened messages for the current locale
   const currentMessages = messages[locale] || messages[config.defaultLocale] || {}
+
+  // Keep standalone intl in sync
+  useEffect(() => {
+    updateIntl(locale, currentMessages)
+  }, [locale, currentMessages])
 
   return (
     <LocaleContext.Provider value={contextValue}>

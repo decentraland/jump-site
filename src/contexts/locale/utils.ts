@@ -1,3 +1,4 @@
+import { getIntl } from './intlSingleton'
 import { LocaleCode, LocaleConfig, LocaleError, LocaleDisplayNames, Messages } from './types'
 
 /**
@@ -29,23 +30,7 @@ export const createDefaultLocaleConfig = <T extends readonly string[]>(
 export const DEFAULT_DISPLAY_NAMES: LocaleDisplayNames = {
   en: 'English',
   es: 'Español',
-  fr: 'Français',
-  de: 'Deutsch',
-  pt: 'Português',
-  it: 'Italiano',
-  ru: 'Русский',
-  zh: '中文',
-  ja: '日本語',
-  ko: '한국어',
-  ar: 'العربية',
-  hi: 'हिन्दी',
-  tr: 'Türkçe',
-  pl: 'Polski',
-  nl: 'Nederlands',
-  sv: 'Svenska',
-  da: 'Dansk',
-  no: 'Norsk',
-  fi: 'Suomi'
+  zh: '中文'
 }
 
 /**
@@ -188,4 +173,14 @@ export const debugLog = (message: string, data?: unknown, debug = false): void =
   if (debug && typeof console !== 'undefined') {
     console.log(`[Locale] ${message}`, data || '')
   }
+}
+
+/**
+ * Format a message using the current locale
+ * @param id - The message key (e.g., 'card.event.add_to_calendar')
+ * @param values - Optional values for interpolation (e.g., { value: 3 })
+ * @returns Formatted message string (e.g., "3 hours ago")
+ */
+export const formatMessage = (id: string, values?: Record<string, string | number | Date | boolean | null | undefined>): string => {
+  return getIntl().formatMessage({ id }, values)
 }
