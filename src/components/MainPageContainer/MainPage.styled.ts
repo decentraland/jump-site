@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Box, type Theme } from 'decentraland-ui2'
-import backgroundImage from '../../assets/background.png'
+import backgroundImage from '../../assets/background.webp'
 
 export const MainPageContainer = styled(Box)(props => {
   const theme = props.theme as Theme

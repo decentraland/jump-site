@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Box } from 'decentraland-ui2'
-import backgroundInvalidEventImage from '../../../assets/background-invalid-events-page.png'
-import backgroundInvalidPlaceImage from '../../../assets/background-invalid-places-page.png'
+import backgroundInvalidEventImage from '../../../assets/background-invalid-events-page.webp'
+import backgroundInvalidPlaceImage from '../../../assets/background-invalid-places-page.webp'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 
 export const InvalidPageContainer = styled(MainPageContainer)<{ isEventPage: boolean; isMobile: boolean }>(({ isEventPage, isMobile }) => {
