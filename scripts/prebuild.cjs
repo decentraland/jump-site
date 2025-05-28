@@ -57,6 +57,12 @@ function getPublicUrls() {
     return {
       VITE_BASE_URL: cdnUrl
     }
+  } else if (isVercel) {
+    console.log('Using vercel as public url')
+    return {
+      VITE_BASE_URL: '/',
+      VITE_REACT_APP_DCL_DEFAULT_ENV: 'prod'
+    }
   }
   // localhost
   console.log('Using empty pubic url')
