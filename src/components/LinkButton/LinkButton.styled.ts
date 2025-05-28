@@ -10,8 +10,6 @@ export const StyledLinkButton = styled(Button)({
     backgroundColor: 'transparent',
     textDecoration: 'none'
   },
-  textTransform: 'none',
   padding: 0,
-  minWidth: 'auto',
-  fontWeight: 'inherit'
+  minWidth: 'auto'
 })
