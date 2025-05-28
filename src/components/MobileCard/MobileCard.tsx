@@ -81,7 +81,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
             <CircularProgress disableShrink />
           </MobileLoadingContainer>
         </MobileTopSection>
-        <MobileMiddleSection>
+        <MobileMiddleSection style={{ paddingBottom: '175px' }}>
           <MobileCardContent>
             <Skeleton variant="text" animation="wave" sx={{ fontSize: 24, fontWeight: 700, marginBottom: '8px' }} />
             <Skeleton variant="text" animation="wave" sx={{ fontSize: 14, marginBottom: '6px' }} />
