@@ -1,3 +1,21 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "version": 2,
+  "name": "jump-in",
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "VITE_BASE_URL": "/",
+      "VITE_REACT_APP_DCL_DEFAULT_ENV": "prod"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/auth/:match*",
+      "destination": "https://decentraland.org/auth/:match*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
