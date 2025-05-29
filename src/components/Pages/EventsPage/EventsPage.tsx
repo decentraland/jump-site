@@ -332,7 +332,7 @@ export const EventsPage: FC = memo(() => {
                 >
                   {formatMessage('events_page.explore_events_button')}
                 </Button>
-                <JumpInButton realm={currentEvent.realm} position={currentEvent.position} size="large" fullWidth>
+                <JumpInButton realm={currentEvent.realm} position={currentEvent.position} sceneData={currentEvent} size="large" fullWidth>
                   {formatMessage('events_page.jump_in_button')}
                 </JumpInButton>
               </>

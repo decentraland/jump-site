@@ -94,9 +94,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
     )
   }
 
-  // Determine if this is an event (has date and total_attendees)
-  const isEvent = data.start_at && data.total_attendees !== undefined
-  const isPlace = data.user_count !== undefined
+  const isEvent = data.type === 'event'
 
   // Use creator data if provided, otherwise fall back to data properties
   const displayUserName = creator?.user_name || data.user_name
@@ -124,7 +122,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
             )}
           </MobileAttendeesBadge>
         )}
-        {isPlace && data.user_count && data.user_count > 0 ? (
+        {!isEvent && data.user_count && data.user_count > 0 ? (
           <MobileAttendeesBadge backgroundColor="#FCFCFC">
             <CircleRoundedIcon sx={{ fontSize: 14 }} htmlColor="#00A146" />
             <PersonIcon sx={{ fontSize: 14 }} />

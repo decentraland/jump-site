@@ -68,9 +68,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
     )
   }
 
-  // Determine if this is an event (has date and total_attendees)
-  const isEvent = data.start_at && data.total_attendees !== undefined
-  const isPlace = data.user_count !== undefined
+  const isEvent = data.type === 'event'
 
   // Use creator data if provided, otherwise fall back to data properties
   const displayUserName = creator?.user_name || data.user_name
@@ -81,7 +79,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
     <CardContainer>
       <LeftSection>
         <CardImage
-          src={data.image || (isPlace ? cardImagePlacesPlaceholder : cardImageEventsPlaceholder)}
+          src={data.image || (!isEvent ? cardImagePlacesPlaceholder : cardImageEventsPlaceholder)}
           alt={formatMessage(isEvent ? 'card.accessibility.event_image' : 'card.accessibility.place_image', { title: data.title })}
         />
         {isEvent && (
@@ -98,7 +96,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
             )}
           </AttendeesBadge>
         )}
-        {isPlace && data.user_count && data.user_count > 0 ? (
+        {!isEvent && data.user_count && data.user_count > 0 ? (
           <AttendeesBadge backgroundColor="#FCFCFC">
             <CircleRoundedIcon sx={{ fontSize: 16, color: '#00A146' }} />
             <PersonIcon sx={{ fontSize: 16, color: '#161518' }} />
@@ -140,6 +138,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
                   realm={data.realm}
                   position={data.position}
                   onlyIcon
+                  sceneData={data}
                   sx={{ marginTop: '-4px', marginRight: '-8px', marginBottom: '-4px' }}
                 />
               )}
@@ -154,8 +153,8 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
         {children}
 
         {/* Default JumpIn button for places or live events */}
-        {!children && (isPlace || (isEvent && data.live)) && (
-          <JumpInButton realm={data.realm} position={data.position} sx={{ width: '300px' }} />
+        {!children && (!isEvent || data.live) && (
+          <JumpInButton realm={data.realm} position={data.position} sceneData={data} sx={{ width: '300px' }} />
         )}
       </RightSection>
     </CardContainer>

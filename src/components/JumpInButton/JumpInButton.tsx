@@ -4,6 +4,7 @@ import { Typography, ButtonOwnProps, Button } from 'decentraland-ui2'
 import { Events, useAnalytics } from '../../hooks/useAnalytics'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { launchDesktopApp } from '../../utils'
+import { CardData } from '../../utils/cardDataTransformers'
 import { DownloadModal } from '../DownloadModal/DownloadModal'
 import { MobileDisclaimerModal } from '../MobileDisclaimerModal/MobileDisclaimerModal'
 import { JumpInIcon, JumpInIconButton } from './JumpInButton.styled'
@@ -15,9 +16,18 @@ interface JumpInButtonProps extends ButtonOwnProps {
   position: string
   realm?: string
   onlyIcon?: boolean
+  sceneData?: CardData
 }
 
-export const JumpInButton: FC<JumpInButtonProps> = ({ position, realm, onlyIcon = false, size = 'large', children, ...props }) => {
+export const JumpInButton: FC<JumpInButtonProps> = ({
+  position,
+  realm,
+  sceneData,
+  onlyIcon = false,
+  size = 'large',
+  children,
+  ...props
+}) => {
   const [, advancedUserAgent] = useAdvancedUserAgentData()
   const { track } = useAnalytics()
   const [downloadOption, setShowDownloadOption] = useState<boolean>(false)
@@ -104,7 +114,7 @@ export const JumpInButton: FC<JumpInButtonProps> = ({ position, realm, onlyIcon 
           </>
         </Button>
       )}
-      <DownloadModal open={downloadOption} onClose={handleCloseDownloadModal} osName={osName} arch={arch} />
+      <DownloadModal open={downloadOption} onClose={handleCloseDownloadModal} osName={osName} arch={arch} sceneData={sceneData} />
       <MobileDisclaimerModal open={showMobileModal} onClose={handleCloseMobileDisclaimerModal} />
     </>
   )

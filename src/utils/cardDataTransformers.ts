@@ -4,6 +4,7 @@ import type { Place } from '../components/Pages/PlacesPage/types'
 // Unified CardData interface for the Card component
 export interface CardData {
   id: string
+  type: 'event' | 'place'
   title: string
   user_name: string
   user?: string // User ID for profile links (events) or deployer address (places)
@@ -35,6 +36,7 @@ export const fromPlace = (data: Place): CardData => {
 
   return {
     id: data.id,
+    type: 'place',
     title: data.title,
     user_name: data.owner || data.contact_name || 'Unknown',
     coordinates,
@@ -76,6 +78,7 @@ export const fromEvent = (data: Event): CardData => {
 
   return {
     id: data.id,
+    type: 'event',
     title: data.name,
     user_name: data.user_name,
     user: data.user,
