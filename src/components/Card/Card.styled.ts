@@ -26,6 +26,7 @@ export const LeftSection = styled('div')(props => {
   return {
     position: 'relative',
     flexGrow: 1,
+    maxWidth: 724,
     overflow: 'hidden',
     [theme.breakpoints.down('md')]: {
       height: '100%'
@@ -40,10 +41,8 @@ export const RightSection = styled('div')(props => {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     flexGrow: 1,
+    maxWidth: 724,
     padding: '60px 60px 48px 48px',
-    // [theme.breakpoints.down('lg')]: {
-    //   padding: '50px 38px 38px 38px'
-    // },
     [theme.breakpoints.down('md')]: {
       padding: 20
     },
