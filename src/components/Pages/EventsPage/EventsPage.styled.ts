@@ -3,10 +3,10 @@ import styled from '@emotion/styled'
 export const EventCardActions = styled('div')<{ isMobile?: boolean }>(({ isMobile }) => ({
   display: 'flex',
   flexDirection: isMobile ? 'column' : 'row',
-  gap: isMobile ? 12 : 16,
+  alignItems: isMobile ? 'stretch' : 'center',
   width: '100%',
-  marginBottom: isMobile ? 0 : 16,
-  alignItems: isMobile ? 'stretch' : 'center'
+  gap: isMobile ? 12 : 16,
+  float: 'left'
 }))
 
 export const EventCardActionRow = styled('div')<{ isMobile?: boolean }>(({ isMobile }) => ({

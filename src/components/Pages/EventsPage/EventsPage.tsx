@@ -18,7 +18,7 @@ import { fetchPlaces } from '../../../utils/placesApi'
 import { JumpInButton } from '../../JumpInButton'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 import { ResponsiveCard } from '../../ResponsiveCard'
-import { EventCardActions, EventCardActionRow } from './EventCardActions.styled'
+import { EventCardActions, EventCardActionRow } from './EventsPage.styled'
 import type { Event } from './types'
 import { getGoogleCalendar, getJumpInUrl } from './utils'
 
