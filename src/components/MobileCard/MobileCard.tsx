@@ -11,6 +11,7 @@ import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
 import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
+import { CardImage, CreatorLabel, CardLoadingContainer } from '../Card/Card.styled'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
 import { ShareLinkButton } from '../ShareLinkButton'
 import { TextWrapper } from '../TextWrapper/TextWrapper'
@@ -19,15 +20,12 @@ import {
   MobileTopSection,
   MobileMiddleSection,
   MobileStickyBottomContainer,
-  MobileCardImage,
   MobileAttendeesBadge,
   MobileCardContent,
   MobileCardTitle,
   MobileCardCreator,
   MobileCardDate,
   MobileCardLocation,
-  MobileLoadingContainer,
-  MobileCreatorLabel,
   MobileCreatorAvatar,
   MobileUserProfileLink
 } from './MobileCard.styled'
@@ -77,9 +75,9 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
     return (
       <MobileCardContainer>
         <MobileTopSection>
-          <MobileLoadingContainer>
+          <CardLoadingContainer>
             <CircularProgress disableShrink />
-          </MobileLoadingContainer>
+          </CardLoadingContainer>
         </MobileTopSection>
         <MobileMiddleSection style={{ paddingBottom: '175px' }}>
           <MobileCardContent>
@@ -108,7 +106,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
   return (
     <MobileCardContainer>
       <MobileTopSection>
-        <MobileCardImage
+        <CardImage
           src={data.image}
           alt={formatMessage(isEvent ? 'card.accessibility.event_image' : 'card.accessibility.place_image', { title: data.title })}
         />
@@ -143,7 +141,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
               src={displayAvatar}
               alt={formatMessage('card.accessibility.creator_avatar', { userName: displayUserName })}
             />
-            <MobileCreatorLabel>{formatMessage('card.creator.by')} </MobileCreatorLabel>
+            <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
             {displayUser ? (
               <MobileUserProfileLink
                 href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}

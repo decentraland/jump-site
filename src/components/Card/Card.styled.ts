@@ -6,21 +6,17 @@ export const CardContainer = styled('div')(props => {
   return {
     display: 'flex',
     height: 608,
-    width: 1448,
+    width: '100%',
+    minWidth: 1118,
+    maxWidth: 1448,
     overflow: 'hidden',
     borderRadius: 16,
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
     backgroundColor: '#380A4D',
     [theme.breakpoints.down('md')]: {
-      width: 'calc(100vw - 32px)',
-      height: 280,
-      margin: '0 16px'
-    },
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-      height: 400,
-      width: 'calc(100vw - 24px)',
-      margin: '0 12px'
+      height: 490,
+      width: '100%',
+      margin: '0 32px'
     }
   }
 })
@@ -29,11 +25,10 @@ export const LeftSection = styled('div')(props => {
   const theme = props.theme as Theme
   return {
     position: 'relative',
-    width: 724,
+    flexGrow: 1,
     overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      height: 200
+    [theme.breakpoints.down('md')]: {
+      height: '100%'
     }
   }
 })
@@ -41,16 +36,18 @@ export const LeftSection = styled('div')(props => {
 export const RightSection = styled('div')(props => {
   const theme = props.theme as Theme
   return {
-    width: 724,
-    padding: '60px 60px 48px 48px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    flexGrow: 1,
+    padding: '60px 60px 48px 48px',
+    // [theme.breakpoints.down('lg')]: {
+    //   padding: '50px 38px 38px 38px'
+    // },
     [theme.breakpoints.down('md')]: {
       padding: 20
     },
     [theme.breakpoints.down('sm')]: {
-      width: '100%',
       padding: 16
     }
   }
@@ -60,8 +57,7 @@ export const CardImage = styled('img')({
   width: '100%',
   height: '100%',
   objectFit: 'fill',
-  objectPosition: 'center',
-  transition: 'transform 0.3s ease'
+  objectPosition: 'center'
 })
 
 export const AttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ backgroundColor = '#FF2D55' }) => ({
@@ -84,7 +80,6 @@ export const CardContent = styled('div')({
   display: 'flex',
   flexGrow: 1,
   flexDirection: 'column',
-  gap: 12,
   marginBottom: 30
 })
 
@@ -101,10 +96,10 @@ export const CardTitle = styled('h2')(props => {
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
     [theme.breakpoints.down('md')]: {
-      fontSize: 24
+      fontSize: 40
     },
     [theme.breakpoints.down('sm')]: {
-      fontSize: 20
+      fontSize: 32
     }
   }
 })
@@ -143,10 +138,9 @@ export const CardDate = styled('div')<{ eventHasEnded: boolean }>(({ eventHasEnd
 })
 
 export const CardLocation = styled('div')({
-  position: 'relative',
   display: 'inline-flex',
   alignItems: 'center',
-  padding: '4px 8px 4px 8px',
+  padding: '4px 8px',
   gap: '8px',
   fontSize: 16,
   fontWeight: 400,
@@ -159,71 +153,48 @@ export const CardLocation = styled('div')({
   width: 'fit-content'
 })
 
-export const CardDescriptionWrapper = styled('div')({
-  position: 'relative',
-  flex: 1,
-  minHeight: 0,
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 4,
-    height: 24,
-    background: 'linear-gradient(transparent, #380A4D)',
-    pointerEvents: 'none',
-    zIndex: 1
-  }
-})
-
-export const CardDescription = styled('div')(props => {
-  const theme = props.theme as Theme
-  return {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    fontSize: 20,
-    color: '#ffffff',
-    lineHeight: 1.6,
-    letterSpacing: 0,
-    margin: 0,
-    overflowY: 'auto',
-    paddingRight: 4,
+export const CardDescription = styled('div')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  fontSize: 20,
+  color: '#ffffff',
+  lineHeight: 1.6,
+  letterSpacing: 0,
+  margin: 0,
+  overflowY: 'auto',
+  paddingRight: 4,
+  '&::-webkit-scrollbar': {
+    width: 4,
+    opacity: 0,
+    transition: 'opacity 0.2s ease'
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: 'transparent'
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: 'transparent',
+    borderRadius: 2
+  },
+  '&:hover': {
     '&::-webkit-scrollbar': {
-      width: 4,
-      opacity: 0,
-      transition: 'opacity 0.2s ease'
+      opacity: 1
     },
     '&::-webkit-scrollbar-track': {
-      backgroundColor: 'transparent'
+      backgroundColor: 'rgba(255, 255, 255, 0.1)'
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'transparent',
-      borderRadius: 2
-    },
-    '&:hover': {
-      '&::-webkit-scrollbar': {
-        opacity: 1
-      },
-      '&::-webkit-scrollbar-track': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)'
-      },
-      '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        '&:hover': {
-          backgroundColor: 'rgba(255, 255, 255, 0.5)'
-        }
+      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)'
       }
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 18
     }
   }
 })
 
-export const LoadingContainer = styled('div')({
+export const CardLoadingContainer = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -232,28 +203,20 @@ export const LoadingContainer = styled('div')({
   backgroundColor: '#f3f4f6'
 })
 
-// Icon components using simple SVG paths or Unicode symbols
-export const DateIcon = styled('span')({
-  fontSize: 16,
-  '&::before': {
-    content: '"📅"'
-  }
-})
-
 export const CreatorAvatar = styled('img')({
-  width: 32,
-  height: 32,
-  borderRadius: '33.65px',
-  borderWidth: '2.29px',
-  borderStyle: 'solid',
-  borderColor: '#ffffff',
-  overflow: 'hidden',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '#f0f0f0',
   flexShrink: 0,
-  objectFit: 'cover'
+  objectFit: 'cover',
+  width: 32,
+  height: 32,
+  overflow: 'hidden',
+  borderRadius: '33.65px',
+  borderWidth: '2.29px',
+  borderStyle: 'solid',
+  borderColor: '#ffffff'
 })
 
 export const UserProfileLink = styled('a')({
@@ -272,11 +235,3 @@ export const UserProfileLink = styled('a')({
     borderRadius: 4
   }
 })
-
-// Legacy exports for backward compatibility
-export const ImageContainer = LeftSection
-export const Image = CardImage
-export const Content = RightSection
-export const Text = CardContent
-export const Title = CardTitle
-export const Subtitle = CardCreator

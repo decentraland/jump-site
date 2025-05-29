@@ -27,7 +27,7 @@ import {
   CardCreator,
   CardDate,
   CardLocation,
-  LoadingContainer,
+  CardLoadingContainer,
   CreatorLabel,
   CreatorAvatar,
   UserProfileLink
@@ -51,12 +51,12 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
     return (
       <CardContainer>
         <LeftSection>
-          <LoadingContainer>
+          <CardLoadingContainer>
             <CircularProgress disableShrink />
-          </LoadingContainer>
+          </CardLoadingContainer>
         </LeftSection>
         <RightSection>
-          <CardContent>
+          <CardContent style={{ gap: 12 }}>
             <Skeleton variant="text" animation="wave" sx={{ fontSize: 28, fontWeight: 700, marginBottom: '12px' }} />
             <Skeleton variant="text" animation="wave" sx={{ fontSize: 16, marginBottom: '8px' }} />
             <Skeleton variant="text" animation="wave" sx={{ fontSize: 16, marginBottom: '8px' }} />

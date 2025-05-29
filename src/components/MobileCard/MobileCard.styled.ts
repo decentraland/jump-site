@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { AttendeesBadge, CardCreator, CardDate, CardDescription, CardLocation, CreatorAvatar, UserProfileLink } from '../Card/Card.styled'
 
 export const MobileCardContainer = styled('div')({
   display: 'flex',
@@ -16,9 +17,9 @@ export const MobileTopSection = styled('div')({
 })
 
 export const MobileMiddleSection = styled('div')({
-  padding: '32px 24px 0px 24px',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  padding: '32px 24px 0px 24px'
 })
 
 export const MobileStickyBottomContainer = styled('div')({
@@ -38,27 +39,11 @@ export const MobileStickyBottomContainer = styled('div')({
   boxShadow: '0 -4px 16px rgba(0, 0, 0, 0.2)'
 })
 
-export const MobileCardImage = styled('img')({
-  width: '100%',
-  height: '100%',
-  objectFit: 'fill',
-  objectPosition: 'center'
-})
-
-export const MobileAttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ backgroundColor = '#FF2D55' }) => ({
-  position: 'absolute',
-  top: 16,
-  left: 16,
-  backgroundColor,
-  color: '#161518',
+export const MobileAttendeesBadge = styled(AttendeesBadge)(() => ({
   padding: '6px 12px',
   borderRadius: 6,
-  display: 'flex',
-  alignItems: 'center',
   gap: 6,
-  fontSize: 12,
-  fontWeight: 700,
-  backdropFilter: 'blur(4px)'
+  fontSize: 12
 }))
 
 export const MobileCardContent = styled('div')({
@@ -76,150 +61,43 @@ export const MobileCardTitle = styled('h1')({
   marginBottom: 16
 })
 
-export const MobileCardCreator = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
+export const MobileCardCreator = styled(CardCreator)({
   gap: 6,
   fontSize: 16,
-  fontWeight: 500,
-  color: '#FF2D55',
   marginBottom: 16
 })
 
-export const MobileCreatorLabel = styled('span')({
-  color: '#ffffff'
-})
-
-export const MobileCardDate = styled('div')<{ eventHasEnded: boolean }>(({ eventHasEnded }) => {
+export const MobileCardDate = styled(CardDate)(() => {
   return {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '4px 8px',
     gap: '6px',
     fontSize: 14,
-    fontWeight: 400,
     lineHeight: 1.5,
-    color: eventHasEnded ? '#fcfcfc' : '#ffffff',
-    backgroundColor: eventHasEnded ? '#716B7C' : '#00000066',
-    textTransform: eventHasEnded ? 'uppercase' : 'none',
-    borderRadius: '6px',
-    backdropFilter: 'blur(4px)',
-    width: 'fit-content'
+    borderRadius: '6px'
   }
 })
 
-export const MobileCardLocation = styled('div')({
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: '4px 8px',
+export const MobileCardLocation = styled(CardLocation)({
   gap: '6px',
   fontSize: 14,
-  fontWeight: 400,
   lineHeight: 1.5,
-  color: '#ffffff',
-  backgroundColor: '#00000066',
-  borderRadius: '6px',
-  backdropFilter: 'blur(4px)',
-  width: 'fit-content'
+  borderRadius: '6px'
 })
 
-export const MobileCardDescriptionWrapper = styled('div')<{ $hasGradient: boolean }>(({ $hasGradient }) => ({
-  position: 'relative',
-  height: '250px',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 3,
-    height: 24,
-    background: 'linear-gradient(transparent, #2E013E)',
-    pointerEvents: 'none',
-    zIndex: 1,
-    opacity: $hasGradient ? 1 : 0,
-    transition: 'opacity 0.2s ease'
-  }
-}))
-
-export const MobileCardDescription = styled('div')({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
+export const MobileCardDescription = styled(CardDescription)({
   fontSize: 16,
-  color: '#ffffff',
   lineHeight: 1.5,
-  letterSpacing: 0,
-  margin: 0,
-  overflowY: 'auto',
-  paddingRight: 4,
   '&::-webkit-scrollbar': {
-    width: 3,
-    opacity: 0,
-    transition: 'opacity 0.2s ease'
-  },
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: 'transparent'
-  },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: 'transparent',
-    borderRadius: 2
-  },
-  '&:hover': {
-    '&::-webkit-scrollbar': {
-      opacity: 1
-    },
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: 'rgba(255, 255, 255, 0.1)'
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(255, 255, 255, 0.3)',
-      '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.5)'
-      }
-    }
+    width: 3
   }
 })
 
-export const MobileLoadingContainer = styled('div')({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%',
-  width: '100%',
-  backgroundColor: '#f3f4f6'
-})
-
-export const MobileCreatorAvatar = styled('img')({
+export const MobileCreatorAvatar = styled(CreatorAvatar)({
   width: 24,
   height: 24,
   borderRadius: '50%',
-  borderWidth: '1.5px',
-  borderStyle: 'solid',
-  borderColor: '#ffffff',
-  overflow: 'hidden',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: '#f0f0f0',
-  flexShrink: 0,
-  objectFit: 'cover'
+  borderWidth: '1.5px'
 })
 
-export const MobileUserProfileLink = styled('a')({
-  color: '#FF2D55',
-  textDecoration: 'none',
-  fontSize: 16,
-  fontWeight: 500,
-  transition: 'color 0.2s ease, text-decoration 0.2s ease',
-  '&:hover': {
-    color: '#FF4D75',
-    textDecoration: 'underline'
-  },
-  '&:focus': {
-    outline: '2px solid #FF2D55',
-    outlineOffset: 2,
-    borderRadius: 4
-  }
+export const MobileUserProfileLink = styled(UserProfileLink)({
+  fontSize: 16
 })
