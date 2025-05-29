@@ -7,6 +7,7 @@ import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 import { ResponsiveCard } from '../../ResponsiveCard'
 
 const DEFAULT_POSITION = '0,0'
+const DEFAULT_REALM = 'main'
 
 const peerApi = new PeerApi()
 
@@ -22,6 +23,7 @@ export const PlacesPage: FC = memo(() => {
   const [isLoading, setIsLoading] = useState(true)
 
   const position = searchParams.get('position') ?? DEFAULT_POSITION
+  const realm = searchParams.get('realm') ?? DEFAULT_REALM
 
   // Convert position string to coordinates array
   const coordinates: [number, number] = useMemo(() => {
@@ -33,7 +35,7 @@ export const PlacesPage: FC = memo(() => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        const response = await fetchPlaces(coordinates)
+        const response = await fetchPlaces({ position: coordinates, realm })
         if (response.ok && response.data.length > 0) {
           // Transform places data using the fromPlace utility
           const transformedPlaces = response.data.map(fromPlace)
