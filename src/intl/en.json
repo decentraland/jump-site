@@ -1,0 +1,90 @@
+{
+  "footer": {
+    "subscribe": {
+      "stay_updated_with": "Stay updated with",
+      "decentraland": "Decentraland"
+    },
+    "social": {
+      "resources": "Resources",
+      "connect": "Connect",
+      "marketplace": "Marketplace",
+      "creator_hub": "Creator Hub",
+      "docs": "Docs",
+      "events": "Events",
+      "blog": "Blog",
+      "support": "Support",
+      "email": "Email",
+      "dao": "DAO",
+      "faq": "FAQ"
+    }
+  },
+  "components": {
+    "button": {
+      "get_google_calendar": {
+        "jump_in": "Jump In"
+      }
+    },
+    "jump_in_button": {
+      "jump_in": "Jump In"
+    }
+  },
+  "share": {
+    "button": {
+      "switch_to_computer": "Switch to a Computer to Use Decentraland",
+      "text": "SHARE LINK"
+    }
+  },
+  "card": {
+    "creator": {
+      "by": "By"
+    },
+    "event": {
+      "add_to_calendar": "ADD TO CALENDAR",
+      "interested": "INTERESTED",
+      "live": "LIVE"
+    },
+    "place": {
+      "default_description": "You’re about to jump into Decentraland! Description: Explore a virtual world built by its community and make new friends from anywhere."
+    },
+    "accessibility": {
+      "creator_avatar": "{userName} avatar",
+      "event_image": "{title} event image",
+      "place_image": "{title} place image",
+      "share_button": "Share",
+      "add_to_calendar_button": "Add to calendar",
+      "interested_button": "Mark as interested",
+      "user_profile_link": "View {userName}'s profile"
+    }
+  },
+  "event": {
+    "snackbar": {
+      "added_to_my_events": "\"{eventTitle}\" added to",
+      "removed_from_my_events": "\"{eventTitle}\" removed from",
+      "my_events": "My Events"
+    },
+    "has_ended": "Event has ended",
+    "time_ago": {
+      "started": "Started",
+      "just_now": "just now",
+      "minutes_ago": "{value, plural, one {# minute} other {# minutes}} ago",
+      "hours_ago": "{value, plural, one {# hour} other {# hours}} ago",
+      "days_ago": "{value, plural, one {# day} other {# days}} ago",
+      "weeks_ago": "{value, plural, one {# week} other {# weeks}} ago",
+      "months_ago": "{value, plural, one {# month} other {# months}} ago",
+      "years_ago": "{value, plural, one {# year} other {# years}} ago"
+    }
+  },
+  "events_page": {
+    "explore_events_button": "EXPLORE EVENTS",
+    "jump_in_button": "Jump In"
+  },
+  "invalid_page": {
+    "title": "Oops!",
+    "message": "Looks like that link was invalid. If you still want to explore, jump into Decentraland's virtual world or browse community events.",
+    "message_mobile": "Looks like that link was invalid. If you still want to explore, browse the community's events then jump in-world from your computer.",
+    "explore_events_button": "EXPLORE EVENTS",
+    "jump_in_button": "Jump into Decentraland",
+    "learn_more": "Learn more about <a>Decentraland</a>",
+    "go_home_button": "Go to Homepage"
+  }
+}

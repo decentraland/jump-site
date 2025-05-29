@@ -58,6 +58,7 @@ function getPublicUrls() {
       VITE_BASE_URL: cdnUrl
     }
   }
+
   // localhost
   console.log('Using empty pubic url')
   return {

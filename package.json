@@ -15,13 +15,16 @@
   },
   "dependencies": {
     "@dcl/hooks": "^0.0.2",
+    "@dcl/single-sign-on-client": "^0.1.0",
     "@dcl/ui-env": "^1.5.1",
     "@segment/analytics-next": "^1.79.0",
     "classnames": "^2.5.1",
-    "decentraland-ui2": "^0.12.1",
+    "decentraland-connect": "^9.1.0",
+    "decentraland-ui2": "^0.22.1",
     "isbot": "^5.1.25",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-intl": "^7.1.11",
     "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
@@ -38,7 +41,8 @@
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "homepage": ""
 }

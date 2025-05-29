@@ -1,6 +1,7 @@
 import { type FC } from 'react'
 import { Close as CloseIcon } from '@mui/icons-material'
 import laptopImage from '../../assets/laptop.svg'
+import { CardData } from '../../utils/cardDataTransformers'
 import { DownloadButton } from '../DownloadButton/DownloadButton'
 import { Modal, ModalContainer, ModalTitle, ModalImage, ModalContent, ModalCloseButton } from './DownloadModal.styled'
 
@@ -9,9 +10,10 @@ export interface DownloadModalProps {
   onClose: () => void
   osName?: string
   arch?: string
+  sceneData?: CardData
 }
 
-export const DownloadModal: FC<DownloadModalProps> = ({ open, onClose, osName, arch }) => {
+export const DownloadModal: FC<DownloadModalProps> = ({ open, onClose, osName, arch, sceneData }) => {
   return (
     <Modal open={open} size="tiny">
       <ModalContainer>
@@ -24,7 +26,7 @@ export const DownloadModal: FC<DownloadModalProps> = ({ open, onClose, osName, a
           <ModalTitle as="h3" style={{ fontSize: '19px', fontWeight: 500 }}>
             Download the all-new Decentraland and come back to this page to jump straight into this place.
           </ModalTitle>
-          <DownloadButton osName={osName} arch={arch} />
+          <DownloadButton osName={osName} arch={arch} sceneData={sceneData} />
         </ModalContent>
       </ModalContainer>
     </Modal>

@@ -7,6 +7,8 @@ import { Box } from 'decentraland-ui2'
 import appleLogo from '../../assets/apple-logo.svg'
 import windowsLogo from '../../assets/windows-logo.svg'
 import { Events, useAnalytics } from '../../hooks/useAnalytics'
+import { CardData } from '../../utils/cardDataTransformers'
+import { eventHasEnded } from '../../utils/dateFormatter'
 import { DownloadButtonIcon } from './DownloadButton.styled'
 
 const DEFAULT_DOWNLOAD_URL = 'https://decentraland.org/download'
@@ -31,8 +33,8 @@ const DOWNLOAD_URLS = {
   }
 }
 
-export const DownloadButton: FC<{ osName: string | undefined; arch: string | undefined }> = memo(
-  ({ osName = 'unknown', arch = 'unknown' }) => {
+export const DownloadButton: FC<{ osName: string | undefined; arch: string | undefined; sceneData?: CardData }> = memo(
+  ({ osName = 'unknown', arch = 'unknown', sceneData }) => {
     const { track } = useAnalytics()
 
     const getDownloadUrl = useCallback(
@@ -50,11 +52,24 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
 
     const handleClickDownload = useCallback(
       (os: OperativeSystem) => {
-        track(Events.CLICK_DOWNLOAD, { osName: os, arch, url: getDownloadUrl(os) })
+        const params: Record<string, string | boolean> = { osName: os, arch, url: getDownloadUrl(os) }
+        if (sceneData) {
+          if (sceneData.type === 'place') {
+            params.fromPlace = true
+          } else if (sceneData.type === 'event') {
+            params.fromEvent = true
+            params.futureEvent = !sceneData.live && !eventHasEnded(sceneData)
+          }
+          params.position = sceneData.position
+        }
+        console.log('params', { params, sceneData })
+        track(Events.CLICK_DOWNLOAD, params)
         window.open(DCLConfig.get('DOWNLOAD_SUCCESS_URL'), '_blank', 'noopener')
       },
       [arch, track]
     )
+
+    const handleDownloadRedirect = useCallback((_url: string) => {}, [])
 
     const renderButton = useCallback(
       (os: OperativeSystem) => {
@@ -66,6 +81,7 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
             endIcon={<DownloadButtonIcon src={config.icon} alt={config.alt} />}
             href={getDownloadUrl(os)}
             onClick={() => handleClickDownload(os)}
+            onRedirect={handleDownloadRedirect}
           />
         )
       },
