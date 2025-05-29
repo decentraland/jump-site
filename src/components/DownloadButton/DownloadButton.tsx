@@ -45,7 +45,6 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
     const getDownloadUrl = useCallback(
       (os: OperativeSystem) => {
         const config = DOWNLOAD_URLS[os]
-        console.log('config', { config })
         const defaultDownloadUrl = `${DEFAULT_DOWNLOAD_URL}/?os=${os}`
 
         if (os === OperativeSystem.MACOS && arch === ARCH.ARM64) {
@@ -68,7 +67,7 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
           }
           params.position = sceneData.position
         }
-        console.log('params', { params, sceneData })
+
         track(Events.CLICK_DOWNLOAD, params)
         window.open(DCLConfig.get('DOWNLOAD_SUCCESS_URL'), '_blank', 'noopener')
       },
