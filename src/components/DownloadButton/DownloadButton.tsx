@@ -2,7 +2,6 @@ import { memo, useCallback, type FC } from 'react'
 import { DownloadButton as DCLDownloadButton } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton'
 import { OperativeSystem } from 'decentraland-ui2/dist/components/DownloadButton/DownloadButton.types'
 import { config as DCLConfig } from 'decentraland-ui2/dist/config'
-import { CDNSource, getCDNRelease } from 'decentraland-ui2/dist/modules/cdnReleases'
 import { Box } from 'decentraland-ui2'
 import appleLogo from '../../assets/apple-logo.svg'
 import windowsLogo from '../../assets/windows-logo.svg'
@@ -18,7 +17,13 @@ enum ARCH {
   AMD64 = 'x64'
 }
 
-const CDN_RELEASES = getCDNRelease(CDNSource.LAUNCHER)
+const CDN_RELEASES = {
+  Windows: { amd64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_x64-setup.exe' },
+  macOS: {
+    amd64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_aarch64.dmg',
+    arm64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_aarch64.dmg'
+  }
+}
 
 const DOWNLOAD_URLS = {
   [OperativeSystem.MACOS]: {
@@ -62,7 +67,7 @@ export const DownloadButton: FC<{ osName: string | undefined; arch: string | und
           }
           params.position = sceneData.position
         }
-        console.log('params', { params, sceneData })
+
         track(Events.CLICK_DOWNLOAD, params)
         window.open(DCLConfig.get('DOWNLOAD_SUCCESS_URL'), '_blank', 'noopener')
       },

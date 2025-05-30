@@ -63,7 +63,6 @@ export const Footer = memo(() => {
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault()
-      console.log('handleClick', { event })
       const href = (event.currentTarget as unknown as HTMLAnchorElement).href
       analytics.track(Events.CLICK_FOOTER_SOCIAL, {
         href

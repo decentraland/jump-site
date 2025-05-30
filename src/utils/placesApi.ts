@@ -8,6 +8,15 @@ export interface PlacesApiResponse {
 
 type FetchFunction = (url: string, init?: RequestInit, additionalMetadata?: Record<string, unknown>) => Promise<Response>
 
+/**
+ * Checks if a string is an ENS name (ends with .eth)
+ * @param str String to check
+ * @returns True if the string is an ENS name
+ */
+export function isEns(str: string | undefined): str is `${string}.eth` {
+  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
+}
+
 export class PlacesApi {
   private baseUrl: string
   private authenticatedFetch?: FetchFunction
@@ -19,15 +28,24 @@ export class PlacesApi {
 
   /**
    * Fetches places from the Decentraland Places API
-   * @param position Optional position coordinates to filter places [x, y]
+   * @param options Optional parameters to filter places
    * @param fetchFn Optional fetch function (defaults to class fetch or global fetch)
    * @returns Promise with places data
    */
-  async fetchPlaces(position?: [number, number], fetchFn?: FetchFunction): Promise<PlacesApiResponse> {
+  async fetchPlaces(options?: { position?: [number, number]; realm?: string }, fetchFn?: FetchFunction): Promise<PlacesApiResponse> {
     const useFetch = fetchFn || this.authenticatedFetch || fetch
 
     try {
-      const url = position ? `${this.baseUrl}/places/?positions=${position[0]},${position[1]}` : this.baseUrl
+      let url = this.baseUrl
+
+      if (options?.realm && isEns(options.realm)) {
+        url = `${this.baseUrl}/worlds?names=${options.realm.toLowerCase()}`
+      } else if (options?.position) {
+        url = `${this.baseUrl}/places/?positions=${options.position[0]},${options.position[1]}`
+      } else {
+        url = `${this.baseUrl}/places`
+      }
+
       const response = await useFetch(url)
 
       if (!response.ok) {
@@ -40,6 +58,19 @@ export class PlacesApi {
       console.error('Error fetching places:', error)
       throw error
     }
+  }
+
+  /**
+   * Fetches places by realm name (ENS)
+   * @param realm The realm name (must be an ENS name)
+   * @param fetchFn Optional fetch function (defaults to class fetch or global fetch)
+   * @returns Promise with places data
+   */
+  async fetchPlacesByRealm(realm: string, fetchFn?: FetchFunction): Promise<PlacesApiResponse> {
+    if (!isEns(realm)) {
+      throw new Error('Invalid realm name. Must be an ENS name (ending with .eth)')
+    }
+    return this.fetchPlaces({ realm }, fetchFn)
   }
 
   /**
@@ -71,7 +102,11 @@ export class PlacesApi {
 }
 
 // Backward compatibility functions
-export const fetchPlaces = async (position?: [number, number], fetchFn: FetchFunction = fetch): Promise<PlacesApiResponse> => {
+export const fetchPlaces = async (
+  options?: { position?: [number, number]; realm?: string },
+  fetchFn: FetchFunction = fetch
+): Promise<PlacesApiResponse> => {
   const placesApi = new PlacesApi()
-  return placesApi.fetchPlaces(position, fetchFn)
+
+  return placesApi.fetchPlaces(options, fetchFn)
 }

@@ -12,9 +12,9 @@ import { useFormatMessage } from '../../../hooks/useFormatMessage'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { fromEvent, type CardData } from '../../../utils/cardDataTransformers'
 import { eventHasEnded } from '../../../utils/dateFormatter'
-import { EventsApi } from '../../../utils/eventApi'
+import { EventsApi, EventsApiResponse } from '../../../utils/eventApi'
 import { Creator, PeerApi } from '../../../utils/peerApi'
-import { fetchPlaces } from '../../../utils/placesApi'
+import { fetchPlaces, PlacesApiResponse } from '../../../utils/placesApi'
 import { JumpInButton } from '../../JumpInButton'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 import { ResponsiveCard } from '../../ResponsiveCard'
@@ -23,6 +23,15 @@ import type { Event } from './types'
 import { getGoogleCalendar, getJumpInUrl } from './utils'
 
 const DEFAULT_POSITION = '0,0'
+
+/**
+ * Custom hook to manage API instances
+ */
+const useApis = (authenticatedFetch: ReturnType<typeof useAuthenticatedFetch>) => {
+  const eventsApi = useMemo(() => new EventsApi(authenticatedFetch), [authenticatedFetch])
+  const peerApi = useMemo(() => new PeerApi(), [])
+  return { eventsApi, peerApi }
+}
 
 export const EventsPage: FC = memo(() => {
   const [searchParams] = useSearchParams()
@@ -59,10 +68,10 @@ export const EventsPage: FC = memo(() => {
 
   // Get authenticated fetch function
   const authenticatedFetch = useAuthenticatedFetch()
-  const eventsApi = new EventsApi(authenticatedFetch)
-  const peerApi = new PeerApi()
+  const { eventsApi, peerApi } = useApis(authenticatedFetch)
 
   const position = searchParams.get('position') ?? DEFAULT_POSITION
+  const id = searchParams.get('id')
 
   // Convert position string to coordinates array
   const coordinates: [number, number] = useMemo(() => {
@@ -75,8 +84,31 @@ export const EventsPage: FC = memo(() => {
     setIsLoading(true)
 
     try {
-      // Use authenticated fetch for both API calls
-      const [eventsResponse, placesResponse] = await Promise.all([eventsApi.fetchEvents(coordinates), fetchPlaces(coordinates)])
+      let eventsResponse: EventsApiResponse = { ok: false, data: [] }
+      let placesResponse: PlacesApiResponse | null = null
+
+      if (id) {
+        // Fetch event by ID
+        const eventResponse = await eventsApi.fetchEvent(id)
+
+        if (eventResponse) {
+          eventsResponse = { ok: true, data: [eventResponse] }
+
+          // If it's a world event, fetch places by realm
+          if (eventResponse.world && eventResponse.server) {
+            placesResponse = await fetchPlaces({ realm: eventResponse.server })
+          }
+          // Otherwise fetch places by event coordinates
+          else if (eventResponse.coordinates) {
+            placesResponse = await fetchPlaces({
+              position: [eventResponse.coordinates[0], eventResponse.coordinates[1]]
+            })
+          }
+        }
+      } else {
+        // Fetch events by position
+        ;[eventsResponse, placesResponse] = await Promise.all([eventsApi.fetchEvents(coordinates), fetchPlaces({ position: coordinates })])
+      }
 
       if (eventsResponse.ok && eventsResponse.data.length > 0) {
         // Store original events data
@@ -91,8 +123,8 @@ export const EventsPage: FC = memo(() => {
         const transformedEvents = eventsResponse.data.map(event => {
           const eventData = fromEvent(event)
 
-          // If the event is live, try to get user_count from places data
-          if (eventData.live && placesResponse.ok) {
+          // If the event is live and we have places data, try to get user_count
+          if (eventData.live && placesResponse?.ok) {
             const matchingPlace = placesResponse.data.find(
               place => place.title === event.scene_name || place.base_position === event.coordinates.join(',')
             )
@@ -110,11 +142,12 @@ export const EventsPage: FC = memo(() => {
         navigate('/events/invalid')
       }
     } catch (err) {
+      console.error('Error fetching event data:', err)
       navigate('/events/invalid')
     } finally {
       setIsLoading(false)
     }
-  }, [coordinates, authenticatedFetch, navigate])
+  }, [coordinates, id, eventsApi, peerApi, navigate])
 
   // Initial data fetch
   useEffect(() => {
