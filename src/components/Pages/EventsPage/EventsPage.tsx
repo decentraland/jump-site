@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState, useCallback, type FC } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import CheckIcon from '@mui/icons-material/Check'
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded'
 import ShareIcon from '@mui/icons-material/Share'
@@ -9,6 +9,7 @@ import { Box, Typography, Button, IconButton, CircularProgress, Snackbar, useMob
 import { config } from '../../../config'
 import { useAuthenticatedFetch } from '../../../hooks/useAuthenticatedFetch'
 import { useFormatMessage } from '../../../hooks/useFormatMessage'
+import { useQueryParams } from '../../../hooks/useQueryParams'
 import { useRequireAuth } from '../../../hooks/useRequireAuth'
 import { fromEvent, type CardData } from '../../../utils/cardDataTransformers'
 import { eventHasEnded } from '../../../utils/dateFormatter'
@@ -22,8 +23,6 @@ import { EventCardActions, EventCardActionRow } from './EventsPage.styled'
 import type { Event } from './types'
 import { getGoogleCalendar, getJumpInUrl } from './utils'
 
-const DEFAULT_POSITION = '0,0'
-
 /**
  * Custom hook to manage API instances
  */
@@ -34,7 +33,8 @@ const useApis = (authenticatedFetch: ReturnType<typeof useAuthenticatedFetch>) =
 }
 
 export const EventsPage: FC = memo(() => {
-  const [searchParams] = useSearchParams()
+  const { position, realm, id } = useQueryParams()
+
   const navigate = useNavigate()
   const [events, setEvents] = useState<CardData[]>([])
   const [creator, setCreator] = useState<Creator>({
@@ -70,15 +70,6 @@ export const EventsPage: FC = memo(() => {
   const authenticatedFetch = useAuthenticatedFetch()
   const { eventsApi, peerApi } = useApis(authenticatedFetch)
 
-  const position = searchParams.get('position') ?? DEFAULT_POSITION
-  const id = searchParams.get('id')
-
-  // Convert position string to coordinates array
-  const coordinates: [number, number] = useMemo(() => {
-    const [x, y] = position.split(',').map(Number)
-    return [x || 0, y || 0]
-  }, [position])
-
   // Fetch events with retry logic
   const fetchData = useCallback(async () => {
     setIsLoading(true)
@@ -106,8 +97,10 @@ export const EventsPage: FC = memo(() => {
           }
         }
       } else {
-        // Fetch events by position
-        ;[eventsResponse, placesResponse] = await Promise.all([eventsApi.fetchEvents(coordinates), fetchPlaces({ position: coordinates })])
+        // Fetch events by position or realm
+        const eventsOptions = realm && realm !== 'main' ? { realm } : { position: position.coordinates }
+
+        ;[eventsResponse, placesResponse] = await Promise.all([eventsApi.fetchEvents(eventsOptions), fetchPlaces(eventsOptions)])
       }
 
       if (eventsResponse.ok && eventsResponse.data.length > 0) {
@@ -147,7 +140,7 @@ export const EventsPage: FC = memo(() => {
     } finally {
       setIsLoading(false)
     }
-  }, [coordinates, id, eventsApi, peerApi, navigate])
+  }, [position.coordinates, realm, id, eventsApi, peerApi, navigate])
 
   // Initial data fetch
   useEffect(() => {
