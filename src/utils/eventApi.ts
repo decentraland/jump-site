@@ -27,13 +27,26 @@ export class EventsApi {
 
   /**
    * Fetches events from the Decentraland Events API
-   * @param position Optional position coordinates to filter events [x, y]
+   * @param options Optional parameters to filter events
    * @param fetchFn Optional fetch function (defaults to global fetch)
    * @returns Promise with events data
    */
-  async fetchEvents(position?: [number, number], fetchFn: FetchFunction = fetch): Promise<EventsApiResponse> {
+  async fetchEvents(options?: { position?: [number, number]; realm?: string }, fetchFn: FetchFunction = fetch): Promise<EventsApiResponse> {
     try {
-      const url = position ? `${this.baseUrl}/events?position=${position[0]},${position[1]}` : `${this.baseUrl}/events`
+      let url = `${this.baseUrl}/events`
+      const params = new URLSearchParams()
+
+      if (options?.position) {
+        params.set('position', `${options.position[0]},${options.position[1]}`)
+      }
+
+      if (options?.realm) {
+        params.set('world_names[]', options.realm)
+      }
+
+      if (params.toString()) {
+        url += `?${params.toString()}`
+      }
 
       const response = await fetchFn(url)
 
@@ -47,6 +60,26 @@ export class EventsApi {
       console.error('Error fetching events:', error)
       throw error
     }
+  }
+
+  /**
+   * Fetches events by position (backward compatibility)
+   * @param position Optional position coordinates to filter events [x, y]
+   * @param fetchFn Optional fetch function (defaults to global fetch)
+   * @returns Promise with events data
+   */
+  async fetchEventsByPosition(position?: [number, number], fetchFn: FetchFunction = fetch): Promise<EventsApiResponse> {
+    return this.fetchEvents({ position }, fetchFn)
+  }
+
+  /**
+   * Fetches events by realm
+   * @param realm The realm name to filter events
+   * @param fetchFn Optional fetch function (defaults to global fetch)
+   * @returns Promise with events data
+   */
+  async fetchEventsByRealm(realm: string, fetchFn: FetchFunction = fetch): Promise<EventsApiResponse> {
+    return this.fetchEvents({ realm }, fetchFn)
   }
 
   /**
