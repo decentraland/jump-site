@@ -9,7 +9,6 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   borderRadius: 16,
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-  backgroundColor: '#380A4D',
   [theme.breakpoints.down('xl')]: {
     maxWidth: '100%',
     minWidth: '100%'
@@ -39,6 +38,7 @@ export const RightSection = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   maxWidth: 724,
   padding: '60px 60px 48px 48px',
+  backgroundColor: '#380A4D',
   [theme.breakpoints.down('md')]: {
     padding: 20
   },
@@ -192,7 +192,7 @@ export const CardLoadingContainer = styled(Box)({
   justifyContent: 'center',
   height: '100%',
   width: '100%',
-  backgroundColor: '#f3f4f6'
+  backgroundColor: 'rgba(56, 10, 77, 0.6)'
 })
 
 export const CreatorAvatar = styled('img')({
