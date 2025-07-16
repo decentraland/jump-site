@@ -1,65 +1,60 @@
-import styled from '@emotion/styled'
-import { type Theme } from '@mui/material'
+import { Box, styled } from 'decentraland-ui2'
 
-export const CardContainer = styled('div')(props => {
-  const theme = props.theme as Theme
-  return {
-    display: 'flex',
-    height: 608,
-    width: '100%',
-    minWidth: 1118,
-    maxWidth: 1448,
-    overflow: 'hidden',
-    borderRadius: 16,
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-    backgroundColor: '#380A4D',
-    [theme.breakpoints.down('md')]: {
-      height: 490,
-      width: '100%',
-      margin: '0 32px'
-    }
+export const CardContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  height: 608,
+  width: '100%',
+  minWidth: 1118,
+  maxWidth: 1448,
+  overflow: 'hidden',
+  borderRadius: 16,
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+  [theme.breakpoints.down('xl')]: {
+    maxWidth: '100%',
+    minWidth: '100%'
+  },
+  [theme.breakpoints.down('md')]: {
+    height: 490,
+    width: 'calc(100% - 64px)',
+    minWidth: 'auto',
+    margin: '0 32px'
   }
-})
+}))
 
-export const LeftSection = styled('div')(props => {
-  const theme = props.theme as Theme
-  return {
-    position: 'relative',
-    flexGrow: 1,
-    maxWidth: 724,
-    overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      height: '100%'
-    }
+export const LeftSection = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  flexGrow: 1,
+  maxWidth: 724,
+  overflow: 'hidden',
+  [theme.breakpoints.down('md')]: {
+    height: '100%'
   }
-})
+}))
 
-export const RightSection = styled('div')(props => {
-  const theme = props.theme as Theme
-  return {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    flexGrow: 1,
-    maxWidth: 724,
-    padding: '60px 60px 48px 48px',
-    [theme.breakpoints.down('md')]: {
-      padding: 20
-    },
-    [theme.breakpoints.down('sm')]: {
-      padding: 16
-    }
+export const RightSection = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  flexGrow: 1,
+  maxWidth: 724,
+  padding: '60px 60px 48px 48px',
+  backgroundColor: '#380A4D',
+  [theme.breakpoints.down('md')]: {
+    padding: 20
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: 16
   }
-})
+}))
 
 export const CardImage = styled('img')({
   width: '100%',
   height: '100%',
-  objectFit: 'contain',
+  objectFit: 'cover',
   objectPosition: 'center'
 })
 
-export const AttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ backgroundColor = '#FF2D55' }) => ({
+export const AttendeesBadge = styled(Box)<{ backgroundColor?: string }>(({ backgroundColor = '#FF2D55' }) => ({
   position: 'absolute',
   top: 16,
   left: 16,
@@ -75,35 +70,32 @@ export const AttendeesBadge = styled('div')<{ backgroundColor?: string }>(({ bac
   backdropFilter: 'blur(4px)'
 }))
 
-export const CardContent = styled('div')({
+export const CardContent = styled(Box)({
   display: 'flex',
   flexGrow: 1,
   flexDirection: 'column',
   marginBottom: 30
 })
 
-export const CardTitle = styled('h2')(props => {
-  const theme = props.theme as Theme
-  return {
-    fontSize: 48,
-    fontWeight: 600,
-    margin: 0,
-    color: '#ffffff',
-    lineHeight: 1.17,
-    display: '-webkit-box',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 40
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 32
-    }
+export const CardTitle = styled('h2')(({ theme }) => ({
+  fontSize: 48,
+  fontWeight: 600,
+  margin: 0,
+  color: '#ffffff',
+  lineHeight: 1.17,
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  [theme.breakpoints.down('md')]: {
+    fontSize: 40
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: 32
   }
-})
+}))
 
-export const CardCreator = styled('div')({
+export const CardCreator = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   gap: 8,
@@ -117,26 +109,27 @@ export const CreatorLabel = styled('span')({
   color: '#ffffff'
 })
 
-export const CardDate = styled('div')<{ eventHasEnded: boolean }>(({ eventHasEnded }) => {
-  return {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '4px 8px',
-    gap: '8px',
-    fontSize: 16,
-    fontWeight: 400,
-    lineHeight: 1.75,
-    letterSpacing: 0,
-    color: eventHasEnded ? '#fcfcfc' : '#ffffff',
-    backgroundColor: eventHasEnded ? '#716B7C' : '#00000066',
-    textTransform: eventHasEnded ? 'uppercase' : 'none',
-    borderRadius: '8px',
-    backdropFilter: 'blur(4px)',
-    width: 'fit-content'
+export const CardDate = styled(Box)<{ eventHasEnded: boolean }>(({ eventHasEnded, theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  padding: '4px 8px',
+  gap: '8px',
+  fontSize: 16,
+  fontWeight: 400,
+  lineHeight: 1.75,
+  letterSpacing: 0,
+  color: eventHasEnded ? '#fcfcfc' : '#ffffff',
+  backgroundColor: eventHasEnded ? '#716B7C' : '#00000066',
+  textTransform: eventHasEnded ? 'uppercase' : 'none',
+  borderRadius: '8px',
+  backdropFilter: 'blur(4px)',
+  width: 'fit-content',
+  [theme.breakpoints.down('md')]: {
+    fontSize: 14
   }
-})
+}))
 
-export const CardLocation = styled('div')({
+export const CardLocation = styled(Box)({
   display: 'inline-flex',
   alignItems: 'center',
   padding: '4px 8px',
@@ -152,7 +145,7 @@ export const CardLocation = styled('div')({
   width: 'fit-content'
 })
 
-export const CardDescription = styled('div')({
+export const CardDescription = styled(Box)({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -193,13 +186,13 @@ export const CardDescription = styled('div')({
   }
 })
 
-export const CardLoadingContainer = styled('div')({
+export const CardLoadingContainer = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   height: '100%',
   width: '100%',
-  backgroundColor: '#f3f4f6'
+  backgroundColor: 'rgba(56, 10, 77, 0.6)'
 })
 
 export const CreatorAvatar = styled('img')({

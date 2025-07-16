@@ -28,9 +28,9 @@ const FooterContainer = styled('footer')(() => {
       paddingTop: '32px',
       paddingBottom: '32px',
       height: 'auto',
-      width: '100vw',
-      marginLeft: 'calc(-50vw + 50%)',
-      marginRight: 'calc(-50vw + 50%)'
+      width: 'calc(100vw - 64px)',
+      marginLeft: 'auto',
+      marginRight: 'auto'
     }
   }
 })
