@@ -22,7 +22,7 @@ export const MainPageContainer = styled(Box)(props => {
       paddingBottom: 0,
       minHeight: 'calc(100vh - 210px)',
       alignItems: 'stretch',
-      width: '100vw',
+      width: 'auto',
       margin: 0,
       padding: 0,
       overflowX: 'hidden'
