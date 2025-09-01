@@ -18,10 +18,10 @@ enum ARCH {
 }
 
 const CDN_RELEASES = {
-  Windows: { amd64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_x64-setup.exe' },
+  Windows: { amd64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_installer.exe' },
   macOS: {
-    amd64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_aarch64.dmg',
-    arm64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_aarch64.dmg'
+    amd64: 'https://explorer-artifacts.decentraland.org/launcher/dcl/Decentraland%20Outdated-mac-x64.dmg',
+    arm64: 'https://explorer-artifacts.decentraland.org/launcher-rust/Decentraland_installer.dmg'
   }
 }
 
