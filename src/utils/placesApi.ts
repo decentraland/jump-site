@@ -25,9 +25,11 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
 export function isValidDomainOrUrl(str: string | undefined): boolean {
   if (!str) return false
 
+  const hasProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(str)
+  const url = hasProtocol ? str : `http://${str}`
+
   try {
-    // Needs protocol to be accepted by URL, so we add it temporarily
-    new URL(`http://${str}`)
+    new URL(url)
     return true
   } catch {
     return false
