@@ -17,6 +17,23 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
   return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
 }
 
+/**
+ * Checks if a string is a valid domain or domain with path
+ * @param str String to check
+ * @returns True if the string is a valid domain (with optional path)
+ */
+export function isValidDomainOrUrl(str: string | undefined): boolean {
+  if (!str) return false
+
+  try {
+    // Needs protocol to be accepted by URL, so we add it temporarily
+    new URL(`http://${str}`)
+    return true
+  } catch {
+    return false
+  }
+}
+
 export class PlacesApi {
   private baseUrl: string
   private authenticatedFetch?: FetchFunction
@@ -40,8 +57,8 @@ export class PlacesApi {
 
       if (options?.realm && isEns(options.realm)) {
         url = `${this.baseUrl}/worlds?names=${options.realm.toLowerCase()}`
-      } else if (options?.position) {
-        url = `${this.baseUrl}/places/?positions=${options.position[0]},${options.position[1]}`
+      } else if (options?.position || (options?.realm && isValidDomainOrUrl(options.realm))) {
+        url = `${this.baseUrl}/places/?positions=${options.position?.[0]},${options.position?.[1]}`
       } else {
         url = `${this.baseUrl}/places`
       }
