@@ -23,7 +23,7 @@ export function isEns(str: string | undefined): str is `${string}.eth` {
  * @returns True if the string is a valid domain (with optional path)
  */
 export function isValidDomainOrUrl(str: string | undefined): boolean {
-  if (!str) return false
+  if (!str || isEns(str)) return false
 
   const hasProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(str)
   const url = hasProtocol ? str : `http://${str}`

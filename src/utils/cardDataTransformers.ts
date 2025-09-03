@@ -31,7 +31,7 @@ export interface CardData {
 /**
  * Transform place API data to unified CardData structure
  */
-export const fromPlace = (data: Place, realm?: string): CardData => {
+export const fromPlace = (data: Place, catalystServer?: string): CardData => {
   const coordinates = data.base_position.split(',').map(Number) as [number, number]
 
   return {
@@ -47,7 +47,7 @@ export const fromPlace = (data: Place, realm?: string): CardData => {
     scene_name: data.title,
     url: data.url,
     position: coordinates.join(','),
-    realm: realm || (data.world ? data.world_name : undefined)
+    realm: catalystServer || (data.world ? data.world_name : undefined)
   }
 }
 
