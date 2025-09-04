@@ -26,10 +26,15 @@ export function isValidDomainOrUrl(str: string | undefined): boolean {
   if (!str || isEns(str)) return false
 
   const hasProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(str)
-  const url = hasProtocol ? str : `http://${str}`
+  /**
+   * Ensure the URL includes a protocol (e.g., "https://")
+   * to prevent client errors when connecting to catalyst servers without one.
+   *
+   **/
+  if (!hasProtocol) return false
 
   try {
-    new URL(url)
+    new URL(str)
     return true
   } catch {
     return false
