@@ -1,5 +1,6 @@
 import { type Place } from '../components/Pages/PlacesPage/types'
 import { config } from '../config'
+import { isEns } from '../utils'
 
 export interface PlacesApiResponse {
   ok: boolean
@@ -9,12 +10,18 @@ export interface PlacesApiResponse {
 type FetchFunction = (url: string, init?: RequestInit, additionalMetadata?: Record<string, unknown>) => Promise<Response>
 
 /**
- * Checks if a string is an ENS name (ends with .eth)
+ * Checks if a string is a valid domain or domain with path
  * @param str String to check
- * @returns True if the string is an ENS name
+ * @returns True if the string is a valid domain (with optional path)
  */
-export function isEns(str: string | undefined): str is `${string}.eth` {
-  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
+export function isValidDomainOrUrl(str: string | undefined): boolean {
+  if (!str) return false
+  try {
+    new URL(str)
+    return true
+  } catch {
+    return false
+  }
 }
 
 export class PlacesApi {
@@ -40,8 +47,8 @@ export class PlacesApi {
 
       if (options?.realm && isEns(options.realm)) {
         url = `${this.baseUrl}/worlds?names=${options.realm.toLowerCase()}`
-      } else if (options?.position) {
-        url = `${this.baseUrl}/places/?positions=${options.position[0]},${options.position[1]}`
+      } else if (options?.position || (options?.realm && isValidDomainOrUrl(options.realm))) {
+        url = `${this.baseUrl}/places/?positions=${options.position?.[0]},${options.position?.[1]}`
       } else {
         url = `${this.baseUrl}/places`
       }

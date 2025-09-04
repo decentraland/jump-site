@@ -9,7 +9,7 @@ export interface CardData {
   user_name: string
   user?: string // User ID for profile links (events) or deployer address (places)
   coordinates: [number, number]
-  image: string
+  image?: string
   description?: string
   // Event-specific fields
   start_at?: string
@@ -31,7 +31,7 @@ export interface CardData {
 /**
  * Transform place API data to unified CardData structure
  */
-export const fromPlace = (data: Place): CardData => {
+export const fromPlace = (data: Place, catalystServer?: string): CardData => {
   const coordinates = data.base_position.split(',').map(Number) as [number, number]
 
   return {
@@ -47,7 +47,7 @@ export const fromPlace = (data: Place): CardData => {
     scene_name: data.title,
     url: data.url,
     position: coordinates.join(','),
-    realm: data.world ? data.world_name : undefined
+    realm: catalystServer || (data.world ? data.world_name : undefined)
   }
 }
 
