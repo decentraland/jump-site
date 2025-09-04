@@ -1,6 +1,6 @@
 import { memo, useEffect, useState, type FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQueryParams, DEFAULT_REALM } from '../../../hooks/useQueryParams'
+import { useQueryParams } from '../../../hooks/useQueryParams'
 import { useRealmValidation } from '../../../hooks/useRealmValidation'
 import { fromPlace, type CardData } from '../../../utils/cardDataTransformers'
 import { Creator, PeerApi } from '../../../utils/peerApi'
@@ -45,7 +45,7 @@ export const PlacesPage: FC = memo(() => {
 
         // Validate realm if provided
         if (realm) {
-          const validationResult = await validateRealm(realm, DEFAULT_REALM)
+          const validationResult = await validateRealm(realm)
           if (!validationResult.isValid) {
             throw new Error(validationResult.error)
           }

@@ -32,9 +32,9 @@ export const useRealmValidation = () => {
   }, [])
 
   const validateRealm = useCallback(
-    async (rawRealm: string | undefined, defaultRealm: string): Promise<RealmValidationResult> => {
+    async (rawRealm: string | undefined): Promise<RealmValidationResult> => {
       // Skip validation for default/main realm or when no realm is provided
-      if (!rawRealm || rawRealm === defaultRealm) {
+      if (!rawRealm) {
         return { isValid: true, validatedRealm: rawRealm }
       }
 
