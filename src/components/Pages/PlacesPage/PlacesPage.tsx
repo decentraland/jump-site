@@ -25,7 +25,7 @@ export const PlacesPage: FC = memo(() => {
   const createGenericPlace = (coordinates: [number, number], realm?: string): CardData => ({
     id: 'generic-place',
     type: 'place',
-    title: realm,
+    title: realm || '',
     user_name: 'Unknown',
     coordinates,
     image: undefined,
