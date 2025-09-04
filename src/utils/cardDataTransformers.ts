@@ -5,11 +5,11 @@ import type { Place } from '../components/Pages/PlacesPage/types'
 export interface CardData {
   id: string
   type: 'event' | 'place'
-  title: string
+  title?: string
   user_name: string
   user?: string // User ID for profile links (events) or deployer address (places)
   coordinates: [number, number]
-  image: string
+  image?: string
   description?: string
   // Event-specific fields
   start_at?: string

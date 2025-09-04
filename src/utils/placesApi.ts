@@ -1,5 +1,6 @@
 import { type Place } from '../components/Pages/PlacesPage/types'
 import { config } from '../config'
+import { isEns } from '../utils'
 
 export interface PlacesApiResponse {
   ok: boolean
@@ -9,30 +10,12 @@ export interface PlacesApiResponse {
 type FetchFunction = (url: string, init?: RequestInit, additionalMetadata?: Record<string, unknown>) => Promise<Response>
 
 /**
- * Checks if a string is an ENS name (ends with .eth)
- * @param str String to check
- * @returns True if the string is an ENS name
- */
-export function isEns(str: string | undefined): str is `${string}.eth` {
-  return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
-}
-
-/**
  * Checks if a string is a valid domain or domain with path
  * @param str String to check
  * @returns True if the string is a valid domain (with optional path)
  */
 export function isValidDomainOrUrl(str: string | undefined): boolean {
-  if (!str || isEns(str)) return false
-
-  const hasProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(str)
-  /**
-   * Ensure the URL includes a protocol (e.g., "https://")
-   * to prevent client errors when connecting to catalyst servers without one.
-   *
-   **/
-  if (!hasProtocol) return false
-
+  if (!str) return false
   try {
     new URL(str)
     return true
