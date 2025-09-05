@@ -4,7 +4,7 @@ import CircleRoundedIcon from '@mui/icons-material/CircleRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import { Box, CircularProgress, Skeleton } from 'decentraland-ui2'
+import { Box, CircularProgress, Skeleton, JumpIn } from 'decentraland-ui2'
 import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.webp'
 import cardImageEventsPlaceholder from '../../assets/card-events-placeholder.webp'
 import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.webp'
@@ -14,7 +14,6 @@ import { type CardData } from '../../utils/cardDataTransformers'
 import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
-import { JumpInButton } from '../JumpInButton'
 import { TextWrapper } from '../TextWrapper/TextWrapper'
 import {
   CardContainer,
@@ -134,12 +133,17 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
               <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
               {data?.realm ?? formatLocation(data.coordinates)}
               {isEvent && !data?.live && (
-                <JumpInButton
-                  realm={data.realm}
-                  position={data.position}
-                  onlyIcon
-                  sceneData={data}
-                  sx={{ marginTop: '-4px', marginRight: '-8px', marginBottom: '-4px' }}
+                <JumpIn
+                  variant="button"
+                  modalProps={{
+                    buttonLabel: 'Download Now',
+                    description: "To jump in, you'll need to download the Decentraland app",
+                    title: 'Download Decentraland'
+                  }}
+                  desktopAppOptions={{
+                    realm: data.realm,
+                    position: data.position
+                  }}
                 />
               )}
             </CardLocation>
@@ -154,7 +158,18 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
 
         {/* Default JumpIn button for places or live events */}
         {!children && (!isEvent || data.live) && (
-          <JumpInButton realm={data.realm} position={data.position} sceneData={data} sx={{ width: '300px' }} />
+          <JumpIn
+            variant="button"
+            modalProps={{
+              buttonLabel: 'Download Now',
+              description: "To jump in, you'll need to download the Decentraland app",
+              title: 'Download Decentraland'
+            }}
+            desktopAppOptions={{
+              realm: data.realm,
+              position: data.position
+            }}
+          />
         )}
       </RightSection>
     </CardContainer>

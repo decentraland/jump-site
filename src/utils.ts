@@ -13,9 +13,37 @@ export type Metadata = {
   image: string
   owner: string
 }
+export interface AboutResponse {
+  healthy: boolean
+  acceptingUsers: boolean
+}
 
+/**
+ * Checks if a string is an ENS name (ends with .eth)
+ * @param str String to check
+ * @returns True if the string is an ENS name
+ */
 export function isEns(str: string | undefined): str is `${string}.eth` {
   return !!str?.match(/^[a-zA-Z0-9.]+\.eth$/)?.length
+}
+
+/**
+ * Validates a peer domain by calling its /about endpoint and checking health
+ * Returns true when both healthy and acceptingUsers are true
+ */
+
+export async function isPeerHealthy(baseUrl: string): Promise<boolean> {
+  try {
+    const trimmed = baseUrl.replace(/\/$/, '')
+    const endsWithAbout = /\/about$/i.test(trimmed)
+    const urlToFetch = endsWithAbout ? trimmed : `${trimmed}/about`
+    const res = await fetch(urlToFetch)
+    if (!res.ok) return false
+    const data: AboutResponse = await res.json()
+    return data.healthy && data.acceptingUsers
+  } catch {
+    return false
+  }
 }
 
 export async function queryData(realm: string, position: string): Promise<Metadata | undefined> {
