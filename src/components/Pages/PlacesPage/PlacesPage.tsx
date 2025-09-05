@@ -12,8 +12,8 @@ const peerApi = new PeerApi()
 
 export const PlacesPage: FC = memo(() => {
   const navigate = useNavigate()
-  const { position, realm } = useQueryParams()
-  const { validateRealm } = useRealmValidation()
+  const { position, realm: realmOrWorld } = useQueryParams()
+  const { validateRealmOrWorld } = useRealmValidation()
   const [places, setPlaces] = useState<CardData[]>([])
   const [creator, setCreator] = useState<Creator>({
     user_name: '',
@@ -45,21 +45,21 @@ export const PlacesPage: FC = memo(() => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        let validatedRealm: string | undefined
+        let validatedRealmOrWorld: string | undefined
 
         // Validate realm if provided
-        if (realm) {
-          const validationResult = await validateRealm(realm)
+        if (realmOrWorld) {
+          const validationResult = await validateRealmOrWorld(realmOrWorld)
           if (!validationResult.isValid) {
             throw new Error(validationResult.error)
           }
-          validatedRealm = validationResult.validatedRealm
+          validatedRealmOrWorld = validationResult.validatedRealmOrWorld
         }
 
         // Fetch places data
         const response = await fetchPlaces({
           position: position.coordinates,
-          realm: validatedRealm
+          realm: validatedRealmOrWorld
         })
 
         if (response.ok && response.data.length > 0) {
@@ -78,7 +78,7 @@ export const PlacesPage: FC = memo(() => {
           }
         } else {
           // Use generic place data when no places are found
-          const genericPlace = createGenericPlace(position.coordinates, validatedRealm)
+          const genericPlace = createGenericPlace(position.coordinates, validatedRealmOrWorld)
           setPlaces([genericPlace])
         }
       } catch (err) {
@@ -89,7 +89,7 @@ export const PlacesPage: FC = memo(() => {
     }
 
     fetchData()
-  }, [position.coordinates, realm, navigate, validateRealm])
+  }, [position.coordinates, realmOrWorld, navigate, validateRealmOrWorld])
 
   return (
     <MainPageContainer>

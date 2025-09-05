@@ -4,7 +4,7 @@ import { fetchWorldContentAbout } from '../utils/worldContentApi'
 
 export interface RealmValidationResult {
   isValid: boolean
-  validatedRealm?: string
+  validatedRealmOrWorld?: string
   error?: string
 }
 
@@ -17,10 +17,12 @@ export const useRealmValidation = () => {
     return hasProtocol ? input : `https://${input}`
   }, [])
 
-  const checkRealmHealth = useCallback(async (realm: string, isEnsRealm: boolean): Promise<boolean> => {
+  const checkRealmHealth = useCallback(async (realm: string): Promise<boolean> => {
+    const isEnsRealm = isEns(realm)
+
     if (isEnsRealm) {
       try {
-        const aboutData = await fetchWorldContentAbout({ realm })
+        const aboutData = await fetchWorldContentAbout({ world: realm })
         return aboutData.healthy && aboutData.acceptingUsers
       } catch {
         return false
@@ -30,30 +32,26 @@ export const useRealmValidation = () => {
     }
   }, [])
 
-  const validateRealm = useCallback(
-    async (rawRealm: string | undefined): Promise<RealmValidationResult> => {
+  const validateRealmOrWorld = useCallback(
+    async (rawRealmOrWorld: string | undefined): Promise<RealmValidationResult> => {
       // Skip validation for default/main realm or when no realm is provided
-      if (!rawRealm) {
-        return { isValid: true, validatedRealm: rawRealm }
+      if (!rawRealmOrWorld) {
+        return { isValid: true, validatedRealmOrWorld: rawRealmOrWorld }
       }
 
       try {
-        const isEnsRealm = isEns(rawRealm)
+        const healthy = await checkRealmHealth(rawRealmOrWorld)
 
-        if (isEnsRealm) {
-          const healthy = await checkRealmHealth(rawRealm, isEnsRealm)
-
-          if (!healthy) {
-            return {
-              isValid: false,
-              error: `ENS realm ${rawRealm} is not healthy or not accepting users`
-            }
+        if (!healthy) {
+          return {
+            isValid: false,
+            error: `The realm ${rawRealmOrWorld} is not healthy or not accepting users`
           }
         }
 
         return {
           isValid: true,
-          validatedRealm: rawRealm
+          validatedRealmOrWorld: rawRealmOrWorld
         }
       } catch (error) {
         return {
@@ -66,6 +64,6 @@ export const useRealmValidation = () => {
   )
 
   return {
-    validateRealm
+    validateRealmOrWorld
   }
 }

@@ -11,11 +11,9 @@ export interface WorldContentApiResponse {
 
 export class WorldContentApi {
   private baseUrl: string
-  private authenticatedFetch?: FetchFunction
 
-  constructor(authenticatedFetch?: FetchFunction) {
+  constructor() {
     this.baseUrl = config.get('WORLD_CONTENT_API_URL')
-    this.authenticatedFetch = authenticatedFetch
   }
 
   /**
@@ -24,19 +22,19 @@ export class WorldContentApi {
    * @param fetchFn Optional fetch function (defaults to class fetch or global fetch)
    * @returns Promise with world content about data
    */
-  async fetchWorldContentAbout(options?: { realm?: string }, fetchFn?: FetchFunction): Promise<WorldContentApiResponse> {
-    const useFetch = fetchFn || this.authenticatedFetch || fetch
+  async fetchWorldContentAbout(options?: { world?: string }, fetchFn?: FetchFunction): Promise<WorldContentApiResponse> {
+    const useFetch = fetchFn || fetch
 
     try {
-      if (!options?.realm) {
-        return { ok: false, error: 'Realm parameter is required' }
+      if (!options?.world) {
+        return { ok: false, error: 'World parameter is required' }
       }
 
-      if (!isEns(options.realm)) {
-        return { ok: false, error: 'Invalid realm name. Must be an ENS name (ending with .eth)' }
+      if (!isEns(options.world)) {
+        return { ok: false, error: 'Invalid world name. Must be an ENS name (ending with .eth)' }
       }
 
-      const url = `${this.baseUrl}/${options.realm.toLowerCase()}/about`
+      const url = `${this.baseUrl}/${options.world.toLowerCase()}/about`
       const response = await useFetch(url)
 
       if (!response.ok) {
@@ -57,7 +55,7 @@ export class WorldContentApi {
 }
 
 // Backward compatibility functions
-export const fetchWorldContentAbout = async (options?: { realm?: string }, fetchFn: FetchFunction = fetch): Promise<AboutResponse> => {
+export const fetchWorldContentAbout = async (options?: { world?: string }, fetchFn: FetchFunction = fetch): Promise<AboutResponse> => {
   const worldContentApi = new WorldContentApi()
   const result = await worldContentApi.fetchWorldContentAbout(options, fetchFn)
 
