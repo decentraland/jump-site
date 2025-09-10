@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { isEns, isPeerHealthy } from '../utils'
 import { fetchWorldContentAbout } from '../utils/worldContentApi'
+import { DEFAULT_REALM } from './useQueryParams'
 
 export interface RealmValidationResult {
   isValid: boolean
@@ -35,7 +36,7 @@ export const useRealmValidation = () => {
   const validateRealmOrWorld = useCallback(
     async (rawRealmOrWorld: string | undefined): Promise<RealmValidationResult> => {
       // Skip validation for default/main realm or when no realm is provided
-      if (!rawRealmOrWorld) {
+      if (!rawRealmOrWorld || rawRealmOrWorld === DEFAULT_REALM) {
         return { isValid: true, validatedRealmOrWorld: rawRealmOrWorld }
       }
 
