@@ -28,5 +28,7 @@
   "FAQ_URL": "https://docs.decentraland.org/player/general/faq/",
   "EMAIL_HELLO_URL": "mailto:hello@decentraland.org",
   "BEEHIIV_SUBSCRIBE_URL": "https://embeds.beehiiv.com/ff89783d-748b-4ba3-8700-4759f6f62831?slim=true",
-  "WORLD_CONTENT_API_URL": "https://worlds-content-server.decentraland.org/world"
+  "WORLD_CONTENT_API_URL": "https://worlds-content-server.decentraland.org/world",
+  "ONBOARDING_URL": "https://decentraland.org/auth/login/?redirectTo=https%3A%2F%2Fdecentraland.org%2Fdownload",
+  "DOWNLOAD_URL": "https://decentraland.org/download"
 }

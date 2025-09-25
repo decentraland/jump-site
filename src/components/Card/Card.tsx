@@ -1,14 +1,16 @@
-import { memo, type FC, type ReactNode } from 'react'
+import { memo, type FC, type ReactNode, useCallback } from 'react'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
-import { Box, CircularProgress, Skeleton, JumpIn } from 'decentraland-ui2'
+import { JumpInIcon } from 'decentraland-ui2/dist/components/Icon/JumpInIcon'
+import { Box, CircularProgress, Skeleton, Button } from 'decentraland-ui2'
 import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.webp'
 import cardImageEventsPlaceholder from '../../assets/card-events-placeholder.webp'
 import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.webp'
 import { config } from '../../config'
+import { useAuth } from '../../contexts/auth/AuthProvider'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
 import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
@@ -45,6 +47,9 @@ const formatLocation = (coordinates: [number, number]): string => {
 
 export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, creator }) => {
   const formatMessage = useFormatMessage()
+  const { isSignedIn } = useAuth()
+  const onboardingUrl = config.get('ONBOARDING_URL')
+  const downloadUrl = config.get('DOWNLOAD_URL')
 
   if (isLoading) {
     return (
@@ -73,6 +78,14 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const displayUserName = creator?.user_name || data.user_name
   const displayUser = creator?.user || data.user
   const displayAvatar = creator?.avatar || cardCreatorPlaceholder
+
+  const handleJumpIn = useCallback(() => {
+    if (isSignedIn) {
+      window.open(downloadUrl, '_self')
+    } else {
+      window.open(onboardingUrl, '_self')
+    }
+  }, [isSignedIn, downloadUrl, onboardingUrl])
 
   return (
     <CardContainer>
@@ -133,18 +146,9 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
               <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
               {data?.realm ?? formatLocation(data.coordinates)}
               {isEvent && !data?.live && (
-                <JumpIn
-                  variant="button"
-                  modalProps={{
-                    buttonLabel: 'Download Now',
-                    description: "To jump in, you'll need to download the Decentraland app",
-                    title: 'Download Decentraland'
-                  }}
-                  desktopAppOptions={{
-                    realm: data.realm,
-                    position: data.position
-                  }}
-                />
+                <Button variant="contained" size="large" fullWidth endIcon={<JumpInIcon />} onClick={handleJumpIn}>
+                  {formatMessage('components.jump_in_button.jump_in')}
+                </Button>
               )}
             </CardLocation>
           </Box>
@@ -158,18 +162,9 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
 
         {/* Default JumpIn button for places or live events */}
         {!children && (!isEvent || data.live) && (
-          <JumpIn
-            variant="button"
-            modalProps={{
-              buttonLabel: 'Download Now',
-              description: "To jump in, you'll need to download the Decentraland app",
-              title: 'Download Decentraland'
-            }}
-            desktopAppOptions={{
-              realm: data.realm,
-              position: data.position
-            }}
-          />
+          <Button variant="contained" size="large" fullWidth endIcon={<JumpInIcon />} onClick={handleJumpIn}>
+            {formatMessage('components.jump_in_button.jump_in')}
+          </Button>
         )}
       </RightSection>
     </CardContainer>
