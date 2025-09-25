@@ -1,11 +1,12 @@
 import { useCallback, useState, type FC } from 'react'
 import { useAdvancedUserAgentData } from '@dcl/hooks'
 import { Typography, ButtonOwnProps, Button } from 'decentraland-ui2'
+import { config } from '../../config'
+import { useAuth } from '../../contexts/auth/AuthProvider'
 import { Events, useAnalytics } from '../../hooks/useAnalytics'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { launchDesktopApp } from '../../utils'
 import { CardData } from '../../utils/cardDataTransformers'
-import { DownloadModal } from '../DownloadModal/DownloadModal'
 import { MobileDisclaimerModal } from '../MobileDisclaimerModal/MobileDisclaimerModal'
 import { JumpInIcon, JumpInIconButton } from './JumpInButton.styled'
 
@@ -30,10 +31,11 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
 }) => {
   const [, advancedUserAgent] = useAdvancedUserAgentData()
   const { track } = useAnalytics()
-  const [downloadOption, setShowDownloadOption] = useState<boolean>(false)
   const [showMobileModal, setMobileModalOpen] = useState(false)
   const formatMessage = useFormatMessage()
-
+  const onboardingUrl = config.get('ONBOARDING_URL')
+  const downloadUrl = config.get('DOWNLOAD_URL')
+  const { isSignedIn } = useAuth()
   const osName = advancedUserAgent?.os?.name ?? 'unknown'
   const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
   const isMobile = !!advancedUserAgent?.mobile
@@ -62,17 +64,16 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
       const resp = await launchDesktopApp(target, appUrl.toString())
 
       if (!resp) {
-        setShowDownloadOption(true)
         track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
+        if (isSignedIn) {
+          window.open(downloadUrl, '_self')
+        } else {
+          window.open(onboardingUrl, '_self')
+        }
       }
     },
-    [realm, position, osName, arch, isMobile, track]
+    [realm, position, osName, arch, isMobile, track, isSignedIn, downloadUrl, onboardingUrl]
   )
-
-  const handleCloseDownloadModal = useCallback(() => {
-    track(Events.CLICK_DOWNLOAD_MODAL_CLOSE, { osName, arch })
-    setShowDownloadOption(false)
-  }, [osName, arch, track])
 
   const handleCloseMobileDisclaimerModal = useCallback(() => {
     track(Events.CLICK_MOBILE_DISCLAIMER_MODAL_CLOSE, { osName, arch })
@@ -114,7 +115,6 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
           </>
         </Button>
       )}
-      <DownloadModal open={downloadOption} onClose={handleCloseDownloadModal} osName={osName} arch={arch} sceneData={sceneData} />
       <MobileDisclaimerModal open={showMobileModal} onClose={handleCloseMobileDisclaimerModal} />
     </>
   )
