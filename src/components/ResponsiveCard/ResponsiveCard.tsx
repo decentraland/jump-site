@@ -15,15 +15,11 @@ type ResponsiveCardProps = {
 export const ResponsiveCard: FC<ResponsiveCardProps> = memo(({ data, isLoading = false, children, creator }) => {
   const isMobile = useMobileMediaQuery()
 
-  if (isMobile) {
-    return (
-      <MobileCard data={data} isLoading={isLoading} creator={creator}>
-        {children}
-      </MobileCard>
-    )
-  }
-
-  return (
+  return isMobile ? (
+    <MobileCard data={data} isLoading={isLoading} creator={creator}>
+      {children}
+    </MobileCard>
+  ) : (
     <Card data={data} isLoading={isLoading} creator={creator}>
       {children}
     </Card>

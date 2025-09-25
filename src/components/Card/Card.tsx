@@ -58,7 +58,24 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const osName = advancedUserAgent?.os?.name ?? 'unknown'
   const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
-  if (isLoading) {
+  const handleJumpIn = useCallback(async () => {
+    if (!data) return
+
+    const resp = await launchDesktopApp({ realm: data.realm, position: data.position })
+
+    resp && track(Events.CLICK_JUMP_IN)
+
+    if (!resp) {
+      track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
+      if (isSignedIn) {
+        window.open(downloadUrl, '_self')
+      } else {
+        window.open(onboardingUrl, '_self')
+      }
+    }
+  }, [isSignedIn, downloadUrl, onboardingUrl, launchDesktopApp, track, data?.realm, data?.position, osName, arch])
+
+  if (isLoading || !data) {
     return (
       <CardContainer>
         <LeftSection>
@@ -85,20 +102,6 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const displayUserName = creator?.user_name || data.user_name
   const displayUser = creator?.user || data.user
   const displayAvatar = creator?.avatar || cardCreatorPlaceholder
-  const handleJumpIn = useCallback(async () => {
-    const resp = await launchDesktopApp({ realm: data.realm, position: data.position })
-
-    resp && track(Events.CLICK_JUMP_IN)
-
-    if (!resp) {
-      track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
-      if (isSignedIn) {
-        window.open(downloadUrl, '_self')
-      } else {
-        window.open(onboardingUrl, '_self')
-      }
-    }
-  }, [isSignedIn, downloadUrl, onboardingUrl])
 
   return (
     <CardContainer>
