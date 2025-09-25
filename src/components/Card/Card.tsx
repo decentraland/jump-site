@@ -4,13 +4,15 @@ import CircleRoundedIcon from '@mui/icons-material/CircleRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import { useAdvancedUserAgentData } from '@dcl/hooks'
 import { JumpInIcon } from 'decentraland-ui2/dist/components/Icon/JumpInIcon'
-import { Box, CircularProgress, Skeleton, Button } from 'decentraland-ui2'
+import { Box, CircularProgress, Skeleton, Button, launchDesktopApp } from 'decentraland-ui2'
 import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.webp'
 import cardImageEventsPlaceholder from '../../assets/card-events-placeholder.webp'
 import cardImagePlacesPlaceholder from '../../assets/card-places-placeholder.webp'
 import { config } from '../../config'
 import { useAuth } from '../../contexts/auth/AuthProvider'
+import { Events, useAnalytics } from '../../hooks/useAnalytics'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { type CardData } from '../../utils/cardDataTransformers'
 import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
@@ -50,6 +52,11 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const { isSignedIn } = useAuth()
   const onboardingUrl = config.get('ONBOARDING_URL')
   const downloadUrl = config.get('DOWNLOAD_URL')
+  const [, advancedUserAgent] = useAdvancedUserAgentData()
+  const { track } = useAnalytics()
+
+  const osName = advancedUserAgent?.os?.name ?? 'unknown'
+  const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
 
   if (isLoading) {
     return (
@@ -78,12 +85,18 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const displayUserName = creator?.user_name || data.user_name
   const displayUser = creator?.user || data.user
   const displayAvatar = creator?.avatar || cardCreatorPlaceholder
+  const handleJumpIn = useCallback(async () => {
+    const resp = await launchDesktopApp({ realm: data.realm, position: data.position })
 
-  const handleJumpIn = useCallback(() => {
-    if (isSignedIn) {
-      window.open(downloadUrl, '_self')
-    } else {
-      window.open(onboardingUrl, '_self')
+    resp && track(Events.CLICK_JUMP_IN)
+
+    if (!resp) {
+      track(Events.CLIENT_NOT_INSTALLED, { osName, arch })
+      if (isSignedIn) {
+        window.open(downloadUrl, '_self')
+      } else {
+        window.open(onboardingUrl, '_self')
+      }
     }
   }, [isSignedIn, downloadUrl, onboardingUrl])
 
