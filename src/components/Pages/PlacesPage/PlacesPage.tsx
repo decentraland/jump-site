@@ -76,6 +76,17 @@ export const PlacesPage: FC = memo(() => {
               avatar: creatorResponse.data.deployerAvatar
             })
           }
+          // If no profile information can be retrieved from the scene deployer, try to fetch it from the place user name (if available)
+          else if (transformedPlaces[0].user_name) {
+            const userProfileFromPlace = await peerApi.fetchUserProfile(transformedPlaces[0].user_name)
+            if (userProfileFromPlace.ok && userProfileFromPlace.data) {
+              setCreator({
+                user_name: userProfileFromPlace.data.avatars[0].name,
+                user: userProfileFromPlace.data.avatars[0].userId,
+                avatar: userProfileFromPlace.data.avatars[0].avatar?.snapshots?.face256
+              })
+            }
+          }
         } else {
           // Use generic place data when no places are found
           const genericPlace = createGenericPlace(position.coordinates, validatedRealmOrWorld)
