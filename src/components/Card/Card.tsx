@@ -61,6 +61,8 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
   const handleJumpIn = useCallback(async () => {
     if (!data) return
 
+    console.log('Jumping in to realm', data.realm, 'and position', data.position)
+
     const resp = await launchDesktopApp({ realm: data.realm, position: data.position })
 
     resp && track(Events.CLICK_JUMP_IN)

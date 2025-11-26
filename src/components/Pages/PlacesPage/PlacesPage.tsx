@@ -21,6 +21,7 @@ export const PlacesPage: FC = memo(() => {
     avatar: ''
   })
   const [isLoading, setIsLoading] = useState(true)
+  console.log('Parameters', position, realmOrWorld)
 
   const createGenericPlace = useMemo(
     () =>
