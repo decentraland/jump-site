@@ -1,5 +1,6 @@
 # 🔐 Authentication Hooks Library
 
+
 A production-ready, type-safe authentication library for React applications with Web3 wallet integration, identity management, and network switching capabilities.
 
 ## ✨ Features
