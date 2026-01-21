@@ -14,13 +14,13 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@dcl/hooks": "^0.0.2",
+    "@dcl/hooks": "^1.0.0",
     "@dcl/single-sign-on-client": "^0.1.0",
     "@dcl/ui-env": "^1.5.1",
     "@segment/analytics-next": "^1.79.0",
     "classnames": "^2.5.1",
     "decentraland-connect": "^9.1.0",
-    "decentraland-ui2": "^0.28.1",
+    "decentraland-ui2": "^1.1.12",
     "isbot": "^5.1.25",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
