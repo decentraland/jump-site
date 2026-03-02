@@ -13,7 +13,7 @@ import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
 import { CardImage, CreatorLabel, CardLoadingContainer } from '../Card/Card.styled'
 import { LiveEventIcon } from '../Icons/LiveEventIcon/LiveEventIcon'
-import { ShareLinkButton } from '../ShareLinkButton'
+import { JumpInButton } from '../JumpInButton'
 import { TextWrapper } from '../TextWrapper/TextWrapper'
 import {
   MobileCardContainer,
@@ -172,7 +172,8 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
       </MobileMiddleSection>
 
       <MobileStickyBottomContainer>
-        {children ? children : <ShareLinkButton url={data?.url} title={data?.title} />}
+        {children}
+        {!children && <JumpInButton position={data.position} realm={data.realm} size="large" fullWidth />}
       </MobileStickyBottomContainer>
     </MobileCardContainer>
   )

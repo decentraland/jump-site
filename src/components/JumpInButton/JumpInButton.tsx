@@ -42,12 +42,6 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
 
   const handleClickJumpIn = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (isMobile) {
-        setMobileModalOpen(true)
-        track(Events.CLICK_JUMP_IN_MOBILE, { osName, arch })
-        return
-      }
-
       const { target } = event
       const appUrl = new URL('decentraland://')
 
@@ -57,6 +51,15 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
 
       if (position !== DEFAULT_POSITION) {
         appUrl.searchParams.set('position', position)
+      }
+
+      if (isMobile) {
+        track(Events.CLICK_JUMP_IN_MOBILE, { deepLink: appUrl.toString(), osName, arch })
+        const resp = await launchDesktopApp(target, appUrl.toString())
+        if (!resp) {
+          setMobileModalOpen(true)
+        }
+        return
       }
 
       track(Events.CLICK_JUMP_IN, { deepLink: appUrl.toString(), osName, arch })

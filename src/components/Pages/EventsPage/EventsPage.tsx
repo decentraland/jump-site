@@ -484,18 +484,25 @@ export const EventsPage: FC = memo(() => {
                 </EventCardActionRow>
               </>
             ) : (
-              <EventCardActionRow isMobile={true}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href={config.get('EVENTS_URL')}
-                  size="large"
-                  fullWidth
-                  sx={{ color: '#161518 !important' }}
-                >
-                  {formatMessage('events_page.explore_events_button')}
-                </Button>
-              </EventCardActionRow>
+              <>
+                <EventCardActionRow isMobile={true}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    href={config.get('EVENTS_URL')}
+                    size="large"
+                    fullWidth
+                    sx={{ color: '#161518 !important' }}
+                  >
+                    {formatMessage('events_page.explore_events_button')}
+                  </Button>
+                </EventCardActionRow>
+                <EventCardActionRow isMobile={true}>
+                  <JumpInButton realm={currentEvent.realm} position={currentEvent.position} sceneData={currentEvent} size="large" fullWidth>
+                    {formatMessage('events_page.jump_in_button')}
+                  </JumpInButton>
+                </EventCardActionRow>
+              </>
             )}
           </EventCardActions>
         ) : null}
