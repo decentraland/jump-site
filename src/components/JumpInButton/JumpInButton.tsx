@@ -38,7 +38,7 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
   const { isSignedIn } = useAuth()
   const osName = advancedUserAgent?.os?.name ?? 'unknown'
   const arch = advancedUserAgent?.cpu?.architecture?.toLowerCase() ?? 'unknown'
-  const isMobile = !!advancedUserAgent?.mobile
+  const isAndroid = !!advancedUserAgent?.mobile && advancedUserAgent?.os?.name === 'Android'
 
   const handleClickJumpIn = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,7 +53,7 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
         appUrl.searchParams.set('position', position)
       }
 
-      if (isMobile) {
+      if (isAndroid) {
         track(Events.CLICK_JUMP_IN_MOBILE, { deepLink: appUrl.toString(), osName, arch })
         const resp = await launchDesktopApp(target, appUrl.toString())
         if (!resp) {
@@ -75,7 +75,7 @@ export const JumpInButton: FC<JumpInButtonProps> = ({
         }
       }
     },
-    [realm, position, osName, arch, isMobile, track, isSignedIn, downloadUrl, onboardingUrl]
+    [realm, position, osName, arch, isAndroid, track, isSignedIn, downloadUrl, onboardingUrl]
   )
 
   const handleCloseMobileDisclaimerModal = useCallback(() => {

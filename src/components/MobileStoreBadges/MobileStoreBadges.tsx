@@ -1,10 +1,8 @@
 import { memo, type FC } from 'react'
 import styled from '@emotion/styled'
-import appStoreBadge from '../../assets/app-store-badge.svg'
 import googlePlayBadge from '../../assets/google-play-badge.svg'
 
 const MOBILE_APP = {
-  IOS_STORE_URL: 'https://testflight.apple.com/join/KF4r3jlU',
   ANDROID_STORE_URL: 'https://play.google.com/store/apps/details?id=org.decentraland.godotexplorer'
 }
 
@@ -27,8 +25,7 @@ const BadgeLink = styled('a')<{ size: 'small' | 'large' }>(({ size }) => ({
   alignItems: 'center',
   textDecoration: 'none',
   transition: 'opacity 0.2s ease',
-  flex: 1,
-  maxWidth: size === 'small' ? 280 : 320,
+  maxWidth: size === 'small' ? 160 : 200,
   '& img': {
     width: '100%',
     height: 'auto'
@@ -41,9 +38,6 @@ const BadgeLink = styled('a')<{ size: 'small' | 'large' }>(({ size }) => ({
 export const MobileStoreBadges: FC<MobileStoreBadgesProps> = memo(({ size = 'small', className }) => {
   return (
     <Container size={size} className={className}>
-      <BadgeLink href={MOBILE_APP.IOS_STORE_URL} target="_blank" rel="noopener noreferrer" size={size}>
-        <img src={appStoreBadge} />
-      </BadgeLink>
       <BadgeLink href={MOBILE_APP.ANDROID_STORE_URL} target="_blank" rel="noopener noreferrer" size={size}>
         <img src={googlePlayBadge} />
       </BadgeLink>
