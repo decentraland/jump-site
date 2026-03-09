@@ -2,7 +2,6 @@ import { memo, type FC } from 'react'
 import styled from '@emotion/styled'
 import appStoreBadge from '../../assets/app-store-badge.svg'
 import googlePlayBadge from '../../assets/google-play-badge.svg'
-import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const MOBILE_APP = {
   IOS_STORE_URL: 'https://testflight.apple.com/join/KF4r3jlU',
@@ -40,27 +39,23 @@ const BadgeLink = styled('a')<{ size: 'small' | 'large' }>(({ size }) => ({
 }))
 
 export const MobileStoreBadges: FC<MobileStoreBadgesProps> = memo(({ size = 'small', className }) => {
-  const formatMessage = useFormatMessage()
-
   return (
     <Container size={size} className={className}>
       <BadgeLink
         href={MOBILE_APP.IOS_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={formatMessage('mobile_store_badges.download_ios')}
         size={size}
       >
-        <img src={appStoreBadge} alt={formatMessage('mobile_store_badges.download_ios')} />
+        <img src={appStoreBadge} />
       </BadgeLink>
       <BadgeLink
         href={MOBILE_APP.ANDROID_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={formatMessage('mobile_store_badges.download_android')}
         size={size}
       >
-        <img src={googlePlayBadge} alt={formatMessage('mobile_store_badges.download_android')} />
+        <img src={googlePlayBadge} />
       </BadgeLink>
     </Container>
   )
