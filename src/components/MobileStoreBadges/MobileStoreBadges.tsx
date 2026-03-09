@@ -41,20 +41,10 @@ const BadgeLink = styled('a')<{ size: 'small' | 'large' }>(({ size }) => ({
 export const MobileStoreBadges: FC<MobileStoreBadgesProps> = memo(({ size = 'small', className }) => {
   return (
     <Container size={size} className={className}>
-      <BadgeLink
-        href={MOBILE_APP.IOS_STORE_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        size={size}
-      >
+      <BadgeLink href={MOBILE_APP.IOS_STORE_URL} target="_blank" rel="noopener noreferrer" size={size}>
         <img src={appStoreBadge} />
       </BadgeLink>
-      <BadgeLink
-        href={MOBILE_APP.ANDROID_STORE_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        size={size}
-      >
+      <BadgeLink href={MOBILE_APP.ANDROID_STORE_URL} target="_blank" rel="noopener noreferrer" size={size}>
         <img src={googlePlayBadge} />
       </BadgeLink>
     </Container>
