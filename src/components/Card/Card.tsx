@@ -14,6 +14,7 @@ import { config } from '../../config'
 import { useAuth } from '../../contexts/auth/AuthProvider'
 import { Events, useAnalytics } from '../../hooks/useAnalytics'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
+import { DEFAULT_REALM } from '../../hooks/useQueryParams'
 import { type CardData } from '../../utils/cardDataTransformers'
 import { eventHasEnded, formatEventDate } from '../../utils/dateFormatter'
 import { type Creator } from '../../utils/peerApi'
@@ -63,7 +64,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
 
     console.log('Jumping in to realm', data.realm, 'and position', data.position)
 
-    const realm = data.realm && data.realm !== 'main' ? data.realm : undefined
+    const realm = data.realm && data.realm !== DEFAULT_REALM ? data.realm : undefined
     const resp = await launchDesktopApp({ realm, position: data.position })
 
     resp && track(Events.CLICK_JUMP_IN)
