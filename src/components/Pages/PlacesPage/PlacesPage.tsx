@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useState, type FC } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQueryParams } from '../../../hooks/useQueryParams'
+import { DEFAULT_REALM, useQueryParams } from '../../../hooks/useQueryParams'
 import { useRealmValidation } from '../../../hooks/useRealmValidation'
 import { fromPlace, type CardData } from '../../../utils/cardDataTransformers'
 import { Creator, PeerApi } from '../../../utils/peerApi'
@@ -12,7 +12,8 @@ const peerApi = new PeerApi()
 
 export const PlacesPage: FC = memo(() => {
   const navigate = useNavigate()
-  const { position, realm: realmOrWorld } = useQueryParams()
+  const { position, realm: rawRealmOrWorld } = useQueryParams()
+  const realmOrWorld = rawRealmOrWorld === DEFAULT_REALM ? undefined : rawRealmOrWorld
   const { validateRealmOrWorld } = useRealmValidation()
   const [places, setPlaces] = useState<CardData[]>([])
   const [creator, setCreator] = useState<Creator>({
