@@ -19,7 +19,7 @@ import { fetchPlaces, PlacesApiResponse } from '../../../utils/placesApi'
 import { JumpInButton } from '../../JumpInButton'
 import { MainPageContainer } from '../../MainPageContainer/MainPage.styled'
 import { ResponsiveCard } from '../../ResponsiveCard'
-import { EventCardActions, EventCardActionRow } from './EventsPage.styled'
+import { EventCardActions, EventCardActionRow, ExploreEventsButton } from './EventsPage.styled'
 import type { Event } from './types'
 import { getGoogleCalendar, getJumpInUrl } from './utils'
 
@@ -348,16 +348,9 @@ export const EventsPage: FC = memo(() => {
               </>
             ) : (
               <>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href={config.get('EVENTS_URL')}
-                  size="large"
-                  fullWidth
-                  sx={{ color: '#161518 !important' }}
-                >
+                <ExploreEventsButton variant="contained" color="secondary" href={config.get('EVENTS_URL')} size="large" fullWidth>
                   {formatMessage('events_page.explore_events_button')}
-                </Button>
+                </ExploreEventsButton>
                 <JumpInButton realm={currentEvent.realm} position={currentEvent.position} sceneData={currentEvent} size="large" fullWidth>
                   {formatMessage('events_page.jump_in_button')}
                 </JumpInButton>
@@ -484,18 +477,18 @@ export const EventsPage: FC = memo(() => {
                 </EventCardActionRow>
               </>
             ) : (
-              <EventCardActionRow isMobile={true}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href={config.get('EVENTS_URL')}
-                  size="large"
-                  fullWidth
-                  sx={{ color: '#161518 !important' }}
-                >
-                  {formatMessage('events_page.explore_events_button')}
-                </Button>
-              </EventCardActionRow>
+              <>
+                <EventCardActionRow isMobile={true}>
+                  <ExploreEventsButton variant="contained" color="secondary" href={config.get('EVENTS_URL')} size="large" fullWidth>
+                    {formatMessage('events_page.explore_events_button')}
+                  </ExploreEventsButton>
+                </EventCardActionRow>
+                <EventCardActionRow isMobile={true}>
+                  <JumpInButton realm={currentEvent.realm} position={currentEvent.position} sceneData={currentEvent} size="large" fullWidth>
+                    {formatMessage('events_page.jump_in_button')}
+                  </JumpInButton>
+                </EventCardActionRow>
+              </>
             )}
           </EventCardActions>
         ) : null}
