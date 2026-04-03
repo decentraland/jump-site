@@ -165,11 +165,6 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
             <CardLocation>
               <PlaceOutlinedIcon sx={{ fontSize: 16 }} />
               {data?.realm ?? formatLocation(data.coordinates)}
-              {isEvent && !data?.live && (
-                <Button variant="contained" size="large" fullWidth endIcon={<JumpInIcon />} onClick={handleJumpIn}>
-                  {formatMessage('components.jump_in_button.jump_in')}
-                </Button>
-              )}
             </CardLocation>
           </Box>
           <TextWrapper maxHeight={128} gradientColor="#380A4D">
