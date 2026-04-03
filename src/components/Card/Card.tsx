@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
 import { useAdvancedUserAgentData } from '@dcl/hooks'
 import { JumpInIcon } from 'decentraland-ui2/dist/components/Icon/JumpInIcon'
 import { Box, CircularProgress, Skeleton, Button, launchDesktopApp } from 'decentraland-ui2'
@@ -123,7 +123,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
               </>
             ) : (
               <>
-                <StarRoundedIcon sx={{ fontSize: 16, color: '#FF2D55' }} />+{data.total_attendees}
+                <NotificationsRoundedIcon sx={{ fontSize: 16, color: '#FF2D55' }} />+{data.total_attendees}
               </>
             )}
           </AttendeesBadge>

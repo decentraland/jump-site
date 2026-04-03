@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import CheckIcon from '@mui/icons-material/Check'
 import DateRangeRoundedIcon from '@mui/icons-material/DateRangeRounded'
 import ShareIcon from '@mui/icons-material/Share'
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded'
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
 import { Box, Typography, Button, IconButton, CircularProgress, Snackbar, useMobileMediaQuery } from 'decentraland-ui2'
 import { config } from '../../../config'
 import { useAuthenticatedFetch } from '../../../hooks/useAuthenticatedFetch'
@@ -279,9 +279,9 @@ export const EventsPage: FC = memo(() => {
                     loadingActions.interested ? (
                       <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
                     ) : currentEvent.attending ? (
-                      <StarRoundedIcon sx={{ fontSize: 16 }} />
+                      <NotificationsRoundedIcon sx={{ fontSize: 16 }} />
                     ) : (
-                      <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
+                      <NotificationsNoneRoundedIcon sx={{ fontSize: 16 }} />
                     )
                   }
                   aria-label={formatMessage('card.accessibility.interested_button')}
@@ -415,9 +415,9 @@ export const EventsPage: FC = memo(() => {
                       loadingActions.interested ? (
                         <CircularProgress size={16} sx={{ color: currentEvent.attending ? '#FF2D55' : '#161518' }} />
                       ) : currentEvent.attending ? (
-                        <StarRoundedIcon sx={{ fontSize: 16 }} />
+                        <NotificationsRoundedIcon sx={{ fontSize: 16 }} />
                       ) : (
-                        <StarBorderRoundedIcon sx={{ fontSize: 16 }} />
+                        <NotificationsNoneRoundedIcon sx={{ fontSize: 16 }} />
                       )
                     }
                     aria-label={formatMessage('card.accessibility.interested_button')}
