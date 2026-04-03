@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded'
 import PersonIcon from '@mui/icons-material/Person'
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import StarRoundedIcon from '@mui/icons-material/StarRounded'
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
 import { Box, CircularProgress, Skeleton } from 'decentraland-ui2'
 import cardCreatorPlaceholder from '../../assets/card-creator-placeholder.webp'
 import { config } from '../../config'
@@ -117,7 +117,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
               </>
             ) : (
               <>
-                <StarRoundedIcon sx={{ fontSize: 14, color: '#FF2D55' }} />+{data.total_attendees}
+                <NotificationsRoundedIcon sx={{ fontSize: 14, color: '#FF2D55' }} />+{data.total_attendees}
               </>
             )}
           </MobileAttendeesBadge>
