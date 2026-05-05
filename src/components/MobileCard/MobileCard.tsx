@@ -142,7 +142,7 @@ export const MobileCard: FC<MobileCardProps> = memo(({ data, isLoading = false, 
             <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
             {displayUser ? (
               <MobileUserProfileLink
-                href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
+                href={`${config.get('PROFILE_URL').replace(/\/$/, '')}/accounts/${displayUser}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={formatMessage('card.accessibility.user_profile_link', { userName: displayUserName })}

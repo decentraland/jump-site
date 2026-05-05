@@ -144,7 +144,7 @@ export const Card: FC<CardProps> = memo(({ data, isLoading = false, children, cr
             <CreatorLabel>{formatMessage('card.creator.by')} </CreatorLabel>
             {displayUser ? (
               <UserProfileLink
-                href={`${config.get('PROFILE_URL')}accounts/${displayUser}`}
+                href={`${config.get('PROFILE_URL').replace(/\/$/, '')}/accounts/${displayUser}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={formatMessage('card.accessibility.user_profile_link', { userName: displayUserName })}
