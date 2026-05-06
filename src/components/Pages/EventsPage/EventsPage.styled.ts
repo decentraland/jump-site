@@ -1,4 +1,9 @@
 import styled from '@emotion/styled'
+import { Button } from 'decentraland-ui2'
+
+export const ExploreEventsButton = styled(Button)({
+  color: '#161518 !important'
+})
 
 export const EventCardActions = styled('div')<{ isMobile?: boolean }>(({ isMobile }) => ({
   display: 'flex',
